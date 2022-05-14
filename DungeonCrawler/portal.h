@@ -1,0 +1,31 @@
+#ifndef PORTAL_H
+#define PORTAL_H
+
+#include "tile.h"
+
+class Portal : public Tile{
+
+public:
+    // constructor
+    Portal(const int pRow, const int pColumn, Tile* pDestination) :
+        Tile(pRow, pColumn, "@"), destination(pDestination){};
+
+    // destructor
+    virtual ~Portal(){};
+
+    // getter - methods
+    virtual std::string getTexture() override;
+    Tile *getDestination() const;
+
+    // setter - methods
+    void setDestination(Tile *newDestination);
+
+    // other methods
+    virtual Tile* onEnter(Tile* fromTile, Character* who) override;
+
+private:
+    // attributes
+    Tile* destination;
+};
+
+#endif // PORTAL_H
