@@ -7,8 +7,8 @@ class Portal : public Tile{
 
 public:
     // constructor
-    Portal(const int pRow, const int pColumn, Tile* pDestination) :
-        Tile(pRow, pColumn, "@"), destination(pDestination){};
+    Portal(const int pRow, const int pColumn) :
+        Tile(pRow, pColumn, "@"){};
 
     // destructor
     virtual ~Portal(){};

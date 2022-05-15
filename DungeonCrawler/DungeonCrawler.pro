@@ -7,6 +7,7 @@ SOURCES += \
         abstractui.cpp \
         active.cpp \
         character.cpp \
+        controller.cpp \
         door.cpp \
         dungeoncrawler.cpp \
         floor.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     abstractui.h \
     active.h \
     character.h \
+    controller.h \
     door.h \
     dungeoncrawler.h \
     floor.h \

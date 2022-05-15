@@ -2,8 +2,9 @@
 #define TERMINALUI_H
 
 #include "abstractui.h"
+#include "controller.h"
 
-class TerminalUI : public AbstractUI{
+class TerminalUI : virtual public AbstractUI, virtual public Controller{
 
 public:
     // constructor
@@ -14,6 +15,7 @@ public:
 
     // other methods
     virtual void draw(Level* level) override;
+    virtual int move() override;
 };
 
 #endif // TERMINALUI_H

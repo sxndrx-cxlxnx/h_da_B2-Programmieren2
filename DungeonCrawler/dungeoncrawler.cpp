@@ -2,10 +2,15 @@
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(){
-    Level* level1 = new Level();
-    level = level1;
-    AbstractUI* terminalui = new TerminalUI();
+
+    TerminalUI* terminalui = new TerminalUI();
     abstractui = terminalui;
+
+    Controller* controller = new TerminalUI();
+    controller = terminalui;
+
+    Level* level1 = new Level(controller);
+    level = level1;
 }
 
 // ************************ destructor ************************************************
@@ -63,5 +68,10 @@ void DungeonCrawler::play(){
        default: std::cout << "Fehler" << std::endl;
 
        }
-   }
+    }
+}
+
+TerminalUI *DungeonCrawler::getAbstractui() const
+{
+    return abstractui;
 }

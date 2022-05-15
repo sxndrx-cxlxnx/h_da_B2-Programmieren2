@@ -18,9 +18,11 @@ public:
     // other methods
     void play();
 
+    TerminalUI *getAbstractui() const;
+
 private:
     // attributes
-    AbstractUI* abstractui;
+    TerminalUI* abstractui;
     Level* level;
 };
 

@@ -7,79 +7,75 @@
 #include "ramp.h"
 #include "pit.h"
 
+using namespace std;
+
 // ************************ constructor ***********************************************
-Level::Level(){
+Level::Level(Controller* pTerminalUI){
 
-    Switch* switch1 = new Switch(1, 1);
-    Door* door1 = new Door(length -4, 2);
+    dungeon.resize(length, vector<Tile*> (width));
 
+//    dungeon.resize(width);
+//    for(size_t w = 0; w < width; w++){
+//        dungeon.at(w).resize(length);
+//    }
 
-    // set wall around the level - rest is floor
-    for(int c = 0; c < width; c++){                         // column / width
-        for(int r = 0; r < length; r++){                    // row / length
+    const string  levelString = {
+        "##########"
+        "#@.......#"
+        "#...<....#"
+        "#..___...#"
+        "#..___...#"
+        "#........#"
+        "#######X##"
+        "#@.......#"
+        "#...?....#"
+        "##########"};
 
-            if(r == 1 && c == 1){
+    Portal* portal1 = new Portal(1, 1);
+    Portal* portal2 = new Portal(7, 1);
 
-                dungeon[r][c] = switch1;
-                continue;
-            } else if(r == length -2 && c == width -2){
-                dungeon[r][c] = new Ramp(r,c);
-                continue;
-            } else if(r == length -2 && c == width -3){
-                dungeon[r][c] = new Pit(r,c);
-                continue;
-            } else if(r == 1 && c == width -2){                    // don't set Floor where portals will be
-                continue;
-            } else if(r == length -2 && c == 1){
-                continue;
+    Switch* switch1 = new Switch(8, 4);
+    Door* door1 = new Door(6, 7);
+    switch1->attach(door1);
+
+    int atString = 0;
+
+    bool firstPortalSet = false;
+
+    for(int r = 0; r < length; r++){
+        for(int c = 0; c < width; c++){
+
+            char test = levelString[atString];
+
+            switch(levelString[atString]){
+                case '#': dungeon[r][c] = new Wall(r, c); break;
+                case '.': dungeon[r][c] = new Floor(r, c); break;
+                case '@': if(!firstPortalSet){
+                              dungeon[r][c] = portal1;
+                              firstPortalSet = true;
+                          } else{
+                              dungeon[r][c] = portal2;
+                          }
+                          break;
+                case 'X': dungeon[r][c] = door1; break;
+                case '_': dungeon[r][c] = new Pit(r, c); break;
+                case '<': dungeon[r][c] = new Ramp(r, c); break;
+                case '?': dungeon[r][c] = switch1; break;
+            default: break;
             }
 
-            if(c == 0 || c == width -1){                    // sides
-                dungeon[r][c] = new Wall(r,c);
-            } else if(r == 0 || r == length -1){            // above and underneath
-                dungeon[r][c] = new Wall(r,c);
-            } else if(r == length -4){                      // seperate one portal from the other one
-                if(c == 2){
-                    dungeon[r][c] = door1;
-                } else{
-                    dungeon [r][c] = new Wall(r,c);
-                }
-            } else{
-                dungeon[r][c] = new Floor (r,c);            // rest
-            }
+            atString++;
         }
     }
 
-    switch1->attach(door1);
-
-    // set 2 portals in the corners
-    Portal* portal1 = new Portal(1, width -2, dungeon[length -2][1]);
-    dungeon[1][width -2] = portal1;
-
-    Portal* portal2 = new Portal(length -2, 1, dungeon[1][width -2]);
-    dungeon[length -2][1] = portal2;
+    portal1->setDestination(dungeon[7][1]);
+    portal2->setDestination(dungeon[1][1]);
 
 
+    Character* who = new Character(dungeon[1][7], pTerminalUI);
+    this->placeCharacter( who, 1, 7 );
+    this->characters.push_back(who);
 
-    // set portal destination (bring them to work)
-    portal1->setDestination(dungeon[length -2][1]);
-    portal2->setDestination(dungeon[1][width -2]);
-
-    int midWidth = width /2;
-    int midLength = length /2;
-
-    // useless, just to make on Enter, 3 lines down, work               // -
-    Character* who = new Character(dungeon[0][0]);                      //  |
-                                                                        //  |
-    // set character in the middle of the field                         //  v
-    if(dungeon[midWidth][midLength]->onEnter(dungeon[length -4][midWidth], who) == nullptr){         // field == wall
-        this->characters.push_back(new Character(dungeon[length -5][midWidth]));                     // one up
-        this->placeCharacter(characters[0], length -5, midWidth);
-    } else{
-        this->characters.push_back(new Character(dungeon[midLength][midWidth]));
-        this->placeCharacter(characters[0], midLength, midWidth);
-    }
-    delete who;     // delete useless Character*
 }
 
 // ************************ destructor ************************************************

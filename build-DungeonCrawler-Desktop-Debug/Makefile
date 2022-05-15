@@ -55,6 +55,7 @@ OBJECTS_DIR   = ./
 SOURCES       = ../DungeonCrawler/abstractui.cpp \
 		../DungeonCrawler/active.cpp \
 		../DungeonCrawler/character.cpp \
+		../DungeonCrawler/controller.cpp \
 		../DungeonCrawler/door.cpp \
 		../DungeonCrawler/dungeoncrawler.cpp \
 		../DungeonCrawler/floor.cpp \
@@ -71,6 +72,7 @@ SOURCES       = ../DungeonCrawler/abstractui.cpp \
 OBJECTS       = abstractui.o \
 		active.o \
 		character.o \
+		controller.o \
 		door.o \
 		dungeoncrawler.o \
 		floor.o \
@@ -247,7 +249,6 @@ DIST          = /usr/lib/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/qt6/mkspecs/linux-clang/qmake.conf \
 		/usr/lib/qt6/mkspecs/features/spec_post.prf \
-		../DungeonCrawler/.qmake.stash \
 		/usr/lib/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/qt6/mkspecs/features/default_pre.prf \
@@ -264,6 +265,7 @@ DIST          = /usr/lib/qt6/mkspecs/features/spec_pre.prf \
 		../DungeonCrawler/DungeonCrawler.pro abstractui.h \
 		active.h \
 		character.h \
+		controller.h \
 		door.h \
 		dungeoncrawler.h \
 		floor.h \
@@ -278,6 +280,7 @@ DIST          = /usr/lib/qt6/mkspecs/features/spec_pre.prf \
 		wall.h ../DungeonCrawler/abstractui.cpp \
 		../DungeonCrawler/active.cpp \
 		../DungeonCrawler/character.cpp \
+		../DungeonCrawler/controller.cpp \
 		../DungeonCrawler/door.cpp \
 		../DungeonCrawler/dungeoncrawler.cpp \
 		../DungeonCrawler/floor.cpp \
@@ -465,7 +468,6 @@ Makefile: ../DungeonCrawler/DungeonCrawler.pro /usr/lib/qt6/mkspecs/linux-clang/
 		/usr/lib/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/qt6/mkspecs/linux-clang/qmake.conf \
 		/usr/lib/qt6/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/qt6/mkspecs/features/default_pre.prf \
@@ -644,7 +646,6 @@ Makefile: ../DungeonCrawler/DungeonCrawler.pro /usr/lib/qt6/mkspecs/linux-clang/
 /usr/lib/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/qt6/mkspecs/linux-clang/qmake.conf:
 /usr/lib/qt6/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/qt6/mkspecs/features/default_pre.prf:
@@ -709,18 +710,28 @@ active.o: ../DungeonCrawler/active.cpp ../DungeonCrawler/active.h \
 		../DungeonCrawler/passive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o active.o ../DungeonCrawler/active.cpp
 
-character.o: ../DungeonCrawler/character.cpp ../DungeonCrawler/character.h
+character.o: ../DungeonCrawler/character.cpp ../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o character.o ../DungeonCrawler/character.cpp
+
+controller.o: ../DungeonCrawler/controller.cpp ../DungeonCrawler/controller.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controller.o ../DungeonCrawler/controller.cpp
 
 door.o: ../DungeonCrawler/door.cpp ../DungeonCrawler/door.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/passive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o door.o ../DungeonCrawler/door.cpp
 
 dungeoncrawler.o: ../DungeonCrawler/dungeoncrawler.cpp ../DungeonCrawler/dungeoncrawler.h \
 		../DungeonCrawler/terminalui.h \
 		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/level.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h
@@ -728,24 +739,33 @@ dungeoncrawler.o: ../DungeonCrawler/dungeoncrawler.cpp ../DungeonCrawler/dungeon
 
 floor.o: ../DungeonCrawler/floor.cpp ../DungeonCrawler/floor.h \
 		../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o floor.o ../DungeonCrawler/floor.cpp
 
 level.o: ../DungeonCrawler/level.cpp ../DungeonCrawler/level.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/wall.h \
 		../DungeonCrawler/floor.h \
 		../DungeonCrawler/portal.h \
 		../DungeonCrawler/door.h \
 		../DungeonCrawler/passive.h \
 		../DungeonCrawler/switch.h \
-		../DungeonCrawler/active.h
+		../DungeonCrawler/active.h \
+		../DungeonCrawler/ramp.h \
+		../DungeonCrawler/pit.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o level.o ../DungeonCrawler/level.cpp
 
 main.o: ../DungeonCrawler/main.cpp ../DungeonCrawler/dungeoncrawler.h \
 		../DungeonCrawler/terminalui.h \
 		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/level.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h
@@ -756,40 +776,60 @@ passive.o: ../DungeonCrawler/passive.cpp ../DungeonCrawler/passive.h
 
 pit.o: ../DungeonCrawler/pit.cpp ../DungeonCrawler/pit.h \
 		../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
+		../DungeonCrawler/ramp.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pit.o ../DungeonCrawler/pit.cpp
 
 portal.o: ../DungeonCrawler/portal.cpp ../DungeonCrawler/portal.h \
 		../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o portal.o ../DungeonCrawler/portal.cpp
 
 ramp.o: ../DungeonCrawler/ramp.cpp ../DungeonCrawler/ramp.h \
 		../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ramp.o ../DungeonCrawler/ramp.cpp
 
 switch.o: ../DungeonCrawler/switch.cpp ../DungeonCrawler/switch.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/active.h \
 		../DungeonCrawler/passive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o switch.o ../DungeonCrawler/switch.cpp
 
 terminalui.o: ../DungeonCrawler/terminalui.cpp ../DungeonCrawler/terminalui.h \
 		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h \
 		../DungeonCrawler/level.h \
 		../DungeonCrawler/tile.h \
 		../DungeonCrawler/character.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o terminalui.o ../DungeonCrawler/terminalui.cpp
 
 tile.o: ../DungeonCrawler/tile.cpp ../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tile.o ../DungeonCrawler/tile.cpp
 
 wall.o: ../DungeonCrawler/wall.cpp ../DungeonCrawler/wall.h \
 		../DungeonCrawler/tile.h \
-		../DungeonCrawler/character.h
+		../DungeonCrawler/character.h \
+		../DungeonCrawler/terminalui.h \
+		../DungeonCrawler/abstractui.h \
+		../DungeonCrawler/controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o wall.o ../DungeonCrawler/wall.cpp
 
 ####### Install
