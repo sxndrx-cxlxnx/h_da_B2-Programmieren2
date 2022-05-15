@@ -4,15 +4,31 @@
 #include "portal.h"
 #include "door.h"
 #include "switch.h"
+#include "ramp.h"
+#include "pit.h"
 
 // ************************ constructor ***********************************************
 Level::Level(){
+
+    Switch* switch1 = new Switch(1, 1);
+    Door* door1 = new Door(length -4, 2);
+
 
     // set wall around the level - rest is floor
     for(int c = 0; c < width; c++){                         // column / width
         for(int r = 0; r < length; r++){                    // row / length
 
-            if(r == 1 && c == width -2){                    // don't set Floor where portals will be
+            if(r == 1 && c == 1){
+
+                dungeon[r][c] = switch1;
+                continue;
+            } else if(r == length -2 && c == width -2){
+                dungeon[r][c] = new Ramp(r,c);
+                continue;
+            } else if(r == length -2 && c == width -3){
+                dungeon[r][c] = new Pit(r,c);
+                continue;
+            } else if(r == 1 && c == width -2){                    // don't set Floor where portals will be
                 continue;
             } else if(r == length -2 && c == 1){
                 continue;
@@ -23,12 +39,18 @@ Level::Level(){
             } else if(r == 0 || r == length -1){            // above and underneath
                 dungeon[r][c] = new Wall(r,c);
             } else if(r == length -4){                      // seperate one portal from the other one
-                dungeon [r][c] = new Wall(r,c);
+                if(c == 2){
+                    dungeon[r][c] = door1;
+                } else{
+                    dungeon [r][c] = new Wall(r,c);
+                }
             } else{
                 dungeon[r][c] = new Floor (r,c);            // rest
             }
         }
     }
+
+    switch1->attach(door1);
 
     // set 2 portals in the corners
     Portal* portal1 = new Portal(1, width -2, dungeon[length -2][1]);
@@ -36,6 +58,8 @@ Level::Level(){
 
     Portal* portal2 = new Portal(length -2, 1, dungeon[1][width -2]);
     dungeon[length -2][1] = portal2;
+
+
 
     // set portal destination (bring them to work)
     portal1->setDestination(dungeon[length -2][1]);

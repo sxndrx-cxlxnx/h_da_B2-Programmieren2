@@ -12,3 +12,7 @@ void Switch::activate(){
         observers[i]->notify(this);
     }
 }
+
+std::string Switch::getTexture() const{
+    return texture;
+}

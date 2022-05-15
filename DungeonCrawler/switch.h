@@ -6,10 +6,12 @@
 
 class Switch : public Tile, public Active{
 public:
-    Switch(const int pRow, const int pColumn):Tile(pRow, pColumn, "?"), Active(){};
+    Switch(const int pRow, const int pColumn):Tile(pRow, pColumn, "?"){};
 
     virtual Tile* onEnter(Tile* from, Character* who) override;
     virtual void activate() override;
+
+    virtual std::string getTexture() const override;
 };
 
 #endif // SWITCH_H

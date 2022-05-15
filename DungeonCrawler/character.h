@@ -10,7 +10,7 @@ class Character{
 
 public:
     // constructor
-    Character(Tile* pTile) : tile(pTile), texture("X"){};
+    Character(Tile* pTile) : tile(pTile), texture("O"){};
 
     // setter - methods
     void setTile(Tile *newTile);

@@ -35,7 +35,7 @@ public:
     bool hasCharacter();
     bool moveTo(Tile* destTile, Character* who);                // move to
     virtual Tile* onEnter(Tile* fromTile, Character* who);      // on Enter
-    Tile* onLeave(Tile* destTile, Character* who);              // on Leave
+    virtual Tile* onLeave(Tile* destTile, Character* who);              // on Leave
     void goAStepWithCharacter(Tile *from, Tile *to /* , Character *who */);
 
 };

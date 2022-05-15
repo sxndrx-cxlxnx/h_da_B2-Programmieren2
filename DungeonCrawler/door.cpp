@@ -18,5 +18,5 @@ Tile *Door::onEnter(Tile *from, Character *who){
 }
 
 void Door::notify(Active *source){
-    isOpen = true;
+    isOpen = !isOpen;
 }

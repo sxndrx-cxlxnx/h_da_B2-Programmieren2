@@ -30,8 +30,3 @@ void Active::detach(Passive *passiveTile){
     }
 }
 
-void Active::activate(){
-    for(int i = 0; i < static_cast<int>( observers.size() ); i++){
-        observers[i]->notify(this);
-    }
-}
