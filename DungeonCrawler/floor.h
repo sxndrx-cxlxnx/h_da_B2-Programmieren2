@@ -13,7 +13,7 @@ public:
     virtual ~Floor(){};
 
     // getter - methods
-    virtual std::string getTexture() override;
+    virtual std::string getTexture() const override;
 
     // other methods
     virtual Tile* onEnter(Tile* fromTile, Character* who) override;

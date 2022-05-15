@@ -16,7 +16,7 @@ Character *Tile::getCharacter() const
     return character;
 }
 
-std::string Tile::getTexture(){
+std::string Tile::getTexture() const{
     return texture;
 }
 

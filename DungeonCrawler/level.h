@@ -3,9 +3,6 @@
 
 #include "tile.h"
 #include "character.h"
-#include "wall.h"
-#include "floor.h"
-#include "portal.h"
 
 #include <array>
 #include <vector>

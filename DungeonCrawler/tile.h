@@ -26,7 +26,7 @@ public:
     int getRow() const;
     int getColumn() const;
     Character *getCharacter() const;
-    virtual std::string getTexture() = 0;
+    virtual std::string getTexture() const = 0;
 
     // setter - methods
     void setCharacter(Character *newCharacter);

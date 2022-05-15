@@ -1,4 +1,9 @@
 #include "level.h"
+#include "wall.h"
+#include "floor.h"
+#include "portal.h"
+#include "door.h"
+#include "switch.h"
 
 // ************************ constructor ***********************************************
 Level::Level(){

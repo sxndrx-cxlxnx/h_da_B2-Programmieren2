@@ -1,7 +1,7 @@
 #include "floor.h"
 
 // ************************ getter - methods ******************************************
-std::string Floor::getTexture(){
+std::string Floor::getTexture() const {
     return texture;
 }
 

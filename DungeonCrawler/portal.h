@@ -14,7 +14,7 @@ public:
     virtual ~Portal(){};
 
     // getter - methods
-    virtual std::string getTexture() override;
+    virtual std::string getTexture() const override;
     Tile *getDestination() const;
 
     // setter - methods
