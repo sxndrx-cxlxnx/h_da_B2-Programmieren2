@@ -60,7 +60,7 @@ void DungeonCrawler::play(){
               break;
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
               break;
-       default: std::cout << "Fehler" << std::endl;
+       default: break;
 
        }
    }
