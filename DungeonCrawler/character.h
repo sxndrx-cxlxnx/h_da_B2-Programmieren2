@@ -1,20 +1,14 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-//#include "controller.h"
-#include "terminalui.h"
-
 #include <iostream>
-
+#include "terminalui.h"
 class DungeonCrawler;
-
 class Tile;
 
-
 class Character{
-
 public:
-    // constructor
+    // constructor (inline)
     Character(Tile* pTile, Controller* pController) : tile(pTile), texture("O"), controller(pController){};
 
     // setter - methods
@@ -27,14 +21,11 @@ public:
     //other methods
     int move();
 
-
-
 private:
     // attributes
     Tile* tile;
     std::string texture;
     Controller* controller;
-
 };
 
 #endif // CHARACTER_H

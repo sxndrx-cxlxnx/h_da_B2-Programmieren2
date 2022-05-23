@@ -4,9 +4,7 @@
 #include <iostream>
 #include "character.h"
 
-class Tile{
-    // abstract basisclass of Floor, Wall and Portal
-
+class Tile{             // abstract basisclass of Floor, Wall and Portal
 protected:
     // attributes
     const int row;
@@ -15,11 +13,11 @@ protected:
     Character* character = nullptr;
 
 public:
-    // constructor
+    // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):
         row(pRow), column(pColumn), texture(pTexture){};
 
-    // destructor
+    // destructor (inline)
     virtual ~Tile(){};
 
     // getter - methods
@@ -35,9 +33,8 @@ public:
     bool hasCharacter();
     bool moveTo(Tile* destTile, Character* who);                // move to
     virtual Tile* onEnter(Tile* fromTile, Character* who);      // on Enter
-    virtual Tile* onLeave(Tile* destTile, Character* who);              // on Leave
-    void goAStepWithCharacter(Tile *from, Tile *to /* , Character *who */);
-
+    virtual Tile* onLeave(Tile* destTile, Character* who);      // on Leave
+    void goAStepWithCharacter(Tile *from, Tile *to);
 };
 
 #endif // TILE_H

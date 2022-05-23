@@ -4,12 +4,11 @@
 #include "tile.h"
 
 class Floor : public Tile{
-
 public:
-    // constructor
+    // constructor (inline)
     Floor(const int pRow, const int pColumn):Tile(pRow,pColumn,"."){};
 
-    // destructor (virtuell)
+    // destructor (inline)
     virtual ~Floor(){};
 
     // getter - methods
@@ -17,7 +16,6 @@ public:
 
     // other methods
     virtual Tile* onEnter(Tile* fromTile, Character* who) override;
-
 };
 
 #endif // FLOOR_H

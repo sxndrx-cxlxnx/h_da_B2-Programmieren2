@@ -3,13 +3,10 @@
 
 #include "tile.h"
 #include "character.h"
-
 #include <array>
 #include <vector>
 
 class Level{
-
-
 private:
     // attributes
     int width = 10;
@@ -37,14 +34,4 @@ public:
 
 };
 
-
-
 #endif // LEVEL_H
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 #include "door.h"
 
-
+// ************************ getter - methods *****************************************
 std::string Door::getTexture() const{
     if(isOpen){
         return "/";
@@ -9,6 +9,7 @@ std::string Door::getTexture() const{
     }
 }
 
+// ************************ other methods *********************************************
 Tile *Door::onEnter(Tile *from, Character *who){
     if(isOpen){
         return this;

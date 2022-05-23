@@ -7,7 +7,6 @@
 #include "level.h"
 
 class DungeonCrawler{
-
 public:
     // constructor
     DungeonCrawler();
@@ -15,10 +14,11 @@ public:
     // destructor
     virtual ~DungeonCrawler();
 
+    // getter - methods
+    TerminalUI *getAbstractui() const;
+
     // other methods
     void play();
-
-    TerminalUI *getAbstractui() const;
 
 private:
     // attributes

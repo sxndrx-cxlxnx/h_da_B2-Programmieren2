@@ -1,7 +1,4 @@
 #include "character.h"
-// #include <conio.h>                       // just in Windows
-#include <unistd.h>
-#include <termios.h>
 
 // ************************ setter - methods *****************************************
 void Character::setTile(Tile *newTile){
@@ -17,13 +14,7 @@ Tile *Character::getTile() const{
     return tile;
 }
 
+// ************************ other methods ********************************************
 int Character::move(){
-
     return controller->move();
 }
-
-
-
-
-
-

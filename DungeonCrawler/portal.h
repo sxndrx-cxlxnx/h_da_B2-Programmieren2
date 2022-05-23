@@ -6,11 +6,11 @@
 class Portal : public Tile{
 
 public:
-    // constructor
+    // constructor (inline)
     Portal(const int pRow, const int pColumn) :
         Tile(pRow, pColumn, "@"){};
 
-    // destructor
+    // destructor (inline)
     virtual ~Portal(){};
 
     // getter - methods

@@ -6,8 +6,11 @@
 
 class Door : public Tile, public Passive{
 private:
+    // attributes
     bool isOpen = false;
+
 public:
+    // constructor (inline)
     Door(const int pRow, const int pColumn):Tile(pRow, pColumn, "X"), Passive(){};
 
     // getter - methods

@@ -4,9 +4,7 @@
 
 using namespace std;
 
-
-int main()
-{
+int main(){
     // initialize
     DungeonCrawler *dungeonCrawler = new DungeonCrawler();
 
@@ -18,14 +16,3 @@ int main()
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-

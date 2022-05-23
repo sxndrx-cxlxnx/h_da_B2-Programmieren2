@@ -6,7 +6,7 @@ DungeonCrawler::DungeonCrawler(){
     TerminalUI* terminalui = new TerminalUI();
     abstractui = terminalui;
 
-    Controller* controller = new TerminalUI();
+    Controller* controller = new TerminalUI();          // put control to user via terminal input
     controller = terminalui;
 
     Level* level1 = new Level(controller);
@@ -19,33 +19,36 @@ DungeonCrawler::~DungeonCrawler(){
     delete abstractui;
 }
 
+// ************************ getter - methods ******************************************
+TerminalUI *DungeonCrawler::getAbstractui() const{
+    return abstractui;
+}
+
 // ************************ other methods *********************************************
-
 void DungeonCrawler::play(){
-
+    // set few refactor-variables
     bool run = true;
     Tile* fromTile;
     Character* thisChar = this->level->getCharacters()[0];
 
-
-
-    while(run){                                                    // Playloop
-        fromTile = thisChar->getTile();
+    // Playloop
+    while(run){
+        fromTile = thisChar->getTile();         // Tile where you standing on at the moment
         int r,c;
         r = fromTile->getRow();
         c = fromTile->getColumn();
 
        this->abstractui->draw(this->level);                     // Output of Playground
 
+        // Explanation of control: (user input)
+
         // 7 8 9              \  |  up  |   /
         // 4 5 6            left | stay | right
         // 1 2 3              /  | down |  \
-        //
         //   0                    Abbruch
 
-
-       switch (thisChar->move()) {
-           case 0: run = false;
+       switch (thisChar->move()){
+           case 0: run = false;                                                 // end of program
               break;
            case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
               break;
@@ -65,13 +68,7 @@ void DungeonCrawler::play(){
               break;
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
               break;
-       default: std::cout << "Fehler" << std::endl;
-
+       default: break;
        }
     }
-}
-
-TerminalUI *DungeonCrawler::getAbstractui() const
-{
-    return abstractui;
 }

@@ -10,7 +10,7 @@ public:
     // constructor
     TerminalUI();
 
-    // destructor
+    // destructor (inline)
     ~TerminalUI(){};
 
     // other methods

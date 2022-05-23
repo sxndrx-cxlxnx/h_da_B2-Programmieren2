@@ -14,9 +14,7 @@ void Portal::setDestination(Tile *newDestination){
     destination = newDestination;
 }
 
-
 // ************************ other methods *********************************************
 Tile *Portal::onEnter(Tile *fromTile, Character *who){
     return this->getDestination();
 }
-
