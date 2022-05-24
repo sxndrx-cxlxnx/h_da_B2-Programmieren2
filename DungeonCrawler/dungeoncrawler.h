@@ -15,14 +15,14 @@ public:
     virtual ~DungeonCrawler();
 
     // getter - methods
-    TerminalUI *getAbstractui() const;
+    AbstractUI *getAbstractui() const;
 
     // other methods
     void play();
 
 private:
     // attributes
-    TerminalUI* abstractui;
+    AbstractUI* abstractui;
     Level* level;
 };
 

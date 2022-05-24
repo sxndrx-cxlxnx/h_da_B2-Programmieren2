@@ -17,9 +17,12 @@ public:
     // getter - methods
     const std::string &getTexture() const;
     Tile *getTile() const;
+    Controller *getController() const;
 
     //other methods
     int move();
+
+
 
 private:
     // attributes

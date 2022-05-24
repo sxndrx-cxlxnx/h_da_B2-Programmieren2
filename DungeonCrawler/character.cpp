@@ -18,3 +18,8 @@ Tile *Character::getTile() const{
 int Character::move(){
     return controller->move();
 }
+
+Controller *Character::getController() const
+{
+    return controller;
+}

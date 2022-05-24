@@ -6,11 +6,20 @@ DungeonCrawler::DungeonCrawler(){
     TerminalUI* terminalui = new TerminalUI();
     abstractui = terminalui;
 
-    Controller* controller = new TerminalUI();          // put control to user via terminal input
-    controller = terminalui;
+    Controller* controller = terminalui;          // put control to user via terminal input
 
-    Level* level1 = new Level(controller);
-    level = level1;
+//    level = new Level(controller);
+
+    // Test copy ctor
+    auto* tmp = new Level(controller);
+    level = new Level(*tmp);               // currentLevel is attribute of DungeonCrawler
+    delete tmp;
+
+/*    // Test assignment
+    tmp = new Level(controller);
+    level =tmp;
+    delete tmp;
+*/
 }
 
 // ************************ destructor ************************************************
@@ -20,7 +29,7 @@ DungeonCrawler::~DungeonCrawler(){
 }
 
 // ************************ getter - methods ******************************************
-TerminalUI *DungeonCrawler::getAbstractui() const{
+AbstractUI *DungeonCrawler::getAbstractui() const{
     return abstractui;
 }
 

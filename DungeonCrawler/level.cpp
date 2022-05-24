@@ -67,6 +67,53 @@ Level::Level(Controller* pTerminalUI){
     this->characters.push_back(who);
 }
 
+Level::Level(const Level &pLevel){
+
+    width = pLevel.width;
+    length = pLevel.length;
+
+    dungeon.resize(length, vector<Tile*> (width));
+
+    for(int r = 0; r < length; r++){
+        for(int c = 0; c < width; c++){
+
+            bool tileIsDoor     = (typeid(*pLevel.dungeon[r][c]) == typeid(Door));
+            bool tileIsFloor    = (typeid(*pLevel.dungeon[r][c]) == typeid(Floor));
+            bool tileIsPit      = (typeid(*pLevel.dungeon[r][c]) == typeid(Pit));
+            bool tileIsPortal   = (typeid(*pLevel.dungeon[r][c]) == typeid(Portal));
+            bool tileIsRamp     = (typeid(*pLevel.dungeon[r][c]) == typeid(Ramp));
+            bool tileIsSwitch   = (typeid(*pLevel.dungeon[r][c]) == typeid(Switch));
+            bool tileIsWall     = (typeid(*pLevel.dungeon[r][c]) == typeid(Wall));
+
+            if(tileIsDoor){
+                dungeon[r][c] = new Door(r, c);
+            } else if(tileIsFloor){
+                dungeon[r][c] = new Floor(r, c);
+            } else if(tileIsPit){
+                dungeon[r][c] = new Pit(r, c);
+            } else if(tileIsPortal){
+                dungeon[r][c] = new Portal(r, c);
+            } else if(tileIsRamp){
+                dungeon[r][c] = new Ramp(r, c);
+            } else if(tileIsSwitch){
+                dungeon[r][c] = new Switch(r, c);
+            } else if(tileIsWall){
+                dungeon[r][c] = new Wall(r, c);
+            }
+
+//            dungeon[r][c] = pLevel.dungeon[r][c];
+
+            if( pLevel.dungeon[r][c]->hasCharacter() ){
+
+                Character* who = new Character(dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController() );         // place character, Character/Player is always characters[0]
+//                who = pLevel.dungeon[r][c]->getCharacter();
+                this->characters.push_back(who);
+                dungeon[r][c]->setCharacter(who);
+            }
+        }
+    }
+}
+
 // ************************ destructor ************************************************
 Level::~Level(){
     for(int r = 0; r < length; r++){                                    // go through dungeon-vector -> delete every dungeon field
@@ -102,7 +149,7 @@ const std::vector<Character *> &Level::getCharacters() const{
 
 // ************************ other methods *********************************************
 void Level::placeCharacter(Character *c, int row, int col){
-    c->getTile()->setCharacter(nullptr);
-    c->setTile(dungeon[row][col]);
-    dungeon[row][col]->setCharacter(c);
+    c->getTile()->setCharacter(nullptr);                                // old Tile get's nullpointer
+    c->setTile(dungeon[row][col]);                                      // Character get's new Tile
+    dungeon[row][col]->setCharacter(c);                                 // new Tile get's character
 }
