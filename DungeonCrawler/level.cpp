@@ -9,12 +9,23 @@
 
 using namespace std;
 
+// ************************ assignment *************************************************
+void swap(Level &lhs, Level &rhs){
+    std::swap(lhs.dungeon, rhs.dungeon);
+    std::swap(lhs.characters, rhs.characters);
+}
+
+Level& Level::operator=(Level rhs){
+    swap(*this, rhs);
+    return *this;
+}
+
 // ************************ constructor ***********************************************
 Level::Level(Controller* pTerminalUI){
 
-    dungeon.resize(length, vector<Tile*> (width));              // resize level with width and length
+    dungeon.resize(length, vector<Tile*> (width));                      // resize level with width and length
 
-    const string  levelString = {                               // create level as a string
+    const string  levelString = {                                       // create level as a string
         "##########"
         "#@.......#"
         "#...<....#"
@@ -26,53 +37,64 @@ Level::Level(Controller* pTerminalUI){
         "#...?....#"
         "##########"};
 
-    Portal* portal1 = new Portal(1, 1);                                 // set portal -> need for destination later
-    Portal* portal2 = new Portal(7, 1);
+    Portal* portal1 = nullptr;                                          // set portal -> need for destination later
+    Portal* portal2 = nullptr;
 
-    Switch* switch1 = new Switch(8, 4);                                 // set switch and door
-    Door* door1 = new Door(6, 7);
-    switch1->attach(door1);                                             // connect door with switch
+    Switch* switch1 = nullptr;                                          // set switch and door
+    Door* door1 = nullptr;
 
     int atString = 0;
-    bool firstPortalSet = false;
 
-    for(int r = 0; r < length; r++){                                    // go through vector to set Tiles in dungeon like they are in "levelString"
+    for(int r = 0; r < length; r++){                                     // go through vector to set Tiles in dungeon like they are in "levelString"
         for(int c = 0; c < width; c++){
 
             switch(levelString[atString]){
-                case '#': dungeon[r][c] = new Wall(r, c); break;
-                case '.': dungeon[r][c] = new Floor(r, c); break;
-                case '@': if(!firstPortalSet){                          // portals already created -> set them in dungeon
-                              dungeon[r][c] = portal1;
-                              firstPortalSet = true;
-                          } else{
-                              dungeon[r][c] = portal2;
-                          }
-                          break;
-                case 'X': dungeon[r][c] = door1; break;
-                case '_': dungeon[r][c] = new Pit(r, c); break;
-                case '<': dungeon[r][c] = new Ramp(r, c); break;
-                case '?': dungeon[r][c] = switch1; break;
+            case '#': dungeon[r][c] = new Wall(r, c); break;
+            case '.': dungeon[r][c] = new Floor(r, c); break;
+            case '@': if( portal1 == nullptr ){                          // portals already created -> set them in dungeon
+                    portal1 = new Portal(r, c);
+                    dungeon[r][c] = portal1;
+                } else{
+                    portal2 = new Portal(r, c);
+                    dungeon[r][c] = portal2;
+                }
+                break;
+            case 'X': door1 = new Door(r, c);
+                      dungeon[r][c] = door1;
+                break;
+            case '_': dungeon[r][c] = new Pit(r, c); break;
+            case '<': dungeon[r][c] = new Ramp(r, c); break;
+            case '?': switch1 = new Switch(r, c);
+                      dungeon[r][c] = switch1;
+                break;
             default: break;
             }
             atString++;
         }
     }
 
-    portal1->setDestination(dungeon[7][1]);                             // set portal destination to the other portal
-    portal2->setDestination(dungeon[1][1]);
+    switch1->attach(door1);                                              // connect door with switch
 
-    Character* who = new Character(dungeon[1][7], pTerminalUI);         // place character
+    portal1->setDestination(portal2);                                    // set portal destination to the other portal
+    portal2->setDestination(portal1);
+
+    Character* who = new Character(dungeon[1][7], pTerminalUI);          // place character
     this->placeCharacter( who, 1, 7 );
     this->characters.push_back(who);
 }
 
+// ************************ copy constructor ******************************************
 Level::Level(const Level &pLevel){
 
     width = pLevel.width;
     length = pLevel.length;
 
     dungeon.resize(length, vector<Tile*> (width));
+
+    Portal* portal1 = nullptr;
+    Portal* portal2 = nullptr;
+    Door* door1 = nullptr;
+    Switch* switch1 = nullptr;
 
     for(int r = 0; r < length; r++){
         for(int c = 0; c < width; c++){
@@ -86,32 +108,41 @@ Level::Level(const Level &pLevel){
             bool tileIsWall     = (typeid(*pLevel.dungeon[r][c]) == typeid(Wall));
 
             if(tileIsDoor){
-                dungeon[r][c] = new Door(r, c);
+                door1 = new Door(r, c);
+                dungeon[r][c] = door1;
             } else if(tileIsFloor){
                 dungeon[r][c] = new Floor(r, c);
             } else if(tileIsPit){
                 dungeon[r][c] = new Pit(r, c);
             } else if(tileIsPortal){
-                dungeon[r][c] = new Portal(r, c);
+
+                if( portal1 == nullptr ){
+                    portal1 = new Portal(r, c);
+                    dungeon[r][c] = portal1;
+                }else{
+                    portal2 = new Portal(r, c);
+                    dungeon[r][c] = portal2;
+                }
             } else if(tileIsRamp){
                 dungeon[r][c] = new Ramp(r, c);
             } else if(tileIsSwitch){
-                dungeon[r][c] = new Switch(r, c);
+                switch1 = new Switch(r, c);
+                dungeon[r][c] = switch1;
             } else if(tileIsWall){
                 dungeon[r][c] = new Wall(r, c);
             }
 
-//            dungeon[r][c] = pLevel.dungeon[r][c];
-
             if( pLevel.dungeon[r][c]->hasCharacter() ){
-
-                Character* who = new Character(dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController() );         // place character, Character/Player is always characters[0]
-//                who = pLevel.dungeon[r][c]->getCharacter();
+                Character* who = new Character( dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController() );
                 this->characters.push_back(who);
                 dungeon[r][c]->setCharacter(who);
             }
         }
     }
+    portal1->setDestination(portal2);
+    portal2->setDestination(portal1);
+
+    switch1->attach(door1);
 }
 
 // ************************ destructor ************************************************

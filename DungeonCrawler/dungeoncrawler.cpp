@@ -12,14 +12,13 @@ DungeonCrawler::DungeonCrawler(){
 
     // Test copy ctor
     auto* tmp = new Level(controller);
-    level = new Level(*tmp);               // currentLevel is attribute of DungeonCrawler
+    level = new Level(*tmp);                      // level is attribute of DungeonCrawler
     delete tmp;
 
-/*    // Test assignment
+    // Test assignment
     tmp = new Level(controller);
-    level =tmp;
+    *level = *tmp;
     delete tmp;
-*/
 }
 
 // ************************ destructor ************************************************
@@ -42,7 +41,7 @@ void DungeonCrawler::play(){
 
     // Playloop
     while(run){
-        fromTile = thisChar->getTile();         // Tile where you standing on at the moment
+        fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
         int r,c;
         r = fromTile->getRow();
         c = fromTile->getColumn();

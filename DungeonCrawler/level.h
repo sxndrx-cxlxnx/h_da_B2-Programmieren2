@@ -15,6 +15,10 @@ private:
     std::vector<Character*> characters;
 
 public:
+    // assignment
+    friend void swap(Level& lhs, Level& rhs);
+    Level& operator=(Level rhs);
+
     // constructor
     Level(Controller *pTerminalUI);
     Level(const Level &pLevel);
@@ -31,7 +35,8 @@ public:
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
-
 };
+
+void swap(Level& lhs, Level& rhs);
 
 #endif // LEVEL_H

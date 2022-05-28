@@ -1,7 +1,7 @@
 #include "portal.h"
 
 // ************************ getter - methods ******************************************
-std::string Portal::getTexture() const {
+std::string Portal::getTexture() const{
     return texture;
 }
 

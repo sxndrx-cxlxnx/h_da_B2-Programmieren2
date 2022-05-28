@@ -1,9 +1,7 @@
 #ifndef DUNGEONCRAWLER_H
 #define DUNGEONCRAWLER_H
 
-
 #include "terminalui.h"
-
 #include "level.h"
 
 class DungeonCrawler{

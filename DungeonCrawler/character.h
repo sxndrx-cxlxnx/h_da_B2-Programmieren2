@@ -22,8 +22,6 @@ public:
     //other methods
     int move();
 
-
-
 private:
     // attributes
     Tile* tile;
