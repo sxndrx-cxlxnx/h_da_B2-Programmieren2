@@ -4,7 +4,7 @@
 #include <iostream>
 #include "character.h"
 
-class Tile{             // abstract basisclass of Floor, Wall and Portal
+class Tile{             // abstract basisclass of Floor, Wall, Portal, Switch, Door, Ramp and Pit
 protected:
     // attributes
     const int row;

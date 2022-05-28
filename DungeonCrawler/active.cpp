@@ -6,6 +6,11 @@ Active::Active(){
 
 }
 
+// ************************ getter - methods ******************************************
+const std::vector<Passive *> &Active::getObservers() const{
+    return observers;
+}
+
 // ************************ other methods *********************************************
 void Active::attach(Passive *passiveTile){
 

@@ -3,8 +3,11 @@
 
 #include "tile.h"
 #include "character.h"
+#include "portal.h"
+#include "switch.h"
 #include <array>
 #include <vector>
+
 
 class Level{
 private:
@@ -13,6 +16,9 @@ private:
     int length = 10;
     std::vector< std::vector<Tile*> > dungeon;
     std::vector<Character*> characters;
+    std::vector<Portal*> portals;
+    std::vector<Switch*> switches;
+    std::vector<Door*> doors;
 
 public:
     // assignment

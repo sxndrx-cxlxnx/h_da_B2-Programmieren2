@@ -8,7 +8,7 @@ DungeonCrawler::DungeonCrawler(){
 
     Controller* controller = terminalui;          // put control to user via terminal input
 
-//    level = new Level(controller);
+//    level = new Level(controller);                // normal initialisation (without testing of ctor and assignement)
 
     // Test copy ctor
     auto* tmp = new Level(controller);

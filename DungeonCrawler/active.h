@@ -20,6 +20,7 @@ public:
     void attach(Passive *passiveTile);
     void detach(Passive *passiveTile);
     virtual void activate() = 0;
+    const std::vector<Passive *> &getObservers() const;
 };
 
 #endif // ACTIVE_H

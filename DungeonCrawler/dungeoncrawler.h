@@ -24,6 +24,4 @@ private:
     Level* level;
 };
 
-
-
 #endif // DUNGEONCRAWLER_H

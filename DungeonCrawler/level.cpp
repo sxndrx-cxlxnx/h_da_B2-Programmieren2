@@ -54,9 +54,11 @@ Level::Level(Controller* pTerminalUI){
             case '@': if( portal1 == nullptr ){                          // portals already created -> set them in dungeon
                     portal1 = new Portal(r, c);
                     dungeon[r][c] = portal1;
+                    portals.push_back(portal1);
                 } else{
                     portal2 = new Portal(r, c);
                     dungeon[r][c] = portal2;
+                    portals.push_back(portal2);
                 }
                 break;
             case 'X': door1 = new Door(r, c);
@@ -66,6 +68,7 @@ Level::Level(Controller* pTerminalUI){
             case '<': dungeon[r][c] = new Ramp(r, c); break;
             case '?': switch1 = new Switch(r, c);
                       dungeon[r][c] = switch1;
+                      switches.push_back(switch1);
                 break;
             default: break;
             }
@@ -74,6 +77,7 @@ Level::Level(Controller* pTerminalUI){
     }
 
     switch1->attach(door1);                                              // connect door with switch
+    doors.push_back(door1);
 
     portal1->setDestination(portal2);                                    // set portal destination to the other portal
     portal2->setDestination(portal1);
@@ -91,58 +95,57 @@ Level::Level(const Level &pLevel){
 
     dungeon.resize(length, vector<Tile*> (width));
 
-    Portal* portal1 = nullptr;
-    Portal* portal2 = nullptr;
-    Door* door1 = nullptr;
-    Switch* switch1 = nullptr;
-
     for(int r = 0; r < length; r++){
         for(int c = 0; c < width; c++){
-
-            bool tileIsDoor     = (typeid(*pLevel.dungeon[r][c]) == typeid(Door));
-            bool tileIsFloor    = (typeid(*pLevel.dungeon[r][c]) == typeid(Floor));
-            bool tileIsPit      = (typeid(*pLevel.dungeon[r][c]) == typeid(Pit));
-            bool tileIsPortal   = (typeid(*pLevel.dungeon[r][c]) == typeid(Portal));
-            bool tileIsRamp     = (typeid(*pLevel.dungeon[r][c]) == typeid(Ramp));
-            bool tileIsSwitch   = (typeid(*pLevel.dungeon[r][c]) == typeid(Switch));
-            bool tileIsWall     = (typeid(*pLevel.dungeon[r][c]) == typeid(Wall));
+            Tile* pLevelTile = pLevel.dungeon[r][c];
+            bool tileIsDoor     = (typeid(*pLevelTile) == typeid(Door));
+            bool tileIsFloor    = (typeid(*pLevelTile) == typeid(Floor));
+            bool tileIsPit      = (typeid(*pLevelTile) == typeid(Pit));
+            bool tileIsPortal   = (typeid(*pLevelTile) == typeid(Portal));
+            bool tileIsRamp     = (typeid(*pLevelTile) == typeid(Ramp));
+            bool tileIsSwitch   = (typeid(*pLevelTile) == typeid(Switch));
+            bool tileIsWall     = (typeid(*pLevelTile) == typeid(Wall));
 
             if(tileIsDoor){
-                door1 = new Door(r, c);
-                dungeon[r][c] = door1;
+                Door* door = new Door(r, c);
+                dungeon[r][c] = door;
+                doors.push_back(door);
             } else if(tileIsFloor){
                 dungeon[r][c] = new Floor(r, c);
             } else if(tileIsPit){
                 dungeon[r][c] = new Pit(r, c);
             } else if(tileIsPortal){
-
-                if( portal1 == nullptr ){
-                    portal1 = new Portal(r, c);
-                    dungeon[r][c] = portal1;
-                }else{
-                    portal2 = new Portal(r, c);
-                    dungeon[r][c] = portal2;
-                }
+                Portal* portal = new Portal(r, c);
+                dungeon[r][c] = portal;
+                portals.push_back(portal);
             } else if(tileIsRamp){
                 dungeon[r][c] = new Ramp(r, c);
             } else if(tileIsSwitch){
-                switch1 = new Switch(r, c);
+                Switch* switch1 = new Switch(r, c);
                 dungeon[r][c] = switch1;
+                switches.push_back(switch1);
             } else if(tileIsWall){
                 dungeon[r][c] = new Wall(r, c);
             }
 
-            if( pLevel.dungeon[r][c]->hasCharacter() ){
-                Character* who = new Character( dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController() );
-                this->characters.push_back(who);
-                dungeon[r][c]->setCharacter(who);
+            if( pLevel.dungeon[r][c]->hasCharacter()){
+                Character* character = new Character( dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController());
+                this->characters.push_back(character);
+                dungeon[r][c]->setCharacter(character);
             }
         }
     }
-    portal1->setDestination(portal2);
-    portal2->setDestination(portal1);
 
-    switch1->attach(door1);
+    for( int i = 0; i < (int) portals.size(); i++ ){
+        int colPLevelDest = pLevel.portals[i]->getDestination()->getColumn();
+        int rowPLevelDest = pLevel.portals[i]->getDestination()->getRow();
+
+        portals[i]->setDestination( dungeon[rowPLevelDest][colPLevelDest]);
+    }
+
+    for( int j = 0; j < (int) doors.size(); j++ ){
+        switches[0]->attach(doors[j]);
+    }
 }
 
 // ************************ destructor ************************************************

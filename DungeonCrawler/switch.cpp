@@ -1,5 +1,6 @@
 #include "switch.h"
 
+
 // ************************ getter - methods ******************************************
 std::string Switch::getTexture() const{
     return texture;
