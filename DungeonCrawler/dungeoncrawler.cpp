@@ -77,9 +77,6 @@ void DungeonCrawler::play(){
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
               break;
        default: break;
-<<<<<<< HEAD
-=======
->>>>>>> P2
        }
     }
 }
