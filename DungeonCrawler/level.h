@@ -3,50 +3,46 @@
 
 #include "tile.h"
 #include "character.h"
-#include "wall.h"
-#include "floor.h"
 #include "portal.h"
-
+#include "switch.h"
 #include <array>
 #include <vector>
 
+
 class Level{
-
-
 private:
     // attributes
-    static const int width{7};      // hardcoded changeable (level generates automatically)
-    static const int length{7};     // min. width = 5 & length = 6
-    std::array<std::array<Tile*, width>, length> dungeon;
+    int width = 10;
+    int length = 10;
+    std::vector< std::vector<Tile*> > dungeon;
     std::vector<Character*> characters;
+    std::vector<Portal*> portals;
+    std::vector<Switch*> switches;
+    std::vector<Door*> doors;
 
 public:
+    // assignment
+    friend void swap(Level& lhs, Level& rhs);
+    Level& operator=(Level rhs);
+
     // constructor
-    Level();
+    Level(Controller *pTerminalUI);
+    Level(const Level &pLevel);
 
     // destructor
     virtual ~Level();
 
     // getter - methods
-    static int getWidth();
-    static int getLength();
+    int getWidth();
+    int getLength();
     Tile *getTile(int row, int col);
     const Tile *getTile(int row, int col) const;
     const std::vector<Character *> &getCharacters() const;
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
-
 };
 
-
+void swap(Level& lhs, Level& rhs);
 
 #endif // LEVEL_H
-
-
-
-
-
-
-
-

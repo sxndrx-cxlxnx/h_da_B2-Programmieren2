@@ -1,7 +1,7 @@
 #include "wall.h"
 
 // ************************ getter - methods ******************************************
-std::string Wall::getTexture(){
+std::string Wall::getTexture() const{
     return texture;
 }
 

@@ -6,15 +6,15 @@
 class Portal : public Tile{
 
 public:
-    // constructor
-    Portal(const int pRow, const int pColumn, Tile* pDestination) :
-        Tile(pRow, pColumn, "@"), destination(pDestination){};
+    // constructor (inline)
+    Portal(const int pRow, const int pColumn) :
+        Tile(pRow, pColumn, "@"){};
 
-    // destructor
+    // destructor (inline)
     virtual ~Portal(){};
 
     // getter - methods
-    virtual std::string getTexture() override;
+    virtual std::string getTexture() const override;
     Tile *getDestination() const;
 
     // setter - methods

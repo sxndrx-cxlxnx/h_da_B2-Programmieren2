@@ -11,7 +11,7 @@ public:
     // constructor
     AbstractUI();
 
-    // destructor
+    // destructor (inline)
     virtual ~AbstractUI(){};
 
     // other methods

@@ -2,10 +2,23 @@
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(){
-    Level* level1 = new Level();
-    level = level1;
-    AbstractUI* terminalui = new TerminalUI();
+
+    TerminalUI* terminalui = new TerminalUI();
     abstractui = terminalui;
+
+    Controller* controller = terminalui;          // put control to user via terminal input
+
+//    level = new Level(controller);                // normal initialisation (without testing of ctor and assignement)
+
+    // Test copy ctor
+    auto* tmp = new Level(controller);
+    level = new Level(*tmp);                      // level is attribute of DungeonCrawler
+    delete tmp;
+
+    // Test assignment
+    tmp = new Level(controller);
+    *level = *tmp;
+    delete tmp;
 }
 
 // ************************ destructor ************************************************
@@ -14,33 +27,36 @@ DungeonCrawler::~DungeonCrawler(){
     delete abstractui;
 }
 
+// ************************ getter - methods ******************************************
+AbstractUI *DungeonCrawler::getAbstractui() const{
+    return abstractui;
+}
+
 // ************************ other methods *********************************************
-
 void DungeonCrawler::play(){
-
+    // set few refactor-variables
     bool run = true;
     Tile* fromTile;
     Character* thisChar = this->level->getCharacters()[0];
 
-
-
-    while(run){                                                    // Playloop
-        fromTile = thisChar->getTile();
+    // Playloop
+    while(run){
+        fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
         int r,c;
         r = fromTile->getRow();
         c = fromTile->getColumn();
 
        this->abstractui->draw(this->level);                     // Output of Playground
 
+        // Explanation of control: (user input)
+
         // 7 8 9              \  |  up  |   /
         // 4 5 6            left | stay | right
         // 1 2 3              /  | down |  \
-        //
         //   0                    Abbruch
 
-
-       switch (thisChar->move()) {
-           case 0: run = false;
+       switch (thisChar->move()){
+           case 0: run = false;                                                 // end of program
               break;
            case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
               break;
@@ -61,7 +77,9 @@ void DungeonCrawler::play(){
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
               break;
        default: break;
-
+<<<<<<< HEAD
+=======
+>>>>>>> P2
        }
-   }
+    }
 }

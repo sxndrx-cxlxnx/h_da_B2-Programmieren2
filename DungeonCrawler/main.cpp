@@ -1,12 +1,10 @@
-#include <iostream>                                                                                                                                     // PG #1
+#include <iostream>                                                                                                                                     // PG #2
 #include "dungeoncrawler.h"                                                                                                                             // Sandra Gräf  - 1111826
 #include "level.h"                                                                                                                                      // Emily Staatz - 1111831
 
 using namespace std;
 
-
-int main()
-{
+int main(){
     // initialize
     DungeonCrawler *dungeonCrawler = new DungeonCrawler();
 
@@ -18,14 +16,3 @@ int main()
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-

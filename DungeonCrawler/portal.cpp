@@ -1,7 +1,7 @@
 #include "portal.h"
 
 // ************************ getter - methods ******************************************
-std::string Portal::getTexture(){
+std::string Portal::getTexture() const{
     return texture;
 }
 
@@ -14,9 +14,7 @@ void Portal::setDestination(Tile *newDestination){
     destination = newDestination;
 }
 
-
 // ************************ other methods *********************************************
 Tile *Portal::onEnter(Tile *fromTile, Character *who){
     return this->getDestination();
 }
-
