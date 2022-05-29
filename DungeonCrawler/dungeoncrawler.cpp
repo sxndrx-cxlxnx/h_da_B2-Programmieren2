@@ -3,22 +3,22 @@
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(){
 
-    TerminalUI* terminalui = new TerminalUI();
-    abstractui = terminalui;
+    GraphicalUI* graphicalui = new GraphicalUI();
+    abstractui = graphicalui;
 
-    Controller* controller = terminalui;          // put control to user via terminal input
+    Controller* controller = graphicalui;          // put control to user via graphic input
 
-//    level = new Level(controller);                // normal initialisation (without testing of ctor and assignement)
+    level = new Level(controller);                 // normal initialisation (without testing of ctor and assignement)
 
-    // Test copy ctor
-    auto* tmp = new Level(controller);
-    level = new Level(*tmp);                      // level is attribute of DungeonCrawler
-    delete tmp;
+//    // Test copy ctor
+//    auto* tmp = new Level(controller);
+//    level = new Level(*tmp);                      // level is attribute of DungeonCrawler
+//    delete tmp;
 
-    // Test assignment
-    tmp = new Level(controller);
-    *level = *tmp;
-    delete tmp;
+//    // Test assignment
+//    tmp = new Level(controller);
+//    *level = *tmp;
+//    delete tmp;
 }
 
 // ************************ destructor ************************************************

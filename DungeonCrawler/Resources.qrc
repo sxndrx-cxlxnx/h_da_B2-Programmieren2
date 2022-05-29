@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/Startscreen">
+        <file>startscreen.png</file>
+    </qresource>
+    <qresource prefix="/New_Game_Button">
+        <file>new_game_button.png</file>
+    </qresource>
+</RCC>

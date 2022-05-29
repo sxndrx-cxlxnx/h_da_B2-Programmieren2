@@ -1,18 +1,26 @@
-#include <iostream>                                                                                                                                     // PG #2
+#include <iostream>                                                                                                                                     // PG #3
 #include "dungeoncrawler.h"                                                                                                                             // Sandra Gräf  - 1111826
 #include "level.h"                                                                                                                                      // Emily Staatz - 1111831
+#include <QApplication>
+#include"startscreen.h"
 
 using namespace std;
 
-int main(){
-    // initialize
-    DungeonCrawler *dungeonCrawler = new DungeonCrawler();
+int main(int argc, char* argv[]){
 
-    // play
-    dungeonCrawler->play();
+    QApplication a(argc, argv);
+    Startscreen s;
+    s.show();
+    return a.exec();
 
-    // delete
-    delete dungeonCrawler;
+//    // initialize
+//    DungeonCrawler *dungeonCrawler = new DungeonCrawler();
 
-    return 0;
+//    // play
+//    dungeonCrawler->play();
+
+//    // delete
+//    delete dungeonCrawler;
+
+//    return 0;
 }

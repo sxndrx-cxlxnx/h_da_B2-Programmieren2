@@ -15,7 +15,7 @@ public:
     virtual ~AbstractUI(){};
 
     // other methods
-    virtual void draw(Level*) = 0;
+    virtual void draw(Level* level) = 0;
 };
 
 #endif // ABSTRACTUI_H
