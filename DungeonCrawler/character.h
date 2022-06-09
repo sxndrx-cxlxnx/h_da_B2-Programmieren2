@@ -29,7 +29,7 @@ private:
     Tile* tile;
     std::string texture;
     Controller* controller;
-    int lastDirection;
+    int lastDirection = 5;
 };
 
 #endif // CHARACTER_H

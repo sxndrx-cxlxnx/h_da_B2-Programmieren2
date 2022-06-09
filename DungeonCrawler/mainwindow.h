@@ -21,10 +21,15 @@ public:
 
     int getLastInput() const;
 
+    void setNewEvent(bool newNewEvent);
+
+    bool getNewEvent() const;
+
 private:
     Ui::MainWindow *ui;
     GraphicalUI* gui;
     int lastInput;
+    bool newEvent;
 
 public slots:
     void buttonUL();

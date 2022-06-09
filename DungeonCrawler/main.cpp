@@ -2,6 +2,7 @@
 #include "dungeoncrawler.h"                                                                                                                             // Sandra Gräf  - 1111826
 #include "level.h"                                                                                                                                      // Emily Staatz - 1111831
 #include <QApplication>
+#include "mainwindow.h"
 #include"startscreen.h"
 
 using namespace std;
@@ -15,15 +16,10 @@ int main(int argc, char* argv[]){
     DungeonCrawler *dungeonCrawler = new DungeonCrawler(dungeonCrawlerGui);
 
     dungeonCrawlerGui->getStartscreen()->show();
+    //dungeonCrawlerGui->getMainWindow()->show();
 
-//    while(true){
-//        // play
-//        dungeonCrawlerGui->draw(dungeonCrawler->getLevel());
-
-//        dungeonCrawler->play();
-//    }
-
-
+    // play
+    dungeonCrawler->play();
 
     return a.exec();
 

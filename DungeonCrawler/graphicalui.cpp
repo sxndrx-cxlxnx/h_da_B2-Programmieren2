@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include <QMainWindow>
 #include "ui_mainwindow.h"
+#include <QTest>
 
 // *******************************
 GraphicalUI::GraphicalUI(){
@@ -52,6 +53,14 @@ void GraphicalUI::draw(Level *level){
 }
 
 int GraphicalUI::move(){
+    QTest::qWait(5000);
+    QCoreApplication::processEvents();
+    if( mainWindow->getNewEvent() ){
+        mainWindow->setNewEvent(false);
+        return mainWindow->getLastInput();
+    }else{
+        return 0;
+    }
 
 }
 

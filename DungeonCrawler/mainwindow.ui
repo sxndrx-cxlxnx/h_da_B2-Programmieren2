@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>19</x>
-      <y>39</y>
-      <width>771</width>
-      <height>501</height>
+      <y>59</y>
+      <width>841</width>
+      <height>481</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridDungeon"/>
