@@ -3,7 +3,7 @@
 // ************************ getter - methods *****************************************
 std::string Door::getTexture() const{
     if(isOpen){
-        return "/";
+        return ":/Textures/Texturen-Paket/door2.png";
     } else{
         return texture;
     }

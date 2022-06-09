@@ -8,7 +8,7 @@
 class Switch : public Tile, public Active{
 public:
     // constructor (inline)
-    Switch(const int pRow, const int pColumn):Tile(pRow, pColumn, "?"){};
+    Switch(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/switch.png"){};
 
     // getter - methods
     virtual std::string getTexture() const override;

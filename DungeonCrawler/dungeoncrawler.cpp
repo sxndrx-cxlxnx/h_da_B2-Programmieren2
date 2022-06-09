@@ -1,14 +1,17 @@
 #include "dungeoncrawler.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 // ************************ constructor ***********************************************
-DungeonCrawler::DungeonCrawler(){
+DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
-    GraphicalUI* graphicalui = new GraphicalUI();
-    abstractui = graphicalui;
+    abstractui = pgui;
 
-    Controller* controller = graphicalui;          // put control to user via graphic input
+    Controller* controller = pgui;          // put control to user via graphic input
 
     level = new Level(controller);                 // normal initialisation (without testing of ctor and assignement)
+    abstractui->setDungeonCrawler(this);
+    abstractui->draw(level);
 
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
@@ -28,7 +31,7 @@ DungeonCrawler::~DungeonCrawler(){
 }
 
 // ************************ getter - methods ******************************************
-AbstractUI *DungeonCrawler::getAbstractui() const{
+GraphicalUI *DungeonCrawler::getAbstractui() const{
     return abstractui;
 }
 
@@ -40,7 +43,7 @@ void DungeonCrawler::play(){
     Character* thisChar = this->level->getCharacters()[0];
 
     // Playloop
-    while(run){
+//    while(run){
         fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
         int r,c;
         r = fromTile->getRow();
@@ -55,7 +58,8 @@ void DungeonCrawler::play(){
         // 1 2 3              /  | down |  \
         //   0                    Abbruch
 
-       switch (thisChar->move()){
+       //switch (thisChar->move()){
+       switch (this->getAbstractui()->getMainWindow()->getLastInput()){
            case 0: run = false;                                                 // end of program
               break;
            case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
@@ -77,6 +81,11 @@ void DungeonCrawler::play(){
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
               break;
        default: break;
-       }
+//       }
     }
+}
+
+Level *DungeonCrawler::getLevel() const
+{
+    return level;
 }

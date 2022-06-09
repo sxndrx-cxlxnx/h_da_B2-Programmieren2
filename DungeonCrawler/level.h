@@ -12,8 +12,8 @@
 class Level{
 private:
     // attributes
-    int width = 10;
-    int length = 10;
+    int width = 16;
+    int length = 8;
     std::vector< std::vector<Tile*> > dungeon;
     std::vector<Character*> characters;
     std::vector<Portal*> portals;

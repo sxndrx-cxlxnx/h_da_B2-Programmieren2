@@ -6,7 +6,7 @@
 class Pit : public Tile{
 public:
     // constructor (inline)
-    Pit(const int pRow, const int pColumn):Tile(pRow, pColumn, "_"){};
+    Pit(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/pit.png"){};
 
     // getter - methods
     virtual std::string getTexture() const override{ return texture; }; // inline - declaration

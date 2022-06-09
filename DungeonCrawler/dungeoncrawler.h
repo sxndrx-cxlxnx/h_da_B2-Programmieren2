@@ -8,20 +8,22 @@
 class DungeonCrawler{
 public:
     // constructor
-    DungeonCrawler();
+    DungeonCrawler(GraphicalUI* pgui);
 
     // destructor
     virtual ~DungeonCrawler();
 
     // getter - methods
-    AbstractUI *getAbstractui() const;
+    GraphicalUI *getAbstractui() const;
 
     // other methods
     void play();
 
+    Level *getLevel() const;
+
 private:
     // attributes
-    AbstractUI* abstractui;
+    GraphicalUI* abstractui;
     Level* level;
 };
 

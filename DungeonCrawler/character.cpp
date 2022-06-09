@@ -19,6 +19,10 @@ int Character::move(){
     return controller->move();
 }
 
+void Character::setLastDirection(int newLastDirection){
+    lastDirection = newLastDirection;
+}
+
 Controller *Character::getController() const{
     return controller;
 }

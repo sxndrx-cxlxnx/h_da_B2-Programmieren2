@@ -8,6 +8,7 @@ QT += testlib
 CONFIG += c++11
 
 FORMS += \
+    mainwindow.ui \
     startscreen.ui
 
 SOURCES += \
@@ -21,6 +22,7 @@ SOURCES += \
         graphicalui.cpp \
         level.cpp \
         main.cpp \
+        mainwindow.cpp \
         passive.cpp \
         pit.cpp \
         portal.cpp \
@@ -41,6 +43,7 @@ HEADERS += \
     floor.h \
     graphicalui.h \
     level.h \
+    mainwindow.h \
     passive.h \
     pit.h \
     portal.h \

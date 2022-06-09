@@ -9,7 +9,7 @@ class Tile;
 class Character{
 public:
     // constructor (inline)
-    Character(Tile* pTile, Controller* pController) : tile(pTile), texture("O"), controller(pController){};
+    Character(Tile* pTile, Controller* pController) : tile(pTile), texture(":/Character/Texturen-Paket/char/char_front_2.png"), controller(pController){};
 
     // setter - methods
     void setTile(Tile *newTile);
@@ -22,11 +22,14 @@ public:
     //other methods
     int move();
 
+    void setLastDirection(int newLastDirection);
+
 private:
     // attributes
     Tile* tile;
     std::string texture;
     Controller* controller;
+    int lastDirection;
 };
 
 #endif // CHARACTER_H

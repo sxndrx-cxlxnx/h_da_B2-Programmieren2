@@ -26,19 +26,19 @@ Level::Level(Controller* pTerminalUI){
     dungeon.resize(length, vector<Tile*> (width));                      // resize level with width and length
 
     const string  levelString = {                                       // create level as a string
-        "##########"
-        "#@.......#"
-        "#...<....#"
-        "#..___...#"
-        "#..___...#"
-        "#........#"
-        "#######X##"
-        "#@.......#"
-        "#...?....#"
-        "##########"};
+        "################"
+        "#.......#@._<..#"
+        "#@....###.___..#"
+        "#.....#@#......#"
+        "#.......###X####"
+        "#########......#"
+        "#@....?##......#"
+        "################"};
 
     Portal* portal1 = nullptr;                                          // set portal -> need for destination later
     Portal* portal2 = nullptr;
+    Portal* portal3 = nullptr;
+    Portal* portal4 = nullptr;
 
     Switch* switch1 = nullptr;                                          // set switch and door
     Door* door1 = nullptr;
@@ -55,10 +55,21 @@ Level::Level(Controller* pTerminalUI){
                     portal1 = new Portal(r, c);
                     dungeon[r][c] = portal1;
                     portals.push_back(portal1);
-                } else{
+                    break;
+                } else if( portal2 == nullptr ){
                     portal2 = new Portal(r, c);
                     dungeon[r][c] = portal2;
                     portals.push_back(portal2);
+                    break;
+                } else if( portal3 == nullptr ){
+                    portal3 = new Portal(r, c);
+                    dungeon[r][c] = portal3;
+                    portals.push_back(portal3);
+                    break;
+                } else{
+                    portal4 = new Portal(r, c);
+                    dungeon[r][c] = portal4;
+                    portals.push_back(portal4);
                 }
                 break;
             case 'X': door1 = new Door(r, c);
@@ -81,9 +92,11 @@ Level::Level(Controller* pTerminalUI){
 
     portal1->setDestination(portal2);                                    // set portal destination to the other portal
     portal2->setDestination(portal1);
+    portal3->setDestination(portal4);
+    portal4->setDestination(portal3);
 
-    Character* who = new Character(dungeon[1][7], pTerminalUI);          // place character
-    this->placeCharacter( who, 1, 7 );
+    Character* who = new Character(dungeon[1][4], pTerminalUI);          // place character
+    this->placeCharacter( who, 1, 4 );
     this->characters.push_back(who);
 }
 

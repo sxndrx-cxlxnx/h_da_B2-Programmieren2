@@ -8,7 +8,7 @@ class Portal : public Tile{
 public:
     // constructor (inline)
     Portal(const int pRow, const int pColumn) :
-        Tile(pRow, pColumn, "@"){};
+        Tile(pRow, pColumn, ":/Textures/Texturen-Paket/portal1.png"){};
 
     // destructor (inline)
     virtual ~Portal(){};

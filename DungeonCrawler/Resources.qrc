@@ -5,4 +5,51 @@
     <qresource prefix="/New_Game_Button">
         <file>new_game_button.png</file>
     </qresource>
+    <qresource prefix="/Bloody_Frame">
+        <file>Texturen-Paket/bloody_frame.png</file>
+    </qresource>
+    <qresource prefix="/Textures">
+        <file>Texturen-Paket/arrow_down.png</file>
+        <file>Texturen-Paket/arrow_down_left.png</file>
+        <file>Texturen-Paket/arrow_down_right.png</file>
+        <file>Texturen-Paket/arrow_left.png</file>
+        <file>Texturen-Paket/arrow_right.png</file>
+        <file>Texturen-Paket/arrow_skip.png</file>
+        <file>Texturen-Paket/arrow_up.png</file>
+        <file>Texturen-Paket/arrow_up_left.png</file>
+        <file>Texturen-Paket/arrow_up_right.png</file>
+        <file>Texturen-Paket/bloody_frame.png</file>
+        <file>Texturen-Paket/door1.png</file>
+        <file>Texturen-Paket/door2.png</file>
+        <file>Texturen-Paket/floor1.png</file>
+        <file>Texturen-Paket/floor2.png</file>
+        <file>Texturen-Paket/floor3.png</file>
+        <file>Texturen-Paket/floor4.png</file>
+        <file>Texturen-Paket/floor5.png</file>
+        <file>Texturen-Paket/new_game_button.png</file>
+        <file>Texturen-Paket/pit.png</file>
+        <file>Texturen-Paket/portal1.png</file>
+        <file>Texturen-Paket/portal2.png</file>
+        <file>Texturen-Paket/portal3.png</file>
+        <file>Texturen-Paket/ramp.png</file>
+        <file>Texturen-Paket/startscreen.png</file>
+        <file>Texturen-Paket/switch.png</file>
+        <file>Texturen-Paket/wall1.png</file>
+        <file>Texturen-Paket/zombie_left.png</file>
+        <file>Texturen-Paket/zombie_right.png</file>
+    </qresource>
+    <qresource prefix="/Character">
+        <file>Texturen-Paket/char/char_back_1.png</file>
+        <file>Texturen-Paket/char/char_back_2.png</file>
+        <file>Texturen-Paket/char/char_back_3.png</file>
+        <file>Texturen-Paket/char/char_front_1.png</file>
+        <file>Texturen-Paket/char/char_front_2.png</file>
+        <file>Texturen-Paket/char/char_front_3.png</file>
+        <file>Texturen-Paket/char/char_left_1.png</file>
+        <file>Texturen-Paket/char/char_left_2.png</file>
+        <file>Texturen-Paket/char/char_left_3.png</file>
+        <file>Texturen-Paket/char/char_right_1.png</file>
+        <file>Texturen-Paket/char/char_right_2.png</file>
+        <file>Texturen-Paket/char/char_right_3.png</file>
+    </qresource>
 </RCC>

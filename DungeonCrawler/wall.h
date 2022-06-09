@@ -6,7 +6,7 @@
 class Wall : public Tile{
 public:
     // constructor (inline)
-    Wall(const int pRow, const int pColumn):Tile(pRow, pColumn, "#"){};
+    Wall(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/wall1.png"){};
 
     // destructor (inline)
     virtual ~Wall(){};

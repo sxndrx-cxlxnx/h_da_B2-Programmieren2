@@ -9,15 +9,24 @@ using namespace std;
 int main(int argc, char* argv[]){
 
     QApplication a(argc, argv);
-    Startscreen s;
-    s.show();
+
+    GraphicalUI* dungeonCrawlerGui = new GraphicalUI();
+
+    DungeonCrawler *dungeonCrawler = new DungeonCrawler(dungeonCrawlerGui);
+
+    dungeonCrawlerGui->getStartscreen()->show();
+
+//    while(true){
+//        // play
+//        dungeonCrawlerGui->draw(dungeonCrawler->getLevel());
+
+//        dungeonCrawler->play();
+//    }
+
+
+
     return a.exec();
 
-//    // initialize
-//    DungeonCrawler *dungeonCrawler = new DungeonCrawler();
-
-//    // play
-//    dungeonCrawler->play();
 
 //    // delete
 //    delete dungeonCrawler;

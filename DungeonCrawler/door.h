@@ -11,7 +11,7 @@ private:
 
 public:
     // constructor (inline)
-    Door(const int pRow, const int pColumn):Tile(pRow, pColumn, "X"), Passive(){};
+    Door(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/door1.png"), Passive(){};
 
     // getter - methods
     virtual std::string getTexture() const override;
