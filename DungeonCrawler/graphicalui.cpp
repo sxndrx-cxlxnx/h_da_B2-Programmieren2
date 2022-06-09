@@ -53,7 +53,7 @@ void GraphicalUI::draw(Level *level){
 }
 
 int GraphicalUI::move(){
-    QTest::qWait(5000);
+    QTest::qWait(500);
     QCoreApplication::processEvents();
     if( mainWindow->getNewEvent() ){
         mainWindow->setNewEvent(false);

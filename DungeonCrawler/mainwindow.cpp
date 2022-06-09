@@ -23,54 +23,6 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonDL, SIGNAL(clicked()), this, SLOT(buttonDL()));
     connect(ui->buttonD,  SIGNAL(clicked()), this, SLOT(buttonD()));
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
-
-//    QPushButton* buttonUL = new QPushButton;
-//    QLabel* UL = new QLabel;
-//    UL->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_up_left.png"));
-//    buttonUL->setStyleSheet("backgroungimage");
-
-//    QPushButton* buttonU = new QPushButton;
-//    QLabel* U = new QLabel;
-//    U->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_up.png"));
-
-//    QPushButton* buttonUR = new QPushButton;
-//    QLabel* UR = new QLabel;
-//    UR->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_up_right.png"));
-
-//    QPushButton* buttonL = new QPushButton;
-//    QLabel* L = new QLabel;
-//    L->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_left.png"));
-
-//    QPushButton* buttonStay = new QPushButton;
-//    QLabel* Stay = new QLabel;
-//    Stay->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_skip.png"));
-
-//    QPushButton* buttonR = new QPushButton;
-//    QLabel* R = new QLabel;
-//    R->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_right.png"));
-
-//    QPushButton* buttonDL = new QPushButton;
-//    QLabel* DL = new QLabel;
-//    DL->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_down_left.png"));
-
-//    QPushButton* buttonD = new QPushButton;
-//    QLabel* D = new QLabel;
-//    D->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_down.png"));
-
-//    QPushButton* buttonDR = new QPushButton;
-//    QLabel* DR = new QLabel;
-//    DR->setPixmap(QPixmap(":/Textures/Texturen-Paket/arrow_down_right.png"));
-
-//    QString tex = QString::fromStdString ( this->getDungeonCrawler()->getLevel()->getTile(r, c)->getTexture() );
-//    QPixmap* pixmap = new QPixmap;
-//    pixmap->load(tex);
-//    QLabel* tile = new QLabel();
-//    tile->setPixmap(*pixmap);
-//    tile->setScaledContents(true);
-
-//    mainWindow->getUi()->gridDungeon->addWidget( tile, r, c );
-
-
 }
 
 MainWindow::~MainWindow(){

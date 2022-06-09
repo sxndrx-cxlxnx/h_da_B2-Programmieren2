@@ -6,7 +6,7 @@
 class Floor : public Tile{
 public:
     // constructor (inline)
-    Floor(const int pRow, const int pColumn):Tile(pRow,pColumn,":/Textures/Texturen-Paket/floor1.png"){};
+    Floor(const int pRow, const int pColumn, std::string pTexture):Tile(pRow,pColumn,pTexture){};
 
     // destructor (inline)
     virtual ~Floor(){};

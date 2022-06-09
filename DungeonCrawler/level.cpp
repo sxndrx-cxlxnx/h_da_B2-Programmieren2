@@ -6,6 +6,7 @@
 #include "ramp.h"
 #include "switch.h"
 #include "wall.h"
+#include <cstdlib>
 
 using namespace std;
 
@@ -13,6 +14,25 @@ using namespace std;
 void swap(Level &lhs, Level &rhs){
     std::swap(lhs.dungeon, rhs.dungeon);
     std::swap(lhs.characters, rhs.characters);
+}
+
+std::string Level::floorType(){
+
+    switch(rand() % 5){
+    case 0: return ":/Textures/Texturen-Paket/floor1.png";
+        break;
+    case 1: return ":/Textures/Texturen-Paket/floor2.png";
+        break;
+    case 2: return ":/Textures/Texturen-Paket/floor3.png";
+        break;
+    case 3: return ":/Textures/Texturen-Paket/floor4.png";
+        break;
+    case 4: return ":/Textures/Texturen-Paket/floor5.png";
+        break;
+    default: return ":/Textures/Texturen-Paket/floor1.png";
+        break;
+    }
+
 }
 
 Level& Level::operator=(Level rhs){
@@ -50,24 +70,24 @@ Level::Level(Controller* pTerminalUI){
 
             switch(levelString[atString]){
             case '#': dungeon[r][c] = new Wall(r, c); break;
-            case '.': dungeon[r][c] = new Floor(r, c); break;
+            case '.': dungeon[r][c] = new Floor(r, c, floorType()); break;
             case '@': if( portal1 == nullptr ){                          // portals already created -> set them in dungeon
-                    portal1 = new Portal(r, c);
+                    portal1 = new Portal(r, c, ":/Textures/Texturen-Paket/portal1.png");
                     dungeon[r][c] = portal1;
                     portals.push_back(portal1);
                     break;
                 } else if( portal2 == nullptr ){
-                    portal2 = new Portal(r, c);
+                    portal2 = new Portal(r, c, ":/Textures/Texturen-Paket/portal1.png");
                     dungeon[r][c] = portal2;
                     portals.push_back(portal2);
                     break;
                 } else if( portal3 == nullptr ){
-                    portal3 = new Portal(r, c);
+                    portal3 = new Portal(r, c, ":/Textures/Texturen-Paket/portal2.png");
                     dungeon[r][c] = portal3;
                     portals.push_back(portal3);
                     break;
                 } else{
-                    portal4 = new Portal(r, c);
+                    portal4 = new Portal(r, c, ":/Textures/Texturen-Paket/portal2.png");
                     dungeon[r][c] = portal4;
                     portals.push_back(portal4);
                 }
@@ -124,11 +144,11 @@ Level::Level(const Level &pLevel){
                 dungeon[r][c] = door;
                 doors.push_back(door);
             } else if(tileIsFloor){
-                dungeon[r][c] = new Floor(r, c);
+                dungeon[r][c] = new Floor(r, c, pLevel.getTile(r,c)->getTexture());
             } else if(tileIsPit){
                 dungeon[r][c] = new Pit(r, c);
             } else if(tileIsPortal){
-                Portal* portal = new Portal(r, c);
+                Portal* portal = new Portal(r, c, pLevel.getTile(r,c)->getTexture());
                 dungeon[r][c] = portal;
                 portals.push_back(portal);
             } else if(tileIsRamp){

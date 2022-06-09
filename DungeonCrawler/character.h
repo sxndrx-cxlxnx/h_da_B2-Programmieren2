@@ -15,7 +15,7 @@ public:
     void setTile(Tile *newTile);
 
     // getter - methods
-    const std::string &getTexture() const;
+    std::string &getTexture();
     Tile *getTile() const;
     Controller *getController() const;
 

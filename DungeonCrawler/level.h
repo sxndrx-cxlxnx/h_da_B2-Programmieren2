@@ -20,6 +20,8 @@ private:
     std::vector<Switch*> switches;
     std::vector<Door*> doors;
 
+    std::string floorType();
+
 public:
     // assignment
     friend void swap(Level& lhs, Level& rhs);

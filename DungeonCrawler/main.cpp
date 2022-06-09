@@ -10,13 +10,10 @@ using namespace std;
 int main(int argc, char* argv[]){
 
     QApplication a(argc, argv);
-
     GraphicalUI* dungeonCrawlerGui = new GraphicalUI();
-
     DungeonCrawler *dungeonCrawler = new DungeonCrawler(dungeonCrawlerGui);
 
     dungeonCrawlerGui->getStartscreen()->show();
-    //dungeonCrawlerGui->getMainWindow()->show();
 
     // play
     dungeonCrawler->play();
@@ -27,5 +24,5 @@ int main(int argc, char* argv[]){
 //    // delete
 //    delete dungeonCrawler;
 
-//    return 0;
+    //    return 0;
 }

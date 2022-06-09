@@ -7,8 +7,8 @@ class Portal : public Tile{
 
 public:
     // constructor (inline)
-    Portal(const int pRow, const int pColumn) :
-        Tile(pRow, pColumn, ":/Textures/Texturen-Paket/portal1.png"){};
+    Portal(const int pRow, const int pColumn, std::string pTexture) :
+        Tile(pRow, pColumn, pTexture){};
 
     // destructor (inline)
     virtual ~Portal(){};
