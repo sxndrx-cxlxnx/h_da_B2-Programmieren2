@@ -6,6 +6,7 @@
 //#include "startscreen.h"
 #include <QMainWindow>
 #include <QWidget>
+#include <QLabel>
 
 class MainWindow;
 class Startscreen;
@@ -16,6 +17,7 @@ class GraphicalUI : public AbstractUI, public Controller{
 public:
     GraphicalUI();
     virtual void draw(Level* level) override;
+    void draw2(Level* level);
     virtual int move() override;
     void startNewGame();
 
@@ -29,6 +31,8 @@ private:
     Startscreen* startscreen;
     MainWindow* mainWindow;
     DungeonCrawler* dungeonCrawler;
+    std::vector<QLabel*> labels;
+    QLabel* character;
 };
 
 #endif // GRAPHICALUI_H

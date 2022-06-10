@@ -43,6 +43,7 @@ public:
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
+    const std::vector<Door *> &getDoors() const;
 };
 
 void swap(Level& lhs, Level& rhs);

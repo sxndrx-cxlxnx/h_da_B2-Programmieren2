@@ -49,7 +49,7 @@ void DungeonCrawler::play(){
         r = fromTile->getRow();
         c = fromTile->getColumn();
 
-       this->abstractui->draw(this->level);                     // Output of Playground
+      // this->abstractui->draw(this->level);                     // Output of Playground
 
         // Explanation of control: (user input)
 
@@ -64,30 +64,30 @@ void DungeonCrawler::play(){
            case 0: // run = false;                                                 // end of program
               break;
            case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 2: fromTile->moveTo(level->getTile(r+1,c), thisChar);           // down
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 3: fromTile->moveTo(level->getTile(r+1,c+1), thisChar);         // down - right
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 4: fromTile->moveTo(level->getTile(r,c-1), thisChar);           // left
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
-           case 5: abstractui->draw(level);                                     // stay
+           case 5: abstractui->draw2(level);                                     // stay
               break;
            case 6: fromTile->moveTo(level->getTile(r,c+1), thisChar);           // right
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 7: fromTile->moveTo(level->getTile(r-1,c-1), thisChar);         // up - left
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 8: fromTile->moveTo(level->getTile(r-1,c), thisChar);           // up
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
            case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
-                   abstractui->draw(level);
+                   abstractui->draw2(level);
               break;
        default: break;
        }

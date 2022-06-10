@@ -16,6 +16,11 @@ void swap(Level &lhs, Level &rhs){
     std::swap(lhs.characters, rhs.characters);
 }
 
+const std::vector<Door *> &Level::getDoors() const
+{
+    return doors;
+}
+
 std::string Level::floorType(){
 
     switch(rand() % 5){
