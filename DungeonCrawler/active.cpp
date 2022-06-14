@@ -20,8 +20,8 @@ void Active::attach(Passive *passiveTile){
             alreadyIncluded = true;
             break;
         }
-    }                                                                        // if not:
-    if(!alreadyIncluded){                                                    // attach "passive Tile" to vector "observers"
+    }                                                                       // if not:
+    if(!alreadyIncluded){                                                   // attach "passive Tile" to vector "observers"
         observers.push_back(passiveTile);
     }
 }

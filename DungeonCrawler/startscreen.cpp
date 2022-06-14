@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "graphicalui.h"
 
+// ************************ constructor ***********************************************
 Startscreen::Startscreen(GraphicalUI* pgui, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Startscreen)
@@ -13,10 +14,12 @@ Startscreen::Startscreen(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(buttonPushed()));
 }
 
+// ************************ destructor ************************************************
 Startscreen::~Startscreen(){
     delete ui;
 }
 
+// ************************ other methods *********************************************
 void Startscreen::buttonPushed(){
     gui->startNewGame();
 }

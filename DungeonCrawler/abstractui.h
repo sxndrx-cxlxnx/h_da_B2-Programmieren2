@@ -1,8 +1,6 @@
 #ifndef ABSTRACTUI_H
 #define ABSTRACTUI_H
 
-//#include "level.h"
-
 class Level;
 
 class AbstractUI{

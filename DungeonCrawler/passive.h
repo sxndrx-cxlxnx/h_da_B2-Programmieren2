@@ -1,5 +1,6 @@
 #ifndef PASSIVE_H
 #define PASSIVE_H
+
 class Active;
 
 class Passive{

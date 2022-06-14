@@ -7,7 +7,7 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
     abstractui = pgui;
 
-    Controller* controller = pgui;          // put control to user via graphic input
+    Controller* controller = pgui;                 // put control to user via graphic input
 
     level = new Level(controller);                 // normal initialisation (without testing of ctor and assignement)
     abstractui->setDungeonCrawler(this);
@@ -35,6 +35,10 @@ GraphicalUI *DungeonCrawler::getAbstractui() const{
     return abstractui;
 }
 
+Level *DungeonCrawler::getLevel() const{
+    return level;
+}
+
 // ************************ other methods *********************************************
 void DungeonCrawler::play(){
     // set few refactor-variables
@@ -49,8 +53,6 @@ void DungeonCrawler::play(){
         r = fromTile->getRow();
         c = fromTile->getColumn();
 
-      // this->abstractui->draw(this->level);                     // Output of Playground
-
         // Explanation of control: (user input)
 
         // 7 8 9              \  |  up  |   /
@@ -58,10 +60,9 @@ void DungeonCrawler::play(){
         // 1 2 3              /  | down |  \
         //   0                    Abbruch
 
-       //switch (thisChar->move()){
-       int direction = thisChar->move(); //this->getAbstractui()->getMainWindow()->getLastInput();
+       int direction = thisChar->move();
        switch (direction){
-           case 0: // run = false;                                                 // end of program
+           case 0: // run = false;                                              // end of program
               break;
            case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
                    abstractui->draw2(level);
@@ -75,7 +76,7 @@ void DungeonCrawler::play(){
            case 4: fromTile->moveTo(level->getTile(r,c-1), thisChar);           // left
                    abstractui->draw2(level);
               break;
-           case 5: abstractui->draw2(level);                                     // stay
+           case 5: abstractui->draw2(level);                                    // stay
               break;
            case 6: fromTile->moveTo(level->getTile(r,c+1), thisChar);           // right
                    abstractui->draw2(level);
@@ -92,9 +93,4 @@ void DungeonCrawler::play(){
        default: break;
        }
     }    
-}
-
-Level *DungeonCrawler::getLevel() const
-{
-    return level;
 }

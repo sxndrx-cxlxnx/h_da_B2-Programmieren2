@@ -16,30 +16,6 @@ void swap(Level &lhs, Level &rhs){
     std::swap(lhs.characters, rhs.characters);
 }
 
-const std::vector<Door *> &Level::getDoors() const
-{
-    return doors;
-}
-
-std::string Level::floorType(){
-
-    switch(rand() % 5){
-    case 0: return ":/Textures/Texturen-Paket/floor1.png";
-        break;
-    case 1: return ":/Textures/Texturen-Paket/floor2.png";
-        break;
-    case 2: return ":/Textures/Texturen-Paket/floor3.png";
-        break;
-    case 3: return ":/Textures/Texturen-Paket/floor4.png";
-        break;
-    case 4: return ":/Textures/Texturen-Paket/floor5.png";
-        break;
-    default: return ":/Textures/Texturen-Paket/floor1.png";
-        break;
-    }
-
-}
-
 Level& Level::operator=(Level rhs){
     swap(*this, rhs);
     return *this;
@@ -144,7 +120,7 @@ Level::Level(const Level &pLevel){
             bool tileIsSwitch   = (typeid(*pLevelTile) == typeid(Switch));
             bool tileIsWall     = (typeid(*pLevelTile) == typeid(Wall));
 
-            if(tileIsDoor){
+            if(tileIsDoor){                                                             // set tiles (push in vector if neccessary)
                 Door* door = new Door(r, c);
                 dungeon[r][c] = door;
                 doors.push_back(door);
@@ -166,7 +142,7 @@ Level::Level(const Level &pLevel){
                 dungeon[r][c] = new Wall(r, c);
             }
 
-            if( pLevel.dungeon[r][c]->hasCharacter()){
+            if( pLevel.dungeon[r][c]->hasCharacter()){                                  // place character
                 Character* character = new Character( dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController());
                 this->characters.push_back(character);
                 dungeon[r][c]->setCharacter(character);
@@ -174,14 +150,14 @@ Level::Level(const Level &pLevel){
         }
     }
 
-    for( int i = 0; i < (int) portals.size(); i++ ){
+    for( int i = 0; i < (int) portals.size(); i++ ){                                    // set portal destination
         int colPLevelDest = pLevel.portals[i]->getDestination()->getColumn();
         int rowPLevelDest = pLevel.portals[i]->getDestination()->getRow();
 
         portals[i]->setDestination( dungeon[rowPLevelDest][colPLevelDest]);
     }
 
-    for( int j = 0; j < (int) doors.size(); j++ ){
+    for( int j = 0; j < (int) doors.size(); j++ ){                                      // connect switch with door
         switches[0]->attach(doors[j]);
     }
 }
@@ -219,9 +195,31 @@ const std::vector<Character *> &Level::getCharacters() const{
     return characters;
 }
 
+const std::vector<Door *> &Level::getDoors() const{
+    return doors;
+}
+
 // ************************ other methods *********************************************
 void Level::placeCharacter(Character *c, int row, int col){
-    c->getTile()->setCharacter(nullptr);                                // old Tile get's nullpointer
-    c->setTile(dungeon[row][col]);                                      // Character get's new Tile
-    dungeon[row][col]->setCharacter(c);                                 // new Tile get's character
+    c->getTile()->setCharacter(nullptr);                                // old Tile gets nullpointer
+    c->setTile(dungeon[row][col]);                                      // Character gets new Tile
+    dungeon[row][col]->setCharacter(c);                                 // new Tile gets character
+}
+
+std::string Level::floorType(){
+
+    switch(rand() % 5){
+    case 0: return ":/Textures/Texturen-Paket/floor1.png";
+        break;
+    case 1: return ":/Textures/Texturen-Paket/floor2.png";
+        break;
+    case 2: return ":/Textures/Texturen-Paket/floor3.png";
+        break;
+    case 3: return ":/Textures/Texturen-Paket/floor4.png";
+        break;
+    case 4: return ":/Textures/Texturen-Paket/floor5.png";
+        break;
+    default: return ":/Textures/Texturen-Paket/floor1.png";
+        break;
+    }
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "terminalui.h"
+
 class DungeonCrawler;
 class Tile;
 
@@ -13,6 +14,7 @@ public:
 
     // setter - methods
     void setTile(Tile *newTile);
+    void setLastDirection(int newLastDirection);
 
     // getter - methods
     std::string &getTexture();
@@ -21,8 +23,6 @@ public:
 
     //other methods
     int move();
-
-    void setLastDirection(int newLastDirection);
 
 private:
     // attributes

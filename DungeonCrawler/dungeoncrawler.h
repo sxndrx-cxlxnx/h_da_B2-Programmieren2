@@ -1,7 +1,6 @@
 #ifndef DUNGEONCRAWLER_H
 #define DUNGEONCRAWLER_H
 
-//#include "terminalui.h"
 #include "graphicalui.h"
 #include "level.h"
 
@@ -15,11 +14,10 @@ public:
 
     // getter - methods
     GraphicalUI *getAbstractui() const;
+    Level *getLevel() const;
 
     // other methods
     void play();
-
-    Level *getLevel() const;
 
 private:
     // attributes

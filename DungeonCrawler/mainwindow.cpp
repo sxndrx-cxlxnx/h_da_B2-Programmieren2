@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QPushButton>
 
+// ************************ constructor ***********************************************
 MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,10 +26,12 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
 }
 
+// ************************ destructor ************************************************
 MainWindow::~MainWindow(){
     delete ui;
 }
 
+// ************************ getter-methods ********************************************
 Ui::MainWindow *MainWindow::getUi() const{
     return ui;
 }
@@ -37,66 +40,65 @@ int MainWindow::getLastInput() const{
     return lastInput;
 }
 
-void MainWindow::setNewEvent(bool newNewEvent)
-{
-    newEvent = newNewEvent;
-}
-
-bool MainWindow::getNewEvent() const
-{
+bool MainWindow::getNewEvent() const{
     return newEvent;
 }
 
-// ******* Buttons *******
-void MainWindow::buttonUL(){
+// ************************ setter-methods ********************************************
+void MainWindow::setNewEvent(bool newNewEvent){
+    newEvent = newNewEvent;
+}
+
+// ************************ Buttons / Slots *******************************************
+void MainWindow::buttonUL(){                                                                        // up - left
     lastInput = 7;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonU(){
+void MainWindow::buttonU(){                                                                         // up
     lastInput = 8;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonUR(){
+void MainWindow::buttonUR(){                                                                        // up - right
     lastInput = 9;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonL(){
+void MainWindow::buttonL(){                                                                         // left
     lastInput = 4;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonS(){
+void MainWindow::buttonS(){                                                                         // stay
     lastInput = 5;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonR(){
+void MainWindow::buttonR(){                                                                         // right
     lastInput = 6;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonDL(){
+void MainWindow::buttonDL(){                                                                        // down - left
     lastInput = 1;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonD(){
+void MainWindow::buttonD(){                                                                         // down
     lastInput = 2;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
 }
 
-void MainWindow::buttonDR(){
+void MainWindow::buttonDR(){                                                                        // downRight
     lastInput = 3;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;

@@ -9,29 +9,33 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow{
+
     Q_OBJECT
 
 public:
+    // constructor
     explicit MainWindow(GraphicalUI* pgui, QWidget *parent = nullptr);
+
+    // destructor
     ~MainWindow();
 
+    // getter - methods
     Ui::MainWindow *getUi() const;
-
     int getLastInput() const;
-
-    void setNewEvent(bool newNewEvent);
-
     bool getNewEvent() const;
 
+    // setter - methods
+    void setNewEvent(bool newNewEvent);
+
 private:
+    // attributes
     Ui::MainWindow *ui;
     GraphicalUI* gui;
     int lastInput;
     bool newEvent;
 
-public slots:
+public slots:                       // buttons: up, down, left, right and stay
     void buttonUL();
     void buttonU();
     void buttonUR();

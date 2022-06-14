@@ -60,8 +60,9 @@ Tile *Tile::onLeave(Tile *destTile, Character *who){
     return this;
 }
 
-void Tile::goAStepWithCharacter(Tile *from, Tile *to){
-    to->setCharacter(from->character);
-    from->character->setTile(to);
-    from->setCharacter(nullptr);
+void Tile::goAStepWithCharacter(Tile *from, Tile *to){              // "Tile *to" (destination) differs, when Tile is portal)
+
+    to->setCharacter(from->character);                              // destination get the character
+    from->character->setTile(to);                                   // character get the new Tile (destination)
+    from->setCharacter(nullptr);                                    // old tile get to know, that character has moved on
 }

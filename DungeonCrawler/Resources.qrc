@@ -1,13 +1,4 @@
 <RCC>
-    <qresource prefix="/Startscreen">
-        <file>startscreen.png</file>
-    </qresource>
-    <qresource prefix="/New_Game_Button">
-        <file>new_game_button.png</file>
-    </qresource>
-    <qresource prefix="/Bloody_Frame">
-        <file>Texturen-Paket/bloody_frame.png</file>
-    </qresource>
     <qresource prefix="/Textures">
         <file>Texturen-Paket/arrow_down.png</file>
         <file>Texturen-Paket/arrow_down_left.png</file>

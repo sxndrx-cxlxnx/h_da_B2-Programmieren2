@@ -47,7 +47,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Resources.qrc">:/Startscreen/startscreen.png</pixmap>
+    <pixmap resource="Resources.qrc">:/Textures/Texturen-Paket/startscreen.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -72,7 +72,7 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">image: url(:/New_Game_Button/new_game_button.png);</string>
+    <string notr="true">image: url(:/Textures/Texturen-Paket/new_game_button.png);</string>
    </property>
    <property name="text">
     <string/>
