@@ -7,6 +7,7 @@
 #include "switch.h"
 #include "wall.h"
 #include <cstdlib>
+#include "levelchanger.h"
 
 using namespace std;
 
@@ -22,19 +23,9 @@ Level& Level::operator=(Level rhs){
 }
 
 // ************************ constructor ***********************************************
-Level::Level(Controller* pTerminalUI){
+Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLevel ){
 
     dungeon.resize(length, vector<Tile*> (width));                      // resize level with width and length
-
-    const string  levelString = {                                       // create level as a string
-        "################"
-        "#.......#@._<..#"
-        "#@....###.___..#"
-        "#.....#@#......#"
-        "#.......###X####"
-        "#########......#"
-        "#@....?##......#"
-        "################"};
 
     Portal* portal1 = nullptr;                                          // set portal -> need for destination later
     Portal* portal2 = nullptr;
@@ -43,6 +34,8 @@ Level::Level(Controller* pTerminalUI){
 
     Switch* switch1 = nullptr;                                          // set switch and door
     Door* door1 = nullptr;
+
+    Levelchanger* levelchanger1 = nullptr;
 
     int atString = 0;
 
@@ -81,24 +74,44 @@ Level::Level(Controller* pTerminalUI){
             case '?': switch1 = new Switch(r, c);
                       dungeon[r][c] = switch1;
                       switches.push_back(switch1);
-                break;
+                    break;
+            case 'S':
+                    levelchanger1 = new Levelchanger(r,c);
+                    dungeon[r][c] = levelchanger1;
+                    break;
             default: break;
             }
             atString++;
         }
     }
 
-    switch1->attach(door1);                                              // connect door with switch
-    doors.push_back(door1);
+    if( switch1 != nullptr ){
+        switch1->attach(door1);                                              // connect door with switch
+    }
 
-    portal1->setDestination(portal2);                                    // set portal destination to the other portal
-    portal2->setDestination(portal1);
-    portal3->setDestination(portal4);
-    portal4->setDestination(portal3);
+    if( door1 != nullptr ){
+        doors.push_back(door1);
+    }
 
-    Character* who = new Character(dungeon[1][4], pTerminalUI);          // place character
-    this->placeCharacter( who, 1, 4 );
-    this->characters.push_back(who);
+    if( portal1 != nullptr && portal2 != nullptr ){
+        portal1->setDestination(portal2);                                    // set portal destination to the other portal
+        portal2->setDestination(portal1);
+    }
+    if( portal3 != nullptr && portal4 != nullptr ){
+        portal3->setDestination(portal4);
+        portal4->setDestination(portal3);
+    }
+
+    if( isCharInLevel ){
+        Character* who = new Character(dungeon[1][4], pTerminalUI, 100, 5);          // place character
+        this->placeCharacter( who, 1, 4 );
+        this->characters.push_back(who);
+    }
+
+    if( levelchanger1 != nullptr ){
+        this->setLevelchanger( levelchanger1 );
+    }
+
 }
 
 // ************************ copy constructor ******************************************
@@ -143,7 +156,8 @@ Level::Level(const Level &pLevel){
             }
 
             if( pLevel.dungeon[r][c]->hasCharacter()){                                  // place character
-                Character* character = new Character( dungeon[r][c], pLevel.dungeon[r][c]->getCharacter()->getController());
+                Character* pLevelChar = pLevel.dungeon[r][c]->getCharacter();
+                Character* character = new Character( dungeon[r][c], pLevelChar->getController(), pLevelChar->getStrength(), pLevelChar->getStamina());
                 this->characters.push_back(character);
                 dungeon[r][c]->setCharacter(character);
             }
@@ -191,12 +205,26 @@ const Tile *Level::getTile(int row, int col) const{
     return dungeon[row][col];
 }
 
-const std::vector<Character *> &Level::getCharacters() const{
+ std::vector<Character *> &Level::getCharacters() {
     return characters;
 }
 
 const std::vector<Door *> &Level::getDoors() const{
     return doors;
+}
+
+Levelchanger *Level::getLevelchanger() const{
+    return levelchanger;
+}
+
+// ************************ setter - methods ******************************************
+
+void Level::setLevelchanger(Levelchanger *newLevelchanger){
+    levelchanger = newLevelchanger;
+}
+
+void Level::setCharacters( Character* pCharacter){
+    characters.insert( characters.begin(), pCharacter );
 }
 
 // ************************ other methods *********************************************
@@ -223,3 +251,8 @@ std::string Level::floorType(){
         break;
     }
 }
+
+
+
+
+

@@ -24,9 +24,13 @@ public:
     Ui::MainWindow *getUi() const;
     int getLastInput() const;
     bool getNewEvent() const;
+    GraphicalUI* getGui();
+    std::string getStatusMessage();
 
     // setter - methods
     void setNewEvent(bool newNewEvent);
+
+    GraphicalUI *getGui() const;
 
 private:
     // attributes
@@ -34,6 +38,7 @@ private:
     GraphicalUI* gui;
     int lastInput;
     bool newEvent;
+    QString statusMessage/*[getGui()->getDungeonCrawler()->getLevel()->getCharacters().size()]*/;
 
 public slots:                       // buttons: up, down, left, right and stay
     void buttonUL();

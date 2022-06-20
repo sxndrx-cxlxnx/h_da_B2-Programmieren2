@@ -9,9 +9,8 @@ class Tile;
 
 class Character{
 public:
-    // constructor (inline)
-    Character(Tile* pTile, Controller* pController) : tile(pTile), texture(":/Character/Texturen-Paket/char/char_front_2.png"), controller(pController){};
-
+    // constructor
+    Character(Tile* pTile, Controller* pController, int pStrength, int pStamina);
     // setter - methods
     void setTile(Tile *newTile);
     void setLastDirection(int newLastDirection);
@@ -20,6 +19,10 @@ public:
     std::string &getTexture();
     Tile *getTile() const;
     Controller *getController() const;
+    int getMaxHP();
+    int getStrength();
+    int getStamina();
+    int getHitpoints();
 
     //other methods
     int move();
@@ -30,6 +33,9 @@ private:
     std::string texture;
     Controller* controller;
     int lastDirection = 5;
+    int strength;
+    int stamina;
+    int hitpoints;
 };
 
 #endif // CHARACTER_H

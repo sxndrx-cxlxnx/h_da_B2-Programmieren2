@@ -35,8 +35,6 @@ private:
     Startscreen* startscreen;
     MainWindow* mainWindow;
     DungeonCrawler* dungeonCrawler;
-    std::vector<QLabel*> labels;
-    QLabel* character;
 };
 
 #endif // GRAPHICALUI_H

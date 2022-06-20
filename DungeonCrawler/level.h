@@ -7,6 +7,9 @@
 #include "switch.h"
 #include <array>
 #include <vector>
+#include <QLabel>
+
+class Levelchanger;
 
 class Level{
 private:
@@ -19,14 +22,19 @@ private:
     std::vector<Portal*> portals;
     std::vector<Switch*> switches;
     std::vector<Door*> doors;
+    Levelchanger* levelchanger = nullptr;
+
 
 public:
+    std::vector<QLabel*> labels;
+    QLabel* character = nullptr;
+
     // assignment
     friend void swap(Level& lhs, Level& rhs);
     Level& operator=(Level rhs);
 
     // constructor
-    Level(Controller *pTerminalUI);
+    Level(Controller *pTerminalUI, std::string levelString, bool isCharInLevel );
     Level(const Level &pLevel);
 
     // destructor
@@ -37,11 +45,19 @@ public:
     int getLength();
     Tile *getTile(int row, int col);
     const Tile *getTile(int row, int col) const;
-    const std::vector<Character *> &getCharacters() const;
+    std::vector<Character *> &getCharacters() ;
     const std::vector<Door *> &getDoors() const;
+    Levelchanger *getLevelchanger() const;
+
+    // setter - methods
+    void setLevelchanger(Levelchanger *newLevelchanger);
+    void setCharacters( Character* pCharacter );
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
+
+
+
 };
 
 void swap(Level& lhs, Level& rhs);

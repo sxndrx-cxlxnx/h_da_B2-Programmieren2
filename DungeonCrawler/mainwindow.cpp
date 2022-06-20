@@ -5,6 +5,7 @@
 #include "dungeoncrawler.h"
 #include <QLabel>
 #include <QPushButton>
+#include <sstream>
 
 // ************************ constructor ***********************************************
 MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
@@ -15,6 +16,10 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     gui = pgui;
     newEvent = false;
 
+   // QString qMessage = QString::fromStdString ( this->getStatusMessage() );
+    //statusMessage = qMessage;
+    //ui->statusbar->showMessage(statusMessage);
+
     connect(ui->buttonUL, SIGNAL(clicked()), this, SLOT(buttonUL()));
     connect(ui->buttonU,  SIGNAL(clicked()), this, SLOT(buttonU()));
     connect(ui->buttonUR, SIGNAL(clicked()), this, SLOT(buttonUR()));
@@ -24,6 +29,8 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonDL, SIGNAL(clicked()), this, SLOT(buttonDL()));
     connect(ui->buttonD,  SIGNAL(clicked()), this, SLOT(buttonD()));
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
+
+
 }
 
 // ************************ destructor ************************************************
@@ -44,9 +51,27 @@ bool MainWindow::getNewEvent() const{
     return newEvent;
 }
 
+GraphicalUI *MainWindow::getGui(){
+    return gui;
+}
+
 // ************************ setter-methods ********************************************
 void MainWindow::setNewEvent(bool newNewEvent){
     newEvent = newNewEvent;
+}
+
+std::string MainWindow::getStatusMessage(){
+    Character* currentCharacter = getGui()->getDungeonCrawler()->getLevel()->getCharacters()[0];
+    std::stringstream strength;
+    std::stringstream stamina;
+    std::stringstream hitpoints;
+    strength << currentCharacter->getStrength();
+    stamina << currentCharacter ->getStamina();
+    hitpoints << currentCharacter->getHitpoints();
+
+    std::string message;
+    message = "Strength: " + strength.str() + "\t Stamina: " + stamina.str() +"\t Hitpoints: " + hitpoints.str();
+    return message;
 }
 
 // ************************ Buttons / Slots *******************************************

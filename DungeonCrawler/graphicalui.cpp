@@ -37,8 +37,8 @@ void GraphicalUI::setDungeonCrawler(DungeonCrawler *newDungeonCrawler){
 // ************************ other methods *********************************************
 void GraphicalUI::draw(Level *level){                                                               // used in constructor
 
-    int length = this->getDungeonCrawler()->getLevel()->getLength();
-    int width = this->getDungeonCrawler()->getLevel()->getWidth();
+    int length = level->getLength();
+    int width = level->getWidth();
     mainWindow->getUi()->gridDungeon->setSpacing(0);
 
     int counter = 0;
@@ -55,23 +55,23 @@ void GraphicalUI::draw(Level *level){                                           
             tile->setScaledContents(true);
             tile->lower();
 
-            mainWindow->getUi()->gridDungeon->addWidget( tile, r, c );
-            labels.push_back(tile);
+            //mainWindow->getUi()->gridDungeon->addWidget( tile, r, c );
+            level->labels.push_back(tile);
 
             if(level->getTile(r, c)->hasCharacter()){
-                character = new QLabel(this->getMainWindow());                                      // load texture of character
+                level->character = new QLabel(/*this->getMainWindow()*/);                                      // load texture of character
                 QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
                 QPixmap* pixmapChar = new QPixmap;
                 pixmapChar->load(tex2);
-                pixmapChar->scaled(labels[counter]->size());
+                pixmapChar->scaled(level->labels[counter]->size());
 
                 QPainter p(pixmapTile);                                                             // show character in front of Tile
                 p.drawPixmap(0,0,*pixmapChar);
-                character->setPixmap(*pixmapTile);
+                level->character->setPixmap(*pixmapTile);
 
-                mainWindow->getUi()->gridDungeon->addWidget( character, r, c );                     // actual output
-                character->setScaledContents(true);
-                character->raise();
+                //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                     // actual output
+                level->character->setScaledContents(true);
+                level->character->raise();
             }
             counter++;
         }
@@ -81,60 +81,91 @@ void GraphicalUI::draw(Level *level){                                           
 
 void GraphicalUI::draw2(Level *level){                                                              // used to update playground
 
-    int length = this->getDungeonCrawler()->getLevel()->getLength();
-    int width = this->getDungeonCrawler()->getLevel()->getWidth();
+    int length = level->getLength();
+    int width = level->getWidth();
 
     int counter = 0;
 
     for( int r = 0; r < length; r++ ){
         for( int c = 0; c < width;  c++ ){
 
-            mainWindow->getUi()->gridDungeon->addWidget( labels[counter], r, c );
-            if( r == level->getDoors()[0]->getRow() && c == level->getDoors()[0]->getColumn()){     // set door separately
+            mainWindow->getUi()->gridDungeon->addWidget( level->labels[counter], r, c );
+            if( level->getDoors().size() != 0 ){
 
-                QString texDoor = QString::fromStdString ( level->getTile(r,c)->getTexture() );
-                QPixmap* pixmapDoor = new QPixmap;
-                pixmapDoor->load(texDoor);
 
-                labels[counter]->setPixmap(*pixmapDoor);
-            }
+                if( r == level->getDoors()[0]->getRow() && c == level->getDoors()[0]->getColumn() ){     // set door separately
 
-            if(level->getTile(r, c)->hasCharacter()){
+                    QString texDoor = QString::fromStdString ( level->getTile(r,c)->getTexture() );
+                    QPixmap* pixmapDoor = new QPixmap;
+                    pixmapDoor->load(texDoor);
 
-                Tile* testPit = level->getTile(r,c);
-                bool tileIsPit = (typeid(*testPit) == typeid(Pit));
-
-                QPixmap* pixmapTile = new QPixmap;                                                   // load texture of Tile
-                QString tex1 = QString::fromStdString ( level->getTile(r,c)->getTexture());
-                pixmapTile->load(tex1);
-
-                QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );  // load texture of character
-                QPixmap* pixmapChar = new QPixmap;
-                pixmapChar->load(tex2);
-                pixmapChar->scaled(labels[counter]->size());
-
-                if(tileIsPit){                                                                      // show character behind a pit,
-                    pixmapTile->scaled(labels[counter]->size());
-
-                    QPainter p(pixmapChar);
-                    p.drawPixmap(0,0,*pixmapTile);
-
-                    character->setPixmap(*pixmapChar);
-
-                } else{                                                                             // but show character in front of a Tile(!= Pit)
-                    QPainter p(pixmapTile);
-                    p.drawPixmap(0,0,*pixmapChar);
-
-                    character->setPixmap(*pixmapTile);
+                    level->labels[counter]->setPixmap(*pixmapDoor);
                 }
-
-                mainWindow->getUi()->gridDungeon->addWidget( character, r, c );                     // actual output
-                character->setScaledContents(true);
-                character->raise();
             }
+            if(level->character == nullptr ){
+
+                QString tex = QString::fromStdString ( level->getTile(r, c)->getTexture() );            // load texture of Tile
+                QPixmap* pixmapTile = new QPixmap;
+                pixmapTile->load(tex);
+
+                if(level->getTile(r, c)->hasCharacter()){
+
+                    level->character = new QLabel(/*this->getMainWindow()*/);                                      // load texture of character
+                    QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
+                    QPixmap* pixmapChar = new QPixmap;
+                    pixmapChar->load(tex2);
+                    pixmapChar->scaled(level->labels[counter]->size());
+
+                    QPainter p(pixmapTile);                                                             // show character in front of Tile
+                    p.drawPixmap(0,0,*pixmapChar);
+                    level->character->setPixmap(*pixmapTile);
+
+                    //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                     // actual output
+                    level->character->setScaledContents(true);
+                    level->character->raise();
+                }
+            }else{
+                if(level->getTile(r, c)->hasCharacter()){
+
+                    Tile* testPit = level->getTile(r,c);
+                    bool tileIsPit = (typeid(*testPit) == typeid(Pit));
+
+                    QPixmap* pixmapTile = new QPixmap;                                                  // load texture of Tile
+                    QString tex1 = QString::fromStdString ( level->getTile(r,c)->getTexture());
+                    pixmapTile->load(tex1);
+
+                    QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );  // load texture of character
+                    QPixmap* pixmapChar = new QPixmap;
+                    pixmapChar->load(tex2);
+                    pixmapChar->scaled(level->labels[counter]->size());
+
+                    if( tileIsPit ){                                                                    // show character behind a pit,
+                        pixmapTile->scaled(level->labels[counter]->size());
+
+                        QPainter p(pixmapChar);
+                        p.drawPixmap(0,0,*pixmapTile);
+
+                        level->character->setPixmap(*pixmapChar);
+
+                    } else{                                                                             // but show character in front of a Tile (!= Pit)
+                        QPainter p(pixmapTile);
+                        p.drawPixmap(0,0,*pixmapChar);
+
+                        level->character->setPixmap(*pixmapTile);
+                    }
+
+                    mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );              // actual output
+                    level->character->setScaledContents(true);
+                    level->character->raise();
+                }
+            }
+
             counter++;
         }
     }
+     QString qMessage = QString::fromStdString ( mainWindow->getStatusMessage() );
+     //mainWindow->statusMessage = qMessage;
+     mainWindow->getUi()->statusbar->showMessage(qMessage);
 }
 
 int GraphicalUI::move(){
@@ -146,7 +177,6 @@ int GraphicalUI::move(){
     }else{
         return 0;
     }
-
 }
 
 void GraphicalUI::startNewGame(){

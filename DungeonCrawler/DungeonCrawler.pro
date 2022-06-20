@@ -21,6 +21,8 @@ SOURCES += \
         floor.cpp \
         graphicalui.cpp \
         level.cpp \
+        levelchanger.cpp \
+        list.cpp \
         main.cpp \
         mainwindow.cpp \
         passive.cpp \
@@ -28,6 +30,7 @@ SOURCES += \
         portal.cpp \
         ramp.cpp \
         startscreen.cpp \
+        stationarycontroller.cpp \
         switch.cpp \
         terminalui.cpp \
         tile.cpp \
@@ -43,12 +46,15 @@ HEADERS += \
     floor.h \
     graphicalui.h \
     level.h \
+    levelchanger.h \
+    list.h \
     mainwindow.h \
     passive.h \
     pit.h \
     portal.h \
     ramp.h \
     startscreen.h \
+    stationarycontroller.h \
     switch.h \
     terminalui.h \
     tile.h \

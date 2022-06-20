@@ -1,5 +1,15 @@
 #include "character.h"
 
+// ************************ constructor **********************************************
+Character::Character(Tile* pTile, Controller* pController, int pStrength, int pStamina){
+    tile = pTile;
+    texture = ":/Character/Texturen-Paket/char/char_front_2.png";
+    controller = pController;
+    strength = pStrength;
+    stamina = pStamina;
+    hitpoints = getMaxHP();
+}
+
 // ************************ setter - methods *****************************************
 void Character::setTile(Tile *newTile){
     tile = newTile;
@@ -44,6 +54,23 @@ Tile *Character::getTile() const{
 
 Controller *Character::getController() const{
     return controller;
+}
+
+int Character::getMaxHP(){
+    int MaxHP = 20 + (stamina *5);
+    return MaxHP;
+}
+
+int Character::getStrength(){
+    return strength;
+}
+
+int Character::getStamina(){
+    return stamina;
+}
+
+int Character::getHitpoints(){
+    return hitpoints;
 }
 
 // ************************ other methods ********************************************

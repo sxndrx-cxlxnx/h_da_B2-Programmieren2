@@ -1,17 +1,63 @@
 #include "dungeoncrawler.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "levelchanger.h"
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
     abstractui = pgui;
 
+    List* pList = new List();
+    levelList = pList;
+
     Controller* controller = pgui;                 // put control to user via graphic input
 
-    level = new Level(controller);                 // normal initialisation (without testing of ctor and assignement)
+    std::string  levelString1 = {                                       // create level as a string
+        "################"
+        "#.......#@._<..#"
+        "#@....###.___..#"
+        "#.....#@#......#"
+        "#.......###X####"
+        "#########......#"
+        "#@....?##......#"
+        "#############S##"};
+
+     std::string  levelString2 = {
+        "#############S##"
+        "#..............#"
+        "#..............#"
+        "#..............#"
+        "#..............#"
+        "#..............#"
+        "#..............#"
+        "################"};
+
+    level = new Level(controller, levelString1, true );                 // normal initialisation (without testing of ctor and assignement)
+    Level* level2 = new Level(controller, levelString2, false );
+
     abstractui->setDungeonCrawler(this);
+
+    levelList->push_back(level);
+    levelList->push_back(level2);
+
+    level->getLevelchanger()->setLevel( level2 );
+    level2->getLevelchanger()->setLevel( level );
+
+    level->getLevelchanger()->setDestiny( level2->getLevelchanger() );
+    level2->getLevelchanger()->setDestiny( level->getLevelchanger() );
+
+    level->getLevelchanger()->setDungeonCrawler( this );
+    level2->getLevelchanger()->setDungeonCrawler( this );
+
+    level2->setCharacters( level->getCharacters()[0] );
+
     abstractui->draw(level);
+    abstractui->draw(level2);
+
+    //abstractui->draw2(level);
+
+
 
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
@@ -37,6 +83,11 @@ GraphicalUI *DungeonCrawler::getAbstractui() const{
 
 Level *DungeonCrawler::getLevel() const{
     return level;
+}
+
+// ************************ setter - methods ******************************************
+void DungeonCrawler::setLevel(Level *pLevel){
+    level = pLevel;
 }
 
 // ************************ other methods *********************************************
