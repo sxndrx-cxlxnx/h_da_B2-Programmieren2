@@ -20,12 +20,12 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
         "#.....#@#......#"
         "#.......###X####"
         "#########......#"
-        "#@....?##......#"
-        "#############S##"};
+        "#@....?##....S.#"
+        "################"};
 
      std::string  levelString2 = {
-        "#############S##"
-        "#..............#"
+        "################"
+        "#............S.#"
         "#..............#"
         "#..............#"
         "#..............#"
@@ -33,29 +33,30 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
         "#..............#"
         "################"};
 
-    level = new Level(controller, levelString1, true );                 // normal initialisation (without testing of ctor and assignement)
+    Level* level1 = new Level(controller, levelString1, true );
+    level = level1;              // normal initialisation (without testing of ctor and assignement)
     Level* level2 = new Level(controller, levelString2, false );
 
     abstractui->setDungeonCrawler(this);
 
-    levelList->push_back(level);
+    levelList->push_back(level1);
     levelList->push_back(level2);
 
-    level->getLevelchanger()->setLevel( level2 );
-    level2->getLevelchanger()->setLevel( level );
+    level1->getLevelchanger()->setLevel( level2 );
+    level2->getLevelchanger()->setLevel( level1 );
 
-    level->getLevelchanger()->setDestiny( level2->getLevelchanger() );
-    level2->getLevelchanger()->setDestiny( level->getLevelchanger() );
+    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );
+    level2->getLevelchanger()->setDestiny( level1->getLevelchanger() );
 
-    level->getLevelchanger()->setDungeonCrawler( this );
+    level1->getLevelchanger()->setDungeonCrawler( this );
     level2->getLevelchanger()->setDungeonCrawler( this );
 
-    level2->setCharacters( level->getCharacters()[0] );
+    level2->setCharacters( level1->getCharacters()[0] );
 
-    abstractui->draw(level);
+    abstractui->draw(level1);
     abstractui->draw(level2);
 
-    //abstractui->draw2(level);
+    abstractui->draw2(level1);
 
 
 

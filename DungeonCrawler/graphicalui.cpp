@@ -35,7 +35,7 @@ void GraphicalUI::setDungeonCrawler(DungeonCrawler *newDungeonCrawler){
 }
 
 // ************************ other methods *********************************************
-void GraphicalUI::draw(Level *level){                                                               // used in constructor
+void GraphicalUI::draw(Level *level){                                                                   // used in constructor
 
     int length = level->getLength();
     int width = level->getWidth();
@@ -46,11 +46,11 @@ void GraphicalUI::draw(Level *level){                                           
     for( int r = 0; r < length; r++ ){
         for( int c = 0; c < width;  c++ ){
 
-            QString tex = QString::fromStdString ( level->getTile(r, c)->getTexture() );            // load texture of Tile
+            QString tex = QString::fromStdString ( level->getTile(r, c)->getTexture() );                // load texture of Tile
             QPixmap* pixmapTile = new QPixmap;
             pixmapTile->load(tex);
 
-            QLabel* tile = new QLabel(this->getMainWindow());                                       // load texture in Label - temp store
+            QLabel* tile = new QLabel(this->getMainWindow());                                           // load texture in Label - temp store
             tile->setPixmap(*pixmapTile);
             tile->setScaledContents(true);
             tile->lower();
@@ -59,27 +59,31 @@ void GraphicalUI::draw(Level *level){                                           
             level->labels.push_back(tile);
 
             if(level->getTile(r, c)->hasCharacter()){
-                level->character = new QLabel(/*this->getMainWindow()*/);                                      // load texture of character
+                level->character = new QLabel(/*this->getMainWindow()*/);                               // load texture of character
                 QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
                 QPixmap* pixmapChar = new QPixmap;
                 pixmapChar->load(tex2);
                 pixmapChar->scaled(level->labels[counter]->size());
 
-                QPainter p(pixmapTile);                                                             // show character in front of Tile
+                QPainter p(pixmapTile);                                                                 // show character in front of Tile
                 p.drawPixmap(0,0,*pixmapChar);
                 level->character->setPixmap(*pixmapTile);
 
-                //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                     // actual output
+                //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                // actual output
                 level->character->setScaledContents(true);
                 level->character->raise();
+
+                delete pixmapChar;
+
             }
             counter++;
+            delete pixmapTile;
         }
     }
     // :/Textures/Texturen-Paket/bloody_frame.png
 }
 
-void GraphicalUI::draw2(Level *level){                                                              // used to update playground
+void GraphicalUI::draw2(Level *level){                                                                  // used to update playground
 
     int length = level->getLength();
     int width = level->getWidth();
@@ -90,16 +94,19 @@ void GraphicalUI::draw2(Level *level){                                          
         for( int c = 0; c < width;  c++ ){
 
             mainWindow->getUi()->gridDungeon->addWidget( level->labels[counter], r, c );
+            level->labels[counter]->raise();
             if( level->getDoors().size() != 0 ){
 
 
-                if( r == level->getDoors()[0]->getRow() && c == level->getDoors()[0]->getColumn() ){     // set door separately
+                if( r == level->getDoors()[0]->getRow() && c == level->getDoors()[0]->getColumn() ){    // set door separately
 
                     QString texDoor = QString::fromStdString ( level->getTile(r,c)->getTexture() );
                     QPixmap* pixmapDoor = new QPixmap;
                     pixmapDoor->load(texDoor);
 
                     level->labels[counter]->setPixmap(*pixmapDoor);
+
+                    delete pixmapDoor;
                 }
             }
             if(level->character == nullptr ){
@@ -110,7 +117,8 @@ void GraphicalUI::draw2(Level *level){                                          
 
                 if(level->getTile(r, c)->hasCharacter()){
 
-                    level->character = new QLabel(/*this->getMainWindow()*/);                                      // load texture of character
+                    //delete level->character;
+                    level->character = new QLabel(/*this->getMainWindow()*/);                           // load texture of character
                     QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
                     QPixmap* pixmapChar = new QPixmap;
                     pixmapChar->load(tex2);
@@ -120,10 +128,13 @@ void GraphicalUI::draw2(Level *level){                                          
                     p.drawPixmap(0,0,*pixmapChar);
                     level->character->setPixmap(*pixmapTile);
 
-                    //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                     // actual output
+                    //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );            // actual output
                     level->character->setScaledContents(true);
                     level->character->raise();
+
+                    delete pixmapChar;
                 }
+                delete pixmapTile;
             }else{
                 if(level->getTile(r, c)->hasCharacter()){
 
@@ -157,6 +168,9 @@ void GraphicalUI::draw2(Level *level){                                          
                     mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );              // actual output
                     level->character->setScaledContents(true);
                     level->character->raise();
+
+                    delete pixmapTile;
+                    delete pixmapChar;
                 }
             }
 
