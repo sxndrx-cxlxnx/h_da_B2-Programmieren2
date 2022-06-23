@@ -12,6 +12,7 @@ protected:
     std::string texture;
     Character* character = nullptr;
 
+
 public:
     // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):
@@ -31,6 +32,7 @@ public:
 
     // other methods
     bool hasCharacter();
+    void fightEvent(Character* attacker, Character* defender);
     bool moveTo(Tile* destTile, Character* who);                // move to
     virtual Tile* onEnter(Tile* fromTile, Character* who);      // on Enter
     virtual Tile* onLeave(Tile* destTile, Character* who);      // on Leave

@@ -1,13 +1,16 @@
+#include <cstdlib>
 #include "level.h"
 #include "door.h"
 #include "floor.h"
+#include "lootchest.h"
 #include "pit.h"
 #include "portal.h"
 #include "ramp.h"
 #include "switch.h"
 #include "wall.h"
-#include <cstdlib>
 #include "levelchanger.h"
+#include "guardcontroller.h"
+#include "stationarycontroller.h"
 
 using namespace std;
 
@@ -79,6 +82,7 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
                     levelchanger1 = new Levelchanger(r,c);
                     dungeon[r][c] = levelchanger1;
                     break;
+            case '$': dungeon[r][c] = new LootChest(r, c); break;
             default: break;
             }
             atString++;
@@ -103,9 +107,19 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
     }
 
     if( isCharInLevel ){
-        Character* who = new Character(dungeon[1][4], pTerminalUI, 100, 5);          // place character
+        Character* who = new Character(dungeon[1][4], pTerminalUI, 25, 16, false);          // place character
         this->placeCharacter( who, 1, 4 );
         this->characters.push_back(who);
+    }else{
+        Controller* guard = new GuardController("66444466");
+        Character* zombie = new Character( dungeon[2][12], guard, 30, 6 ,true);
+        this->placeCharacter( zombie, 2, 12 );
+        this->characters.push_back(zombie);
+
+        Controller* standingAround = new StationaryController();
+        Character* boringZombie = new Character( dungeon[6][1], standingAround, 30, 6, true);
+        this->placeCharacter( boringZombie, 6, 1);
+        this->characters.push_back(boringZombie);
     }
 
     if( levelchanger1 != nullptr ){
@@ -127,6 +141,7 @@ Level::Level(const Level &pLevel){
             Tile* pLevelTile = pLevel.dungeon[r][c];
             bool tileIsDoor     = (typeid(*pLevelTile) == typeid(Door));
             bool tileIsFloor    = (typeid(*pLevelTile) == typeid(Floor));
+            bool tileIsLoot     = (typeid(*pLevelTile) == typeid(LootChest));
             bool tileIsPit      = (typeid(*pLevelTile) == typeid(Pit));
             bool tileIsPortal   = (typeid(*pLevelTile) == typeid(Portal));
             bool tileIsRamp     = (typeid(*pLevelTile) == typeid(Ramp));
@@ -139,6 +154,8 @@ Level::Level(const Level &pLevel){
                 doors.push_back(door);
             } else if(tileIsFloor){
                 dungeon[r][c] = new Floor(r, c, pLevel.getTile(r,c)->getTexture());
+            } else if(tileIsLoot){
+                dungeon[r][c] = new LootChest(r, c);
             } else if(tileIsPit){
                 dungeon[r][c] = new Pit(r, c);
             } else if(tileIsPortal){
@@ -157,7 +174,7 @@ Level::Level(const Level &pLevel){
 
             if( pLevel.dungeon[r][c]->hasCharacter()){                                  // place character
                 Character* pLevelChar = pLevel.dungeon[r][c]->getCharacter();
-                Character* character = new Character( dungeon[r][c], pLevelChar->getController(), pLevelChar->getStrength(), pLevelChar->getStamina());
+                Character* character = new Character( dungeon[r][c], pLevelChar->getController(), pLevelChar->getStrength(), pLevelChar->getStamina(), pLevelChar->getIsNPC());
                 this->characters.push_back(character);
                 dungeon[r][c]->setCharacter(character);
             }
@@ -217,6 +234,10 @@ Levelchanger *Level::getLevelchanger() const{
     return levelchanger;
 }
 
+const std::vector<std::vector<Tile *> > &Level::getDungeon() const{
+    return dungeon;
+}
+
 // ************************ setter - methods ******************************************
 
 void Level::setLevelchanger(Levelchanger *newLevelchanger){
@@ -251,6 +272,7 @@ std::string Level::floorType(){
         break;
     }
 }
+
 
 
 

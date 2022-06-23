@@ -50,6 +50,8 @@ public slots:                       // buttons: up, down, left, right and stay
     void buttonDL();
     void buttonD();
     void buttonDR();
+
+    void closeWindow();
 };
 
 #endif // MAINWINDOW_H

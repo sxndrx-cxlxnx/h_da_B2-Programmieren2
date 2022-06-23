@@ -2,6 +2,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "levelchanger.h"
+#include "guardcontroller.h"
+#include "stationarycontroller.h"
+#include <QTest>
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
@@ -25,12 +28,12 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
      std::string  levelString2 = {
         "################"
-        "#............S.#"
-        "#..............#"
-        "#..............#"
-        "#..............#"
-        "#..............#"
-        "#..............#"
+        "#....#.$.#...S.#"
+        "#....#...X.....#"
+        "#....#####.....#"
+        "#....#...#######"
+        "#....#.........#"
+        "#....#........?#"
         "################"};
 
     Level* level1 = new Level(controller, levelString1, true );
@@ -58,8 +61,6 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
     abstractui->draw2(level1);
 
-
-
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
 //    level = new Level(*tmp);                      // level is attribute of DungeonCrawler
@@ -75,6 +76,7 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 DungeonCrawler::~DungeonCrawler(){
     delete level;
     delete abstractui;
+    delete levelList;
 }
 
 // ************************ getter - methods ******************************************
@@ -96,53 +98,78 @@ void DungeonCrawler::play(){
     // set few refactor-variables
     bool run = true;
     Tile* fromTile;
-    Character* thisChar = this->level->getCharacters()[0];
+    bool cancelTry = false;
 
     // Playloop
     while(run){
-        fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
-        int r,c;
-        r = fromTile->getRow();
-        c = fromTile->getColumn();
 
-        // Explanation of control: (user input)
+        if( level->getCharacters()[0]->getHitpoints() <= 0 || level->getCharacters()[0]->getLootChestFound()){
+            run = false;           
+            abstractui->messageBox();
+            break;
+        }
 
-        // 7 8 9              \  |  up  |   /
-        // 4 5 6            left | stay | right
-        // 1 2 3              /  | down |  \
-        //   0                    Abbruch
+        QTest::qWait(50);
+        QCoreApplication::processEvents();
 
-       int direction = thisChar->move();
-       switch (direction){
-           case 0: // run = false;                                              // end of program
-              break;
-           case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
-                   abstractui->draw2(level);
-              break;
-           case 2: fromTile->moveTo(level->getTile(r+1,c), thisChar);           // down
-                   abstractui->draw2(level);
-              break;
-           case 3: fromTile->moveTo(level->getTile(r+1,c+1), thisChar);         // down - right
-                   abstractui->draw2(level);
-              break;
-           case 4: fromTile->moveTo(level->getTile(r,c-1), thisChar);           // left
-                   abstractui->draw2(level);
-              break;
-           case 5: abstractui->draw2(level);                                    // stay
-              break;
-           case 6: fromTile->moveTo(level->getTile(r,c+1), thisChar);           // right
-                   abstractui->draw2(level);
-              break;
-           case 7: fromTile->moveTo(level->getTile(r-1,c-1), thisChar);         // up - left
-                   abstractui->draw2(level);
-              break;
-           case 8: fromTile->moveTo(level->getTile(r-1,c), thisChar);           // up
-                   abstractui->draw2(level);
-              break;
-           case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
-                   abstractui->draw2(level);
-              break;
-       default: break;
-       }
-    }    
+        if( this->getAbstractui()->getMainWindow()->getNewEvent() ){
+
+            for( int i = 0; i < this->level->getCharacters().size(); i++ ){
+                Character* thisChar = this->level->getCharacters()[i];
+
+                fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
+                int r,c;
+                r = fromTile->getRow();
+                c = fromTile->getColumn();
+
+                // Explanation of control: (user input)
+
+                // 7 8 9              \  |  up  |   /
+                // 4 5 6            left | stay | right
+                // 1 2 3              /  | down |  \
+                //   0                    Abbruch
+
+                int direction = thisChar->move();
+                switch (direction){
+                case 0:
+                    if( !cancelTry ){
+                        abstractui->cancel();
+                        cancelTry = true;
+                    }else{
+                        abstractui->cancelTry2();
+                        run = false;
+                    }                                                                // end of program
+                    break;
+                case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
+                    abstractui->draw2(level);
+                    break;
+                case 2: fromTile->moveTo(level->getTile(r+1,c), thisChar);           // down
+                    abstractui->draw2(level);
+                    break;
+                case 3: fromTile->moveTo(level->getTile(r+1,c+1), thisChar);         // down - right
+                    abstractui->draw2(level);
+                    break;
+                case 4: fromTile->moveTo(level->getTile(r,c-1), thisChar);           // left
+                    abstractui->draw2(level);
+                    break;
+                case 5: abstractui->draw2(level);                                    // stay
+                    break;
+                case 6: fromTile->moveTo(level->getTile(r,c+1), thisChar);           // right
+                    abstractui->draw2(level);
+                    break;
+                case 7: fromTile->moveTo(level->getTile(r-1,c-1), thisChar);         // up - left
+                    abstractui->draw2(level);
+                    break;
+                case 8: fromTile->moveTo(level->getTile(r-1,c), thisChar);           // up
+                    abstractui->draw2(level);
+                    break;
+                case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
+                    abstractui->draw2(level);
+                    break;
+                default: break;
+                }
+            }
+        }
+    }
 }
+

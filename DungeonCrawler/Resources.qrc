@@ -28,6 +28,7 @@
         <file>Texturen-Paket/wall1.png</file>
         <file>Texturen-Paket/zombie_left.png</file>
         <file>Texturen-Paket/zombie_right.png</file>
+        <file>Texturen-Paket/chest.png</file>
     </qresource>
     <qresource prefix="/Character">
         <file>Texturen-Paket/char/char_back_1.png</file>

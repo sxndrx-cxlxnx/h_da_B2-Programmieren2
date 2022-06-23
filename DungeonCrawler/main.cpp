@@ -1,4 +1,4 @@
-#include <iostream>                                                                                                                                     // PG #3
+#include <iostream>                                                                                                                                     // PG #4
 #include "dungeoncrawler.h"                                                                                                                             // Sandra Gräf  - 1111826
 #include "level.h"                                                                                                                                      // Emily Staatz - 1111831
 #include "mainwindow.h"
@@ -18,7 +18,5 @@ int main(int argc, char* argv[]){
     // play
     dungeonCrawler->play();
 
-    return a.exec();
-
-    //    return 0;
+        return 0;
 }

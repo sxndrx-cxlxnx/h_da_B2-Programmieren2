@@ -29,6 +29,9 @@ public:
     void draw2(Level* level);                                       // used to update playground
     virtual int move() override;
     void startNewGame();
+    void messageBox();
+    void cancel();
+    void cancelTry2();
 
 private:
     // attributes

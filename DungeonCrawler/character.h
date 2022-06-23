@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "terminalui.h"
+#include <QLabel>
 
 class DungeonCrawler;
 class Tile;
@@ -10,10 +11,13 @@ class Tile;
 class Character{
 public:
     // constructor
-    Character(Tile* pTile, Controller* pController, int pStrength, int pStamina);
+    Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC);
+
     // setter - methods
     void setTile(Tile *newTile);
     void setLastDirection(int newLastDirection);
+    void setHitpoints(int newHitpoints);
+    void setLootChestFound();
 
     // getter - methods
     std::string &getTexture();
@@ -23,9 +27,13 @@ public:
     int getStrength();
     int getStamina();
     int getHitpoints();
+    bool getIsNPC();
+    bool getLootChestFound();
 
     //other methods
     int move();
+
+    QLabel* label = nullptr;
 
 private:
     // attributes
@@ -36,6 +44,9 @@ private:
     int strength;
     int stamina;
     int hitpoints;
+    bool isNPC;
+    bool lootChestFound = false;
+
 };
 
 #endif // CHARACTER_H

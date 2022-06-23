@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QTest>
 #include <QPainter>
+#include <QMessageBox>
 #include <vector>
 #include "graphicalui.h"
 #include "dungeoncrawler.h"
@@ -59,19 +60,19 @@ void GraphicalUI::draw(Level *level){                                           
             level->labels.push_back(tile);
 
             if(level->getTile(r, c)->hasCharacter()){
-                level->character = new QLabel(/*this->getMainWindow()*/);                               // load texture of character
-                QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
+                level->getTile(r, c)->getCharacter()->label = new QLabel(/*this->getMainWindow()*/);                               // load texture of character
+                QString tex2 = QString::fromStdString ( level->getTile(r,c)->getCharacter()->getTexture() );
                 QPixmap* pixmapChar = new QPixmap;
                 pixmapChar->load(tex2);
                 pixmapChar->scaled(level->labels[counter]->size());
 
                 QPainter p(pixmapTile);                                                                 // show character in front of Tile
                 p.drawPixmap(0,0,*pixmapChar);
-                level->character->setPixmap(*pixmapTile);
+                level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapTile);
 
                 //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );                // actual output
-                level->character->setScaledContents(true);
-                level->character->raise();
+                level->getTile(r, c)->getCharacter()->label->setScaledContents(true);
+                level->getTile(r, c)->getCharacter()->label->raise();
 
                 delete pixmapChar;
 
@@ -109,35 +110,33 @@ void GraphicalUI::draw2(Level *level){                                          
                     delete pixmapDoor;
                 }
             }
-            if(level->character == nullptr ){
+            if(level->getTile(r, c)->hasCharacter() ){
+                if(level->getTile(r, c)->getCharacter()->label  == nullptr){
 
-                QString tex = QString::fromStdString ( level->getTile(r, c)->getTexture() );            // load texture of Tile
-                QPixmap* pixmapTile = new QPixmap;
-                pixmapTile->load(tex);
-
-                if(level->getTile(r, c)->hasCharacter()){
+                    QString tex = QString::fromStdString ( level->getTile(r, c)->getTexture() );            // load texture of Tile
+                    QPixmap* pixmapTile = new QPixmap;
+                    pixmapTile->load(tex);
 
                     //delete level->character;
-                    level->character = new QLabel(/*this->getMainWindow()*/);                           // load texture of character
-                    QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );
+                    level->getTile(r, c)->getCharacter()->label = new QLabel(/*this->getMainWindow()*/);                           // load texture of character
+                    QString tex2 = QString::fromStdString ( level->getTile(r,c)->getCharacter()->getTexture() );
                     QPixmap* pixmapChar = new QPixmap;
                     pixmapChar->load(tex2);
                     pixmapChar->scaled(level->labels[counter]->size());
 
                     QPainter p(pixmapTile);                                                             // show character in front of Tile
                     p.drawPixmap(0,0,*pixmapChar);
-                    level->character->setPixmap(*pixmapTile);
+                    level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapTile);
 
                     //mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );            // actual output
-                    level->character->setScaledContents(true);
-                    level->character->raise();
+                    level->getTile(r, c)->getCharacter()->label->setScaledContents(true);
+                    level->getTile(r, c)->getCharacter()->label->raise();
 
                     delete pixmapChar;
-                }
-                delete pixmapTile;
-            }else{
-                if(level->getTile(r, c)->hasCharacter()){
 
+                    delete pixmapTile;
+
+                }else{
                     Tile* testPit = level->getTile(r,c);
                     bool tileIsPit = (typeid(*testPit) == typeid(Pit));
 
@@ -145,7 +144,7 @@ void GraphicalUI::draw2(Level *level){                                          
                     QString tex1 = QString::fromStdString ( level->getTile(r,c)->getTexture());
                     pixmapTile->load(tex1);
 
-                    QString tex2 = QString::fromStdString ( level->getCharacters()[0]->getTexture() );  // load texture of character
+                    QString tex2 = QString::fromStdString ( level->getTile(r,c)->getCharacter()->getTexture() );  // load texture of character
                     QPixmap* pixmapChar = new QPixmap;
                     pixmapChar->load(tex2);
                     pixmapChar->scaled(level->labels[counter]->size());
@@ -156,30 +155,29 @@ void GraphicalUI::draw2(Level *level){                                          
                         QPainter p(pixmapChar);
                         p.drawPixmap(0,0,*pixmapTile);
 
-                        level->character->setPixmap(*pixmapChar);
+                        level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapChar);
 
                     } else{                                                                             // but show character in front of a Tile (!= Pit)
                         QPainter p(pixmapTile);
                         p.drawPixmap(0,0,*pixmapChar);
 
-                        level->character->setPixmap(*pixmapTile);
+                        level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapTile);
                     }
 
-                    mainWindow->getUi()->gridDungeon->addWidget( level->character, r, c );              // actual output
-                    level->character->setScaledContents(true);
-                    level->character->raise();
+                    mainWindow->getUi()->gridDungeon->addWidget( level->getTile(r, c)->getCharacter()->label , r, c );              // actual output
+                    level->getTile(r, c)->getCharacter()->label->setScaledContents(true);
+                    level->getTile(r, c)->getCharacter()->label->raise();
 
                     delete pixmapTile;
                     delete pixmapChar;
                 }
             }
-
             counter++;
         }
     }
-     QString qMessage = QString::fromStdString ( mainWindow->getStatusMessage() );
-     //mainWindow->statusMessage = qMessage;
-     mainWindow->getUi()->statusbar->showMessage(qMessage);
+    QString qMessage = QString::fromStdString ( mainWindow->getStatusMessage() );
+    //mainWindow->statusMessage = qMessage;
+    mainWindow->getUi()->statusbar->showMessage(qMessage);
 }
 
 int GraphicalUI::move(){
@@ -196,4 +194,41 @@ int GraphicalUI::move(){
 void GraphicalUI::startNewGame(){
     startscreen->hide();
     mainWindow->show();
+}
+
+void GraphicalUI::messageBox(){
+    QMessageBox msgBox;
+
+    if( dungeonCrawler->getLevel()->getCharacters()[0]->getHitpoints() <= 0 ){
+        msgBox.setWindowTitle( "Game lost");
+        msgBox.setText("You were cuddled too hard by a zombie.");
+    } else{
+        msgBox.setWindowTitle( "Game won");
+        msgBox.setText("You drowned in gold when you fell into the lootchest.");
+    }
+    msgBox.exec();
+}
+
+void GraphicalUI::cancel(){
+    QMessageBox msgBox;
+
+    msgBox.setWindowTitle( "Error 404");
+    msgBox.setText("*******************************************\n\n"
+                   "         Button not found ...\n\n"
+                   "        *confused_Zombie_Noises*\n\n"
+                   "*******************************************");
+
+    msgBox.exec();
+}
+
+void GraphicalUI::cancelTry2(){
+    QMessageBox msgBox;
+
+    msgBox.setWindowTitle( "Error 404 - solved");
+    msgBox.setText("*******************************************\n\n"
+                   "         found the Button now ...\n\n"
+                   "        *happy_Zombie_Noises*\n\n"
+                   "*******************************************");
+
+    msgBox.exec();
 }

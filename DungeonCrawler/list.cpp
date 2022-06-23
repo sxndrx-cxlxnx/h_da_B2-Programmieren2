@@ -8,6 +8,12 @@ List::List(){
     first.pointer->back = nullptr;
 }
 
+List::~List(){
+    while(!empty()){
+        pop_back();
+    }
+}
+
 void List::push_front(Level *level){
     Element* element = new Element();
     element->data = level;

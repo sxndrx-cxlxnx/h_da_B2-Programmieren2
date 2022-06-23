@@ -45,6 +45,7 @@ private:
 
 public:
     List();
+    ~List();
     void push_front(Level* level);
     void push_back(Level* level);
     void pop_back();

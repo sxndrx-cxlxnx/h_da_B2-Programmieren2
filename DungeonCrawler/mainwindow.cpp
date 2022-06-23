@@ -30,6 +30,7 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonD,  SIGNAL(clicked()), this, SLOT(buttonD()));
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
 
+    connect(ui->beenden, SIGNAL(clicked()), this, SLOT(closeWindow()));
 
 }
 
@@ -127,5 +128,12 @@ void MainWindow::buttonDR(){                                                    
     lastInput = 3;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
+}
+
+void MainWindow::closeWindow(){
+    lastInput = 0;
+    this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
+    newEvent = true;
+
 }
 

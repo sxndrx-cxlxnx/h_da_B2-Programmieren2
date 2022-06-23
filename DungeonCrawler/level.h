@@ -27,7 +27,7 @@ private:
 
 public:
     std::vector<QLabel*> labels;
-    QLabel* character = nullptr;
+    //std::vector<QLabel*> character;
 
     // assignment
     friend void swap(Level& lhs, Level& rhs);
@@ -48,6 +48,7 @@ public:
     std::vector<Character *> &getCharacters() ;
     const std::vector<Door *> &getDoors() const;
     Levelchanger *getLevelchanger() const;
+    const std::vector<std::vector<Tile *> > &getDungeon() const;
 
     // setter - methods
     void setLevelchanger(Levelchanger *newLevelchanger);
@@ -55,8 +56,6 @@ public:
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
-
-
 
 };
 

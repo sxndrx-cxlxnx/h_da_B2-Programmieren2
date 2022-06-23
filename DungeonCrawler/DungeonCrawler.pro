@@ -20,9 +20,11 @@ SOURCES += \
         dungeoncrawler.cpp \
         floor.cpp \
         graphicalui.cpp \
+        guardcontroller.cpp \
         level.cpp \
         levelchanger.cpp \
         list.cpp \
+        lootchest.cpp \
         main.cpp \
         mainwindow.cpp \
         passive.cpp \
@@ -45,9 +47,11 @@ HEADERS += \
     dungeoncrawler.h \
     floor.h \
     graphicalui.h \
+    guardcontroller.h \
     level.h \
     levelchanger.h \
     list.h \
+    lootchest.h \
     mainwindow.h \
     passive.h \
     pit.h \

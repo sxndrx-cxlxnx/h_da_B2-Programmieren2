@@ -1,4 +1,6 @@
 #include "tile.h"
+#include "guardcontroller.h"
+#include "lootchest.h"
 
 // ************************ getter - methods ******************************************
 int Tile::getRow() const{
@@ -31,9 +33,38 @@ bool Tile::hasCharacter(){
     }
 }
 
+void Tile::fightEvent(Character *attacker, Character *defender){     
+    int damage = attacker->getStrength();
+    defender->setHitpoints(defender->getHitpoints() - damage);
+
+    if( defender->getHitpoints() > 0 ){
+        damage = defender->getStrength();
+        attacker->setHitpoints(attacker->getHitpoints() - damage);
+    }
+}
+
 bool Tile::moveTo(Tile *destTile, Character *who){
     Tile* lastTile;
     lastTile = this->onLeave(destTile, who);                        // lastTile - where I come from
+
+    if(destTile->hasCharacter()){
+        if( destTile->getCharacter()->getIsNPC() != who->getIsNPC() ){
+            fightEvent( who, destTile->getCharacter() );
+            if( destTile->getCharacter()->getHitpoints() > 0 ){
+                return false;
+            }else{
+                destTile->setCharacter( nullptr );
+            }
+        } else{
+            return false;
+        }
+    }
+
+    bool destTileIsLootChest = (typeid(*destTile) == typeid(LootChest));
+    if(destTileIsLootChest){
+        who->setLootChestFound();
+    }
+
     if(lastTile == nullptr){        // f.e. standing on a one-way road
         return false;
     }else{                                                          // destTile - where I wanted to go (original destination)
