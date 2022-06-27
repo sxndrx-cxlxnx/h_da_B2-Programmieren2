@@ -3,6 +3,7 @@
 // ************************ constructor **********************************************
 Character::Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC){
     tile = pTile;
+
     if(pIsNPC){
         texture = ":/Textures/Texturen-Paket/zombie_left.png";
     } else{
@@ -61,7 +62,7 @@ std::string &Character::getTexture(){
             break;
         }
 
-    }else{
+    } else{
 
         switch(lastDirection){
         case 1:     texture = ":/Character/Texturen-Paket/char/char_left_2.png";
@@ -86,7 +87,6 @@ std::string &Character::getTexture(){
             break;
         }
     }
-
     return texture;
 }
 

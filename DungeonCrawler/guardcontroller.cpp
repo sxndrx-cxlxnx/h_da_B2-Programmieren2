@@ -15,8 +15,6 @@ unsigned int GuardController::getWhereInMovePattern() const{
 
 int GuardController::move(){
 
-  //  QTest::qWait(1000);
-
     int tempMoveWhichYouAreDoingRightNow = movePattern[whereInMovePattern]-48;
 
     if( (whereInMovePattern +1) == movePattern.length()){

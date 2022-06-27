@@ -30,15 +30,13 @@ public:
     // setter - methods
     void setNewEvent(bool newNewEvent);
 
-    GraphicalUI *getGui() const;
-
 private:
     // attributes
     Ui::MainWindow *ui;
     GraphicalUI* gui;
     int lastInput;
     bool newEvent;
-    QString statusMessage/*[getGui()->getDungeonCrawler()->getLevel()->getCharacters().size()]*/;
+    QString statusMessage;
 
 public slots:                       // buttons: up, down, left, right and stay
     void buttonUL();
@@ -51,7 +49,7 @@ public slots:                       // buttons: up, down, left, right and stay
     void buttonD();
     void buttonDR();
 
-    void closeWindow();
+    void closeWindow();             // button to exit the game
 };
 
 #endif // MAINWINDOW_H

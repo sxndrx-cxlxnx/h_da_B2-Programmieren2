@@ -2,15 +2,15 @@
 #include "level.h"
 #include "door.h"
 #include "floor.h"
+#include "guardcontroller.h"
+#include "levelchanger.h"
 #include "lootchest.h"
 #include "pit.h"
 #include "portal.h"
 #include "ramp.h"
+#include "stationarycontroller.h"
 #include "switch.h"
 #include "wall.h"
-#include "levelchanger.h"
-#include "guardcontroller.h"
-#include "stationarycontroller.h"
 
 using namespace std;
 
@@ -93,7 +93,7 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
         switch1->attach(door1);                                              // connect door with switch
     }
 
-    if( door1 != nullptr ){
+    if( door1 != nullptr ){                                                  // push door in door-vector
         doors.push_back(door1);
     }
 
@@ -111,21 +111,36 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
         this->placeCharacter( who, 1, 4 );
         this->characters.push_back(who);
     }else{
-        Controller* guard = new GuardController("66444466");
+        Controller* guard = new GuardController("6644");
         Character* zombie = new Character( dungeon[2][12], guard, 30, 6 ,true);
         this->placeCharacter( zombie, 2, 12 );
         this->characters.push_back(zombie);
 
+        for(int i = 0; i < 3; i++){
+            std::string movement;
+            if(i == 0){
+                movement = "644466";
+            } else if (i == 1){
+                movement = "664446";
+            } else{
+                movement = "666444";
+            }
+            Controller* guard2 = new GuardController(movement);
+
+            Character* zombie2 = new Character( dungeon[6-i][1+i], guard2, 30, 6 ,true);
+            this->placeCharacter( zombie2, 6-i, 1+i );
+            this->characters.push_back(zombie2);
+        }
+
         Controller* standingAround = new StationaryController();
-        Character* boringZombie = new Character( dungeon[6][1], standingAround, 30, 6, true);
-        this->placeCharacter( boringZombie, 6, 1);
+        Character* boringZombie = new Character( dungeon[3][1], standingAround, 30, 6 ,true);
+        this->placeCharacter( boringZombie, 3, 1 );
         this->characters.push_back(boringZombie);
     }
 
     if( levelchanger1 != nullptr ){
         this->setLevelchanger( levelchanger1 );
     }
-
 }
 
 // ************************ copy constructor ******************************************
@@ -222,7 +237,7 @@ const Tile *Level::getTile(int row, int col) const{
     return dungeon[row][col];
 }
 
- std::vector<Character *> &Level::getCharacters() {
+std::vector<Character *> &Level::getCharacters() {
     return characters;
 }
 
@@ -272,9 +287,3 @@ std::string Level::floorType(){
         break;
     }
 }
-
-
-
-
-
-

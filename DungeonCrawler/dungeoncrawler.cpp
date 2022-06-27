@@ -28,12 +28,12 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
      std::string  levelString2 = {
         "################"
-        "#....#.$.#...S.#"
-        "#....#...X.....#"
-        "#....#####.....#"
-        "#....#...#######"
-        "#....#.........#"
-        "#....#........?#"
+        "#..@?#.$.#.#.S.#"
+        "#....#...X.#...#"
+        "#.########@#...#"
+        "#....#...#####.#"
+        "#....#.#.#...#.#"
+        "#......#...#...#"
         "################"};
 
     Level* level1 = new Level(controller, levelString1, true );
@@ -42,24 +42,24 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
     abstractui->setDungeonCrawler(this);
 
-    levelList->push_back(level1);
+    levelList->push_back(level1);                                                       // put levels in level-vector
     levelList->push_back(level2);
 
-    level1->getLevelchanger()->setLevel( level2 );
+    level1->getLevelchanger()->setLevel( level2 );                                      // set Levelchanger in their own level
     level2->getLevelchanger()->setLevel( level1 );
 
-    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );
+    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );                 // set destiny of Levelchanger to the Levelchanger of the other level
     level2->getLevelchanger()->setDestiny( level1->getLevelchanger() );
 
-    level1->getLevelchanger()->setDungeonCrawler( this );
+    level1->getLevelchanger()->setDungeonCrawler( this );                               // give levelchanger this "dungeonCrawler" to know for later methods
     level2->getLevelchanger()->setDungeonCrawler( this );
 
-    level2->setCharacters( level1->getCharacters()[0] );
+    level2->setCharacters( level1->getCharacters()[0] );                                // put the same character in the 2nd level as well (not playing with different ones)
 
-    abstractui->draw(level1);
+    abstractui->draw(level1);                                                           // first draw - both levels
     abstractui->draw(level2);
 
-    abstractui->draw2(level1);
+    abstractui->draw2(level1);                                                          // draw startlevel above
 
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
@@ -114,7 +114,7 @@ void DungeonCrawler::play(){
 
         if( this->getAbstractui()->getMainWindow()->getNewEvent() ){
 
-            for( int i = 0; i < this->level->getCharacters().size(); i++ ){
+            for( size_t i = 0; i < this->level->getCharacters().size(); i++ ){
                 Character* thisChar = this->level->getCharacters()[i];
 
                 fromTile = thisChar->getTile();                         // Tile where you standing on at the moment
@@ -172,4 +172,3 @@ void DungeonCrawler::play(){
         }
     }
 }
-

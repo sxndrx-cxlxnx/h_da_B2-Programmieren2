@@ -33,6 +33,7 @@ public:
     //other methods
     int move();
 
+    // public attributes
     QLabel* label = nullptr;
 
 private:

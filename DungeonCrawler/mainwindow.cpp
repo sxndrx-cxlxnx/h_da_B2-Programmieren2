@@ -16,10 +16,6 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     gui = pgui;
     newEvent = false;
 
-   // QString qMessage = QString::fromStdString ( this->getStatusMessage() );
-    //statusMessage = qMessage;
-    //ui->statusbar->showMessage(statusMessage);
-
     connect(ui->buttonUL, SIGNAL(clicked()), this, SLOT(buttonUL()));
     connect(ui->buttonU,  SIGNAL(clicked()), this, SLOT(buttonU()));
     connect(ui->buttonUR, SIGNAL(clicked()), this, SLOT(buttonUR()));
@@ -56,23 +52,29 @@ GraphicalUI *MainWindow::getGui(){
     return gui;
 }
 
-// ************************ setter-methods ********************************************
-void MainWindow::setNewEvent(bool newNewEvent){
-    newEvent = newNewEvent;
-}
-
 std::string MainWindow::getStatusMessage(){
     Character* currentCharacter = getGui()->getDungeonCrawler()->getLevel()->getCharacters()[0];
     std::stringstream strength;
     std::stringstream stamina;
     std::stringstream hitpoints;
+
     strength << currentCharacter->getStrength();
     stamina << currentCharacter ->getStamina();
-    hitpoints << currentCharacter->getHitpoints();
+
+    if(currentCharacter->getHitpoints() < 0){                   // prevent of negativ Hitpoints in Statusbar
+        hitpoints << 0;
+    } else{
+        hitpoints << currentCharacter->getHitpoints();
+    }
 
     std::string message;
     message = "Strength: " + strength.str() + "\t Stamina: " + stamina.str() +"\t Hitpoints: " + hitpoints.str();
     return message;
+}
+
+// ************************ setter-methods ********************************************
+void MainWindow::setNewEvent(bool newNewEvent){
+    newEvent = newNewEvent;
 }
 
 // ************************ Buttons / Slots *******************************************
@@ -134,6 +136,4 @@ void MainWindow::closeWindow(){
     lastInput = 0;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
-
 }
-

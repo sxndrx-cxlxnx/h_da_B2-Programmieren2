@@ -20,7 +20,7 @@ public:
     ~Startscreen();
 
 public slots:
-        void buttonPushed();
+    void buttonPushed();
 
 private:
     // attributes

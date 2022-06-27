@@ -12,7 +12,6 @@ protected:
     std::string texture;
     Character* character = nullptr;
 
-
 public:
     // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):

@@ -7,7 +7,7 @@
 class Door : public Tile, public Passive{
 private:
     // attributes
-    bool isOpen = true;
+    bool isOpen = false;
 
 public:
     // constructor (inline)

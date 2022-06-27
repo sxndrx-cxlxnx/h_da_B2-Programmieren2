@@ -1,6 +1,5 @@
 #include "list.h"
 
-
 List::List(){
     first.pointer->next = last.pointer;
     last.pointer->next = NULL;

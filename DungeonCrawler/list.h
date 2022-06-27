@@ -5,16 +5,17 @@
 #include <stdexcept>
 
 class List{
+
 private:
+    // nested structs
     struct Element{
         Level* data = nullptr;
         Element* next = nullptr;
         Element* back = nullptr;
     };
-
     struct iterator{
         Element* pointer = new Element();
-        iterator& operator++(){
+        iterator& operator++(){                                         // operator ++
             if( pointer->next != nullptr ){
                 pointer = pointer->next;
                 return *this;
@@ -22,7 +23,7 @@ private:
                 throw std::runtime_error("no next element");
             }
         };
-        iterator& operator--(){
+        iterator& operator--(){                                         // operator --
             if( pointer->back != nullptr ){
                 pointer = pointer->back;
                 return *this;
@@ -31,7 +32,7 @@ private:
             }
 
         };
-        Level& operator*() const {
+        Level& operator*() const {                                      // operator *
             if(pointer->data == nullptr){
                 throw std::runtime_error("nullpointer");
             }else{
@@ -40,12 +41,19 @@ private:
         bool operator==(const iterator& theOther){ return this->pointer->data == theOther.pointer->data; };
         bool operator!=(const iterator& theOther){ return !(*this == theOther); };
     };
+
+    //attributes
     iterator first;
     iterator last;
 
 public:
+    // constructor
     List();
+
+    // destructor
     ~List();
+
+    // methods
     void push_front(Level* level);
     void push_back(Level* level);
     void pop_back();
@@ -56,7 +64,6 @@ public:
     void remove(Level* level);
     iterator begin();
     iterator end();
-
 };
 
 #endif // LIST_H

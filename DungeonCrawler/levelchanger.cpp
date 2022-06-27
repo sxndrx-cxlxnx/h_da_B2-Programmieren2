@@ -21,15 +21,6 @@ void Levelchanger::setDungeonCrawler(DungeonCrawler *newDungeonCrawler){
 
 // ************************ other methods *********************************************
 Tile *Levelchanger::onEnter(Tile *fromTile, Character *who){
-
-    /*
-    return this->getDestination();
-
-    hier muss Level gewechselt werden
-    */
-    //level->setCharacters( dungeonCrawler->getLevel()->getCharacters()[0] );
     dungeonCrawler->setLevel( level );
-
     return destiny;
-
 }

@@ -26,8 +26,8 @@ private:
 
 
 public:
+    // public attributes
     std::vector<QLabel*> labels;
-    //std::vector<QLabel*> character;
 
     // assignment
     friend void swap(Level& lhs, Level& rhs);
@@ -35,6 +35,8 @@ public:
 
     // constructor
     Level(Controller *pTerminalUI, std::string levelString, bool isCharInLevel );
+
+    // copy constructor
     Level(const Level &pLevel);
 
     // destructor
@@ -56,9 +58,9 @@ public:
 
     // other methods
     void placeCharacter(Character *c, int row, int col);
-
 };
 
+// friend method for assignement
 void swap(Level& lhs, Level& rhs);
 
 #endif // LEVEL_H

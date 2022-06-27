@@ -4,8 +4,12 @@
 #include "controller.h"
 
 class StationaryController : public Controller{
+
 public:
+    // constructor
     StationaryController();
+
+    // other methods
     virtual int move() override;
 };
 
