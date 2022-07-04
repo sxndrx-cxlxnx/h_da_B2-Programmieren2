@@ -56,6 +56,18 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
     level2->setCharacters( level1->getCharacters()[0] );                                // put the same character in the 2nd level as well (not playing with different ones)
 
+    for(int r = 0; r < level1->getLength(); r++){                                       // put every neighboor of every Tile in their adjaceny list "neighborhood"
+        for(int c = 0; c < level1->getWidth(); c++){
+            level1->getDungeon()[r][c]->setNeighborhood(level1);
+        }
+    }
+
+    for(int r = 0; r < level2->getLength(); r++){                                       // do the same for every Tile in level2 as well
+        for(int c = 0; c < level2->getWidth(); c++){
+            level2->getDungeon()[r][c]->setNeighborhood(level2);
+        }
+    }
+
     abstractui->draw(level1);                                                           // first draw - both levels
     abstractui->draw(level2);
 
@@ -130,6 +142,11 @@ void DungeonCrawler::play(){
                 //   0                    Abbruch
 
                 int direction = thisChar->move();
+
+                if( thisChar->isDead() ){
+                    continue;
+                }
+
                 switch (direction){
                 case 0:
                     if( !cancelTry ){
@@ -140,35 +157,36 @@ void DungeonCrawler::play(){
                         run = false;
                     }                                                                // end of program
                     break;
-                case 1: fromTile->moveTo(level->getTile(r+1,c-1), thisChar);         // down - left
+                case 1: fromTile->moveTo(level->getTile(r+1, c-1), thisChar);         // down - left
                     abstractui->draw2(level);
                     break;
-                case 2: fromTile->moveTo(level->getTile(r+1,c), thisChar);           // down
+                case 2: fromTile->moveTo(level->getTile(r+1, c), thisChar);           // down
                     abstractui->draw2(level);
                     break;
-                case 3: fromTile->moveTo(level->getTile(r+1,c+1), thisChar);         // down - right
+                case 3: fromTile->moveTo(level->getTile(r+1, c+1), thisChar);         // down - right
                     abstractui->draw2(level);
                     break;
-                case 4: fromTile->moveTo(level->getTile(r,c-1), thisChar);           // left
+                case 4: fromTile->moveTo(level->getTile(r, c-1), thisChar);           // left
                     abstractui->draw2(level);
                     break;
                 case 5: abstractui->draw2(level);                                    // stay
                     break;
-                case 6: fromTile->moveTo(level->getTile(r,c+1), thisChar);           // right
+                case 6: fromTile->moveTo(level->getTile(r, c+1), thisChar);           // right
                     abstractui->draw2(level);
                     break;
-                case 7: fromTile->moveTo(level->getTile(r-1,c-1), thisChar);         // up - left
+                case 7: fromTile->moveTo(level->getTile(r-1, c-1), thisChar);         // up - left
                     abstractui->draw2(level);
                     break;
-                case 8: fromTile->moveTo(level->getTile(r-1,c), thisChar);           // up
+                case 8: fromTile->moveTo(level->getTile(r-1, c), thisChar);           // up
                     abstractui->draw2(level);
                     break;
-                case 9: fromTile->moveTo(level->getTile(r-1,c+1), thisChar);         // up - right
+                case 9: fromTile->moveTo(level->getTile(r-1, c+1), thisChar);         // up - right
                     abstractui->draw2(level);
                     break;
                 default: break;
                 }
             }
+
         }
     }
 }

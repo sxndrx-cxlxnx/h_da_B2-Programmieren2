@@ -2,7 +2,9 @@
 #define TILE_H
 
 #include <iostream>
+#include <vector>
 #include "character.h"
+class Level;
 
 class Tile{             // abstract basisclass of Floor, Wall, Portal, Switch, Door, Ramp and Pit
 protected:
@@ -11,8 +13,11 @@ protected:
     const int column;
     std::string texture;
     Character* character = nullptr;
+    std::vector<Tile*> neighborhood;
 
 public:
+    Tile* predesessor = nullptr;
+    bool visited = false;
     // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):
         row(pRow), column(pColumn), texture(pTexture){};
@@ -25,9 +30,11 @@ public:
     int getColumn() const;
     Character *getCharacter() const;
     virtual std::string getTexture() const = 0;
+    std::vector<Tile *> &getNeighborhood();
 
     // setter - methods
     void setCharacter(Character *newCharacter);
+    void setNeighborhood(Level* pLevel);
 
     // other methods
     bool hasCharacter();

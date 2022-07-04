@@ -21,6 +21,7 @@ public:
 
 public slots:
     void buttonPushed();
+    void loadButtonPushed();
 
 private:
     // attributes

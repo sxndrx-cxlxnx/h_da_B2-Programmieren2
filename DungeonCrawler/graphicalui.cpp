@@ -168,6 +168,14 @@ void GraphicalUI::startNewGame(){
     mainWindow->show();
 }
 
+void GraphicalUI::loadLevel(){
+    std::cout << "me fine" << std::endl;
+}
+
+void GraphicalUI::storeLevel(){
+    std::cout << "me fine vol. 2" << std::endl;
+}
+
 void GraphicalUI::messageBox(){
     QMessageBox msgBox;
 

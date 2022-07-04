@@ -23,7 +23,7 @@ private:
     std::vector<Switch*> switches;
     std::vector<Door*> doors;
     Levelchanger* levelchanger = nullptr;
-
+    std::vector< Tile* > allNodes;
 
 public:
     // public attributes
@@ -49,8 +49,10 @@ public:
     const Tile *getTile(int row, int col) const;
     std::vector<Character *> &getCharacters() ;
     const std::vector<Door *> &getDoors() const;
+    const std::vector<Portal *> &getPortals() const;
     Levelchanger *getLevelchanger() const;
     const std::vector<std::vector<Tile *> > &getDungeon() const;
+    std::vector<Tile*> getPath(Tile* from, Tile* to);
 
     // setter - methods
     void setLevelchanger(Levelchanger *newLevelchanger);

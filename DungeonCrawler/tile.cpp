@@ -1,6 +1,9 @@
 #include "tile.h"
 #include "guardcontroller.h"
 #include "lootchest.h"
+#include "level.h"
+#include "portal.h"
+#include "wall.h"
 
 // ************************ getter - methods ******************************************
 int Tile::getRow() const{
@@ -19,14 +22,54 @@ std::string Tile::getTexture() const{
     return texture;
 }
 
+std::vector<Tile *> &Tile::getNeighborhood(){
+    return neighborhood;
+}
 // ************************ setter - methods ******************************************
 void Tile::setCharacter(Character *newCharacter){
     character = newCharacter;
 }
 
+void Tile::setNeighborhood(Level* pLevel){
+    int thisRow = this->getRow();
+    int thisCol = this->getColumn();
+    bool thisTileIsWall = (typeid(*this) == typeid(Wall));
+
+    Tile* newTile = nullptr;
+
+    if( !thisTileIsWall ){
+        for(int c = -1; c <= 1; c++){
+            for(int r = -1; r <= 1; r++){
+                newTile = pLevel->getDungeon()[thisRow + r][thisCol + c];
+                bool tileIsPortal = (typeid(*newTile) == typeid(Portal));
+                bool tileIsWall = (typeid(*newTile) == typeid(Wall));
+
+                if(c == 0 && r == 0 ){
+                    // this Tile != neighbor of this Tile
+                    // -> don't push_back
+                } else if(tileIsWall){
+                    // do not push_back
+                } else if(tileIsPortal){
+                    int portalPlace = -404;
+                    for(size_t i = 0; i < pLevel->getPortals().size(); i++){
+                        if(newTile == pLevel->getPortals()[i]){
+                            portalPlace = i;
+                        }
+                    }
+                    if(portalPlace != -404){
+                        neighborhood.push_back( pLevel->getPortals()[portalPlace]->getDestination() );
+                    }
+                } else{
+                    neighborhood.push_back( newTile );
+                }
+            }
+        }
+    }
+}
+
 // ************************ other methods *********************************************
 bool Tile::hasCharacter(){
-    if(this->character == nullptr){
+    if(this->character == nullptr || this->character->getHitpoints() <= 0 ){
         return false;
     } else{
         return true;
@@ -48,13 +91,21 @@ bool Tile::moveTo(Tile *destTile, Character *who){
     lastTile = this->onLeave(destTile, who);                        // lastTile - where I come from
 
     if(destTile->hasCharacter()){
-        if( destTile->getCharacter()->getIsNPC() != who->getIsNPC() ){
+        if( destTile->character->getIsNPC() != who->getIsNPC() ){
+
             fightEvent( who, destTile->getCharacter() );
-            if( destTile->getCharacter()->getHitpoints() > 0 ){
+
+            if( destTile->character->getHitpoints() > 0 ){         // if enemy live, you can't move
                 return false;
-            }else{
-                destTile->setCharacter( nullptr );
+            } else{                                                     // else -> he will be discarded
+                destTile->character = nullptr;
             }
+
+            if( lastTile->character->getHitpoints() <= 0 ){        // if me is dead
+                lastTile->character = nullptr;                      // i will be disarded
+                return false;                                           // and can't move
+            }
+
         } else{
             return false;
         }

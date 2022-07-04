@@ -12,6 +12,7 @@ Startscreen::Startscreen(GraphicalUI* pgui, QWidget *parent) :
     ui->setupUi(this);
     gui = pgui;
     connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(buttonPushed()));
+    connect(ui->loadLevelButton, SIGNAL(clicked()), this, SLOT(loadButtonPushed()));
 }
 
 // ************************ destructor ************************************************
@@ -22,4 +23,8 @@ Startscreen::~Startscreen(){
 // ************************ other methods *********************************************
 void Startscreen::buttonPushed(){
     gui->startNewGame();
+}
+
+void Startscreen::loadButtonPushed(){
+    gui->loadLevel();
 }

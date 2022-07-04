@@ -32,6 +32,7 @@ public:
 
     //other methods
     int move();
+    bool isDead();
 
     // public attributes
     QLabel* label = nullptr;
@@ -47,7 +48,6 @@ private:
     int hitpoints;
     bool isNPC;
     bool lootChestFound = false;
-
 };
 
 #endif // CHARACTER_H

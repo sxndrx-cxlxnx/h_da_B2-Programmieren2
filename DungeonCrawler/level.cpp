@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <queue>
+
 #include "level.h"
 #include "door.h"
 #include "floor.h"
@@ -11,6 +13,7 @@
 #include "stationarycontroller.h"
 #include "switch.h"
 #include "wall.h"
+#include "attackcontroller.h"
 
 using namespace std;
 
@@ -47,40 +50,53 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
 
             switch(levelString[atString]){
             case '#': dungeon[r][c] = new Wall(r, c); break;
-            case '.': dungeon[r][c] = new Floor(r, c, floorType()); break;
+            case '.': dungeon[r][c] = new Floor(r, c, floorType());
+                      allNodes.push_back( dungeon[r][c] );
+                  break;
             case '@': if( portal1 == nullptr ){                          // portals already created -> set them in dungeon
                     portal1 = new Portal(r, c, ":/Textures/Texturen-Paket/portal1.png");
                     dungeon[r][c] = portal1;
                     portals.push_back(portal1);
+                    allNodes.push_back( dungeon[r][c] );
                     break;
                 } else if( portal2 == nullptr ){
                     portal2 = new Portal(r, c, ":/Textures/Texturen-Paket/portal1.png");
                     dungeon[r][c] = portal2;
                     portals.push_back(portal2);
+                    allNodes.push_back( dungeon[r][c] );
                     break;
                 } else if( portal3 == nullptr ){
                     portal3 = new Portal(r, c, ":/Textures/Texturen-Paket/portal2.png");
                     dungeon[r][c] = portal3;
                     portals.push_back(portal3);
+                    allNodes.push_back( dungeon[r][c] );
                     break;
                 } else{
                     portal4 = new Portal(r, c, ":/Textures/Texturen-Paket/portal2.png");
                     dungeon[r][c] = portal4;
                     portals.push_back(portal4);
+                    allNodes.push_back( dungeon[r][c] );
                 }
                 break;
             case 'X': door1 = new Door(r, c);
                       dungeon[r][c] = door1;
+                      allNodes.push_back( dungeon[r][c] );
                 break;
-            case '_': dungeon[r][c] = new Pit(r, c); break;
-            case '<': dungeon[r][c] = new Ramp(r, c); break;
+            case '_': dungeon[r][c] = new Pit(r, c);
+                      allNodes.push_back( dungeon[r][c] );
+                break;
+            case '<': dungeon[r][c] = new Ramp(r, c);
+                      allNodes.push_back( dungeon[r][c] );
+                break;
             case '?': switch1 = new Switch(r, c);
                       dungeon[r][c] = switch1;
                       switches.push_back(switch1);
+                      allNodes.push_back( dungeon[r][c] );
                     break;
             case 'S':
                     levelchanger1 = new Levelchanger(r,c);
                     dungeon[r][c] = levelchanger1;
+//                    allNodes.push_back( dungeon[r][c] );
                     break;
             case '$': dungeon[r][c] = new LootChest(r, c); break;
             default: break;
@@ -107,14 +123,21 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
     }
 
     if( isCharInLevel ){
-        Character* who = new Character(dungeon[1][4], pTerminalUI, 25, 16, false);          // place character
+        Character* who = new Character( dungeon[1][4], pTerminalUI, 25, 16, false );          // place character
         this->placeCharacter( who, 1, 4 );
-        this->characters.push_back(who);
+        this->characters.push_back( who) ;
+
+        AttackController* attack = new AttackController( this );
+        Character* zombie = new Character( dungeon[1][7], attack, 30, 6, true );
+        attack->setCharacter( zombie );
+        this->placeCharacter( zombie, 1, 7 );
+        this->characters.push_back( zombie );
+
     }else{
         Controller* guard = new GuardController("6644");
-        Character* zombie = new Character( dungeon[2][12], guard, 30, 6 ,true);
+        Character* zombie = new Character( dungeon[2][12], guard, 30, 6 ,true );
         this->placeCharacter( zombie, 2, 12 );
-        this->characters.push_back(zombie);
+        this->characters.push_back( zombie );
 
         for(int i = 0; i < 3; i++){
             std::string movement;
@@ -245,12 +268,80 @@ const std::vector<Door *> &Level::getDoors() const{
     return doors;
 }
 
+const std::vector<Portal *> &Level::getPortals() const{
+    return portals;
+}
+
 Levelchanger *Level::getLevelchanger() const{
     return levelchanger;
 }
 
 const std::vector<std::vector<Tile *> > &Level::getDungeon() const{
     return dungeon;
+}
+
+std::vector<Tile *> Level::getPath(Tile *from, Tile *to){
+
+    for( size_t y = 0; y < allNodes.size(); y++ ){
+        allNodes[y]->predesessor = nullptr;
+        allNodes[y]->visited = false;
+    }
+
+   // vector< Tile* > alreadyChecked;
+//    bool notChecked = true;
+
+    queue< Tile* > q;                                           // queue for the next Tiles
+    q.push( from );                                             // from is the startvalue for the breadth-first-search
+
+    vector< Tile* > wayToGo;                                    // wayToGo has the Tiles, which were visited, but reversed order
+
+    while( !q.empty() ){
+        auto *currentNode = q.front();
+//        for( size_t i = 0; i < alreadyChecked.size(); i++ ){
+//            if( currentNode == alreadyChecked[i] ){
+//                notChecked = false;
+//                break;
+//            }
+//        }
+        q.pop();
+
+        if( !currentNode->visited /*notChecked*/ ){
+            vector < Tile* > nearMe = currentNode->getNeighborhood();
+            //alreadyChecked.push_back( currentNode );
+            currentNode->visited = true;
+
+            for( Tile* &nextNode: nearMe ){
+ //               bool addNode = true;
+//                for( size_t s = 0; s < alreadyChecked.size(); s++){
+//                    if(nextNode == alreadyChecked[s]){
+//                        addNode = false;
+//                        break;
+//                    }
+//                }
+                if( nextNode->predesessor == nullptr/*addNode*/){
+//                    if( nextNode->predesessor == nullptr ){
+                        nextNode->predesessor = currentNode;
+//                    }
+
+                    q.push( nextNode );
+
+                    if( nextNode == to ){
+
+                        wayToGo.push_back( nextNode );
+                        Tile* goBack = currentNode;
+
+                        while( goBack/*->predesessor*/ != from ){
+                            wayToGo.push_back( goBack );
+                            goBack = goBack->predesessor;
+                        }
+                        return wayToGo;
+                    }
+                }
+            }
+        }
+        //notChecked = true;
+    }
+    return wayToGo;
 }
 
 // ************************ setter - methods ******************************************

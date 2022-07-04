@@ -50,6 +50,7 @@ public slots:                       // buttons: up, down, left, right and stay
     void buttonDR();
 
     void closeWindow();             // button to exit the game
+    void storeLevel();              // button to store the current level
 };
 
 #endif // MAINWINDOW_H

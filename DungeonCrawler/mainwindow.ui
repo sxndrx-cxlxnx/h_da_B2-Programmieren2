@@ -283,10 +283,30 @@ background-color: rgb(transparent);</string>
      <string>Q</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="storeLevel">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>150</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(154, 153, 150);</string>
+    </property>
+    <property name="text">
+     <string>speichern</string>
+    </property>
+    <property name="shortcut">
+     <string>O</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>gridLayoutWidget</zorder>
    <zorder>gridLayoutWidget_2</zorder>
    <zorder>beenden</zorder>
+   <zorder>storeLevel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

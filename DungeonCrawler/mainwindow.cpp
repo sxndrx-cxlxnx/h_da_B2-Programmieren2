@@ -27,7 +27,7 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
 
     connect(ui->beenden, SIGNAL(clicked()), this, SLOT(closeWindow()));
-
+    connect(ui->storeLevel, SIGNAL(clicked()), this, SLOT(storeLevel()));
 }
 
 // ************************ destructor ************************************************
@@ -136,4 +136,8 @@ void MainWindow::closeWindow(){
     lastInput = 0;
     this->gui->getDungeonCrawler()->getLevel()->getCharacters()[0]->setLastDirection(lastInput);
     newEvent = true;
+}
+
+void MainWindow::storeLevel(){
+    this->gui->storeLevel();
 }
