@@ -2,7 +2,7 @@
 #define GRAPHICALUI_H
 
 #include "abstractui.h"
-#include "controller.h"
+#include "../Controller/controller.h"
 #include <QMainWindow>
 #include <QWidget>
 #include <QLabel>

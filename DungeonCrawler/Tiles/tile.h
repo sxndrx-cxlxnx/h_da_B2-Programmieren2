@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "character.h"
+#include "../Other/character.h"
+
 class Level;
 
 class Tile{             // abstract basisclass of Floor, Wall, Portal, Switch, Door, Ramp and Pit
@@ -16,8 +17,10 @@ protected:
     std::vector<Tile*> neighborhood;
 
 public:
-    Tile* predesessor = nullptr;
+    // public attributes
+    Tile* predecessor = nullptr;
     bool visited = false;
+
     // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):
         row(pRow), column(pColumn), texture(pTexture){};

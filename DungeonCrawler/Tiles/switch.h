@@ -1,8 +1,9 @@
 #ifndef SWITCH_H
 #define SWITCH_H
-#include "tile.h"
-#include "door.h"
+
 #include "active.h"
+#include "door.h"
+#include "tile.h"
 #include <vector>
 
 class Switch : public Tile, public Active{

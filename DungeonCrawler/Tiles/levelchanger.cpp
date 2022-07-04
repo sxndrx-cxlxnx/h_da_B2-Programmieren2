@@ -1,5 +1,5 @@
 #include "levelchanger.h"
-#include "dungeoncrawler.h"
+#include "../Other/dungeoncrawler.h"
 
 // ************************ getter - methods ******************************************
 std::string Levelchanger::getTexture() const{

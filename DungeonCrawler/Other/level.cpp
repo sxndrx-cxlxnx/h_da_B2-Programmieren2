@@ -1,19 +1,19 @@
 #include <cstdlib>
 #include <queue>
 
-#include "level.h"
-#include "door.h"
-#include "floor.h"
-#include "guardcontroller.h"
-#include "levelchanger.h"
-#include "lootchest.h"
-#include "pit.h"
-#include "portal.h"
-#include "ramp.h"
-#include "stationarycontroller.h"
-#include "switch.h"
-#include "wall.h"
-#include "attackcontroller.h"
+#include "../Controller/attackcontroller.h"
+#include "../Controller/guardcontroller.h"
+#include "../Controller/stationarycontroller.h"
+#include "../Other/level.h"
+#include "../Tiles/door.h"
+#include "../Tiles/floor.h"
+#include "../Tiles/levelchanger.h"
+#include "../Tiles/lootchest.h"
+#include "../Tiles/pit.h"
+#include "../Tiles/portal.h"
+#include "../Tiles/ramp.h"
+#include "../Tiles/switch.h"
+#include "../Tiles/wall.h"
 
 using namespace std;
 
@@ -256,12 +256,12 @@ Tile *Level::getTile(int row, int col){
     return dungeon[row][col];
 }
 
-const Tile *Level::getTile(int row, int col) const{
-    return dungeon[row][col];
+Levelchanger *Level::getLevelchanger() const{
+    return levelchanger;
 }
 
-std::vector<Character *> &Level::getCharacters() {
-    return characters;
+const Tile *Level::getTile(int row, int col) const{
+    return dungeon[row][col];
 }
 
 const std::vector<Door *> &Level::getDoors() const{
@@ -272,76 +272,56 @@ const std::vector<Portal *> &Level::getPortals() const{
     return portals;
 }
 
-Levelchanger *Level::getLevelchanger() const{
-    return levelchanger;
-}
-
 const std::vector<std::vector<Tile *> > &Level::getDungeon() const{
     return dungeon;
+}
+
+std::vector<Character *> &Level::getCharacters() {
+    return characters;
 }
 
 std::vector<Tile *> Level::getPath(Tile *from, Tile *to){
 
     for( size_t y = 0; y < allNodes.size(); y++ ){
-        allNodes[y]->predesessor = nullptr;
+        allNodes[y]->predecessor = nullptr;
         allNodes[y]->visited = false;
     }
 
-   // vector< Tile* > alreadyChecked;
-//    bool notChecked = true;
+    vector< Tile* > wayToGo;                                                        // wayToGo will be the shortest path from "from" to "to" (but reversed order)
+    queue< Tile* > q;                                                               // queue for the next Tiles
 
-    queue< Tile* > q;                                           // queue for the next Tiles
-    q.push( from );                                             // from is the startvalue for the breadth-first-search
-
-    vector< Tile* > wayToGo;                                    // wayToGo has the Tiles, which were visited, but reversed order
+    q.push( from );                                                                 // "from" is the startvalue for the breadth-first-search
 
     while( !q.empty() ){
         auto *currentNode = q.front();
-//        for( size_t i = 0; i < alreadyChecked.size(); i++ ){
-//            if( currentNode == alreadyChecked[i] ){
-//                notChecked = false;
-//                break;
-//            }
-//        }
         q.pop();
 
-        if( !currentNode->visited /*notChecked*/ ){
-            vector < Tile* > nearMe = currentNode->getNeighborhood();
-            //alreadyChecked.push_back( currentNode );
+        if( !currentNode->visited ){
+            vector < Tile* > currentNeighbors = currentNode->getNeighborhood();
             currentNode->visited = true;
 
-            for( Tile* &nextNode: nearMe ){
- //               bool addNode = true;
-//                for( size_t s = 0; s < alreadyChecked.size(); s++){
-//                    if(nextNode == alreadyChecked[s]){
-//                        addNode = false;
-//                        break;
-//                    }
-//                }
-                if( nextNode->predesessor == nullptr/*addNode*/){
-//                    if( nextNode->predesessor == nullptr ){
-                        nextNode->predesessor = currentNode;
-//                    }
+            for( Tile* &nextNode: currentNeighbors ){
+                if( nextNode->predecessor == nullptr ){                             // set predecessor of neighbors to current Node
+                        nextNode->predecessor = currentNode;
 
-                    q.push( nextNode );
+                    q.push( nextNode );                                             // push neighbors of currentNode to Queue
 
-                    if( nextNode == to ){
-
+                    if( nextNode == to ){                                           // if end of way is reached
                         wayToGo.push_back( nextNode );
                         Tile* goBack = currentNode;
 
-                        while( goBack/*->predesessor*/ != from ){
+                        while( goBack != from ){                                    // store current node and every ancestor as "Way to go"
                             wayToGo.push_back( goBack );
-                            goBack = goBack->predesessor;
+                            goBack = goBack->predecessor;
                         }
+
                         return wayToGo;
                     }
                 }
             }
         }
-        //notChecked = true;
     }
-    return wayToGo;
+    return wayToGo;                                                                 // if q == empty -> Character not found
 }
 
 // ************************ setter - methods ******************************************

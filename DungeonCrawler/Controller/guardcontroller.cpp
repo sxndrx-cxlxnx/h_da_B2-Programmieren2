@@ -20,7 +20,7 @@ int GuardController::move(){
     if( (whereInMovePattern +1) == movePattern.length()){
         setWhereInMovePattern(0);
     } else{
-        setWhereInMovePattern( (whereInMovePattern+1) );
+        setWhereInMovePattern( (whereInMovePattern +1) );
     }
     return tempMoveWhichYouAreDoingRightNow;
 }

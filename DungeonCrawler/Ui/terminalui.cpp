@@ -1,5 +1,5 @@
 #include "terminalui.h"
-#include "level.h"
+#include "../Other/level.h"
 #include <unistd.h>
 #include <termios.h>
 

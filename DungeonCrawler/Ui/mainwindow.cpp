@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "graphicalui.h"
-#include "dungeoncrawler.h"
+#include "../Other/dungeoncrawler.h"
 #include <QLabel>
 #include <QPushButton>
 #include <sstream>
@@ -26,7 +26,7 @@ MainWindow::MainWindow(GraphicalUI* pgui, QWidget *parent) :
     connect(ui->buttonD,  SIGNAL(clicked()), this, SLOT(buttonD()));
     connect(ui->buttonDR, SIGNAL(clicked()), this, SLOT(buttonDR()));
 
-    connect(ui->beenden, SIGNAL(clicked()), this, SLOT(closeWindow()));
+    connect(ui->beenden,    SIGNAL(clicked()), this, SLOT(closeWindow()));
     connect(ui->storeLevel, SIGNAL(clicked()), this, SLOT(storeLevel()));
 }
 

@@ -12,7 +12,7 @@ public:
     virtual ~LootChest(){}
 
     // getter - methods
-    virtual std::string getTexture() const override;// inline - declaration
+    virtual std::string getTexture() const override;
 
     // other methods
     virtual Tile *onEnter(Tile* fromTile, Character* who) override;

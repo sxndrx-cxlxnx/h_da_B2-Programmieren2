@@ -2,8 +2,8 @@
 #define CHARACTER_H
 
 #include <iostream>
-#include "terminalui.h"
 #include <QLabel>
+#include "../Ui/terminalui.h"
 
 class DungeonCrawler;
 class Tile;

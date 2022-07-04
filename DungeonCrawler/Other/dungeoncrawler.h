@@ -1,7 +1,7 @@
 #ifndef DUNGEONCRAWLER_H
 #define DUNGEONCRAWLER_H
 
-#include "graphicalui.h"
+#include "../Ui/graphicalui.h"
 #include "level.h"
 #include "list.h"
 
@@ -14,7 +14,7 @@ public:
     virtual ~DungeonCrawler();
 
     // getter - methods
-    GraphicalUI *getAbstractui() const;
+    GraphicalUI *getGraphicalui() const;
     Level *getLevel() const;
 
     // setter - methods
@@ -25,7 +25,7 @@ public:
 
 private:
     // attributes
-    GraphicalUI* abstractui;
+    GraphicalUI* graphicalui;
     Level* level;
     List* levelList;
 };

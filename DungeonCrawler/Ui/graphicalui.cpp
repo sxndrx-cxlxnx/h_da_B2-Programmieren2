@@ -9,9 +9,9 @@
 #include <vector>
 
 #include "graphicalui.h"
-#include "dungeoncrawler.h"
+#include "../Other/dungeoncrawler.h"
 #include "startscreen.h"
-#include "pit.h"
+#include "../Tiles/pit.h"
 
 // ************************ constructor ***********************************************
 GraphicalUI::GraphicalUI(){

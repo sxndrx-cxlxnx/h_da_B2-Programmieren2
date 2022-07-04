@@ -2,7 +2,7 @@
 #define TERMINALUI_H
 
 #include "abstractui.h"
-#include "controller.h"
+#include "../Controller/controller.h"
 
 class TerminalUI : virtual public AbstractUI, virtual public Controller{
 

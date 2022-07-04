@@ -1,15 +1,15 @@
 #include "dungeoncrawler.h"
-#include "mainwindow.h"
+#include "../Ui/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "levelchanger.h"
-#include "guardcontroller.h"
-#include "stationarycontroller.h"
+#include "../Tiles/levelchanger.h"
+#include "../Controller/guardcontroller.h"
+#include "../Controller/stationarycontroller.h"
 #include <QTest>
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 
-    abstractui = pgui;
+    graphicalui = pgui;
 
     List* pList = new List();
     levelList = pList;
@@ -40,7 +40,7 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
     level = level1;              // normal initialisation (without testing of ctor and assignement)
     Level* level2 = new Level(controller, levelString2, false );
 
-    abstractui->setDungeonCrawler(this);
+    graphicalui->setDungeonCrawler(this);
 
     levelList->push_back(level1);                                                       // put levels in level-vector
     levelList->push_back(level2);
@@ -68,10 +68,10 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
         }
     }
 
-    abstractui->draw(level1);                                                           // first draw - both levels
-    abstractui->draw(level2);
+    graphicalui->draw(level1);                                                           // first draw - both levels
+    graphicalui->draw(level2);
 
-    abstractui->draw2(level1);                                                          // draw startlevel above
+    graphicalui->draw2(level1);                                                          // draw startlevel above
 
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
@@ -87,13 +87,13 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
 // ************************ destructor ************************************************
 DungeonCrawler::~DungeonCrawler(){
     delete level;
-    delete abstractui;
+    delete graphicalui;
     delete levelList;
 }
 
 // ************************ getter - methods ******************************************
-GraphicalUI *DungeonCrawler::getAbstractui() const{
-    return abstractui;
+GraphicalUI *DungeonCrawler::getGraphicalui() const{
+    return graphicalui;
 }
 
 Level *DungeonCrawler::getLevel() const{
@@ -117,14 +117,14 @@ void DungeonCrawler::play(){
 
         if( level->getCharacters()[0]->getHitpoints() <= 0 || level->getCharacters()[0]->getLootChestFound()){
             run = false;           
-            abstractui->messageBox();
+            graphicalui->messageBox();
             break;
         }
 
         QTest::qWait(50);
         QCoreApplication::processEvents();
 
-        if( this->getAbstractui()->getMainWindow()->getNewEvent() ){
+        if( this->getGraphicalui()->getMainWindow()->getNewEvent() ){
 
             for( size_t i = 0; i < this->level->getCharacters().size(); i++ ){
                 Character* thisChar = this->level->getCharacters()[i];
@@ -148,45 +148,44 @@ void DungeonCrawler::play(){
                 }
 
                 switch (direction){
-                case 0:
+                case 0:                                                               // end of program
                     if( !cancelTry ){
-                        abstractui->cancel();
+                        graphicalui->cancel();
                         cancelTry = true;
-                    }else{
-                        abstractui->cancelTry2();
+                    } else{
+                        graphicalui->cancelTry2();
                         run = false;
-                    }                                                                // end of program
+                    }
                     break;
                 case 1: fromTile->moveTo(level->getTile(r+1, c-1), thisChar);         // down - left
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 2: fromTile->moveTo(level->getTile(r+1, c), thisChar);           // down
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 3: fromTile->moveTo(level->getTile(r+1, c+1), thisChar);         // down - right
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 4: fromTile->moveTo(level->getTile(r, c-1), thisChar);           // left
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
-                case 5: abstractui->draw2(level);                                    // stay
+                case 5: graphicalui->draw2(level);                                    // stay
                     break;
                 case 6: fromTile->moveTo(level->getTile(r, c+1), thisChar);           // right
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 7: fromTile->moveTo(level->getTile(r-1, c-1), thisChar);         // up - left
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 8: fromTile->moveTo(level->getTile(r-1, c), thisChar);           // up
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 case 9: fromTile->moveTo(level->getTile(r-1, c+1), thisChar);         // up - right
-                    abstractui->draw2(level);
+                    graphicalui->draw2(level);
                     break;
                 default: break;
                 }
             }
-
         }
     }
 }

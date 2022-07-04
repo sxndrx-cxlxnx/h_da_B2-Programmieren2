@@ -1,9 +1,9 @@
 #include "tile.h"
-#include "guardcontroller.h"
-#include "lootchest.h"
-#include "level.h"
-#include "portal.h"
-#include "wall.h"
+#include "../Controller/guardcontroller.h"
+#include "../Other/level.h"
+#include "../Tiles/lootchest.h"
+#include "../Tiles/portal.h"
+#include "../Tiles/wall.h"
 
 // ************************ getter - methods ******************************************
 int Tile::getRow() const{
@@ -54,9 +54,10 @@ void Tile::setNeighborhood(Level* pLevel){
                     for(size_t i = 0; i < pLevel->getPortals().size(); i++){
                         if(newTile == pLevel->getPortals()[i]){
                             portalPlace = i;
+                            break;
                         }
                     }
-                    if(portalPlace != -404){
+                    if(portalPlace != -404){                    // set Portal-Destination as neighbor of thisTile
                         neighborhood.push_back( pLevel->getPortals()[portalPlace]->getDestination() );
                     }
                 } else{
@@ -97,13 +98,13 @@ bool Tile::moveTo(Tile *destTile, Character *who){
 
             if( destTile->character->getHitpoints() > 0 ){         // if enemy live, you can't move
                 return false;
-            } else{                                                     // else -> he will be discarded
+            } else{                                                // else -> he will be discarded
                 destTile->character = nullptr;
             }
 
             if( lastTile->character->getHitpoints() <= 0 ){        // if me is dead
-                lastTile->character = nullptr;                      // i will be disarded
-                return false;                                           // and can't move
+                lastTile->character = nullptr;                     // i will be disarded
+                return false;                                      // and can't move
             }
 
         } else{

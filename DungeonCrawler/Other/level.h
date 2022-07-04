@@ -1,10 +1,10 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#include "tile.h"
 #include "character.h"
-#include "portal.h"
-#include "switch.h"
+#include "../Tiles/portal.h"
+#include "../Tiles/switch.h"
+#include "../Tiles/tile.h"
 #include <array>
 #include <vector>
 #include <QLabel>
@@ -46,12 +46,12 @@ public:
     int getWidth();
     int getLength();
     Tile *getTile(int row, int col);
+    Levelchanger *getLevelchanger() const;
     const Tile *getTile(int row, int col) const;
-    std::vector<Character *> &getCharacters() ;
     const std::vector<Door *> &getDoors() const;
     const std::vector<Portal *> &getPortals() const;
-    Levelchanger *getLevelchanger() const;
     const std::vector<std::vector<Tile *> > &getDungeon() const;
+    std::vector<Character *> &getCharacters() ;
     std::vector<Tile*> getPath(Tile* from, Tile* to);
 
     // setter - methods

@@ -1,6 +1,6 @@
 #ifndef LEVELCHANGER_H
 #define LEVELCHANGER_H
-#include "level.h"
+#include "../Other/level.h"
 #include "portal.h"
 #include "tile.h"
 
