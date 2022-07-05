@@ -32,6 +32,7 @@ public:
 
     //other methods
     int move();
+    bool isDead();
 
     // public attributes
     QLabel* label = nullptr;

@@ -127,3 +127,11 @@ bool Character::getLootChestFound(){
 int Character::move(){
     return controller->move();
 }
+
+bool Character::isDead(){
+    if( hitpoints <= 0 ){
+        return true;
+    } else{
+        return false;
+    }
+}

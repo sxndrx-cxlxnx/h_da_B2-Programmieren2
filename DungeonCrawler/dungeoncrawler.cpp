@@ -130,6 +130,11 @@ void DungeonCrawler::play(){
                 //   0                    Abbruch
 
                 int direction = thisChar->move();
+
+                if( thisChar->isDead() ){
+                    continue;
+                }
+
                 switch (direction){
                 case 0:
                     if( !cancelTry ){

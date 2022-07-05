@@ -26,7 +26,7 @@ void Tile::setCharacter(Character *newCharacter){
 
 // ************************ other methods *********************************************
 bool Tile::hasCharacter(){
-    if(this->character == nullptr){
+    if( this->character == nullptr || this->character->getHitpoints() <= 0 ){
         return false;
     } else{
         return true;
@@ -48,13 +48,19 @@ bool Tile::moveTo(Tile *destTile, Character *who){
     lastTile = this->onLeave(destTile, who);                        // lastTile - where I come from
 
     if(destTile->hasCharacter()){
-        if( destTile->getCharacter()->getIsNPC() != who->getIsNPC() ){
+        if( destTile->character->getIsNPC() != who->getIsNPC() ){
             fightEvent( who, destTile->getCharacter() );
-            if( destTile->getCharacter()->getHitpoints() > 0 ){
+            if( destTile->character->getHitpoints() > 0 ){
                 return false;
             }else{
-                destTile->setCharacter( nullptr );
+                destTile->character = nullptr;
             }
+
+            if( lastTile->character->getHitpoints() <= 0 ){         // if me is dead
+                lastTile->character = nullptr;                      // i will be disarded
+                return false;                                       // and can't move
+            }
+
         } else{
             return false;
         }
