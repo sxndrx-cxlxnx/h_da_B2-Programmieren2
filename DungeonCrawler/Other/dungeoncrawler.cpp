@@ -147,6 +147,10 @@ void DungeonCrawler::play(){
                     continue;
                 }
 
+                if(i != 0){
+                    this->level->getCharacters()[i]->setLastDirection(direction);
+                }
+
                 switch (direction){
                 case 0:                                                               // end of program
                     if( !cancelTry ){

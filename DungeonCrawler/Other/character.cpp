@@ -37,7 +37,7 @@ void Character::setLootChestFound(){
 // ************************ getter - methods *****************************************
 std::string &Character::getTexture(){
 
-    if( isNPC ){
+    if( this->getIsNPC() ){
 
         switch(lastDirection){
         case 1:     texture = ":/Textures/Texturen-Paket/zombie_left.png";

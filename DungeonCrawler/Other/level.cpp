@@ -96,7 +96,8 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
             case 'S':
                     levelchanger1 = new Levelchanger(r,c);
                     dungeon[r][c] = levelchanger1;
-//                    allNodes.push_back( dungeon[r][c] );
+                    levelchanger1->predecessor = dungeon[r][c];
+                    levelchanger1->visited = true;
                     break;
             case '$': dungeon[r][c] = new LootChest(r, c); break;
             default: break;
@@ -134,19 +135,19 @@ Level::Level(Controller* pTerminalUI, std::string levelString, bool isCharInLeve
         this->characters.push_back( zombie );
 
     }else{
-        Controller* guard = new GuardController("6644");
-        Character* zombie = new Character( dungeon[2][12], guard, 30, 6 ,true );
-        this->placeCharacter( zombie, 2, 12 );
+        Controller* guard = new GuardController("56446");
+        Character* zombie = new Character( dungeon[2][13], guard, 30, 6 ,true );
+        this->placeCharacter( zombie, 2, 13 );
         this->characters.push_back( zombie );
 
         for(int i = 0; i < 3; i++){
             std::string movement;
             if(i == 0){
-                movement = "644466";
+                movement = "5666444";
             } else if (i == 1){
-                movement = "664446";
+                movement = "5466644";
             } else{
-                movement = "666444";
+                movement = "5446664";
             }
             Controller* guard2 = new GuardController(movement);
 
