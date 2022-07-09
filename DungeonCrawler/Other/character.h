@@ -11,7 +11,7 @@ class Tile;
 class Character{
 public:
     // constructor
-    Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC);
+    Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC, int pHitpoints );
 
     // setter - methods
     void setTile(Tile *newTile);
@@ -29,6 +29,7 @@ public:
     int getHitpoints();
     bool getIsNPC();
     bool getLootChestFound();
+    int getLastDirection() const;
 
     //other methods
     int move();
@@ -36,6 +37,8 @@ public:
 
     // public attributes
     QLabel* label = nullptr;
+
+
 
 private:
     // attributes

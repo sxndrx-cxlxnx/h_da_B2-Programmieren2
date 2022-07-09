@@ -2,6 +2,16 @@
 #include "../Other/dungeoncrawler.h"
 
 // ************************ getter - methods ******************************************
+Level *Levelchanger::getLevel() const
+{
+    return level;
+}
+
+Tile *Levelchanger::getDestiny() const
+{
+    return destiny;
+}
+
 std::string Levelchanger::getTexture() const{
     return texture;
 }

@@ -29,6 +29,8 @@ public:
 
     // other methods
     virtual Tile* onEnter(Tile* fromTile, Character* who) override;
+    Level *getLevel() const;
+    Tile *getDestiny() const;
 };
 
 #endif // LEVELCHANGER_H

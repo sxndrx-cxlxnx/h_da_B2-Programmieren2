@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "graphicalui.h"
+#include "../Tiles/levelchanger.h"
 #include "../Other/dungeoncrawler.h"
 #include "startscreen.h"
 #include "../Tiles/pit.h"
@@ -163,17 +164,51 @@ int GraphicalUI::move(){
     }
 }
 
-void GraphicalUI::startNewGame(){
+void GraphicalUI::loadLevel( bool isStandardLevel ){
+
+    std::string path1 = "";
+    std::string path2 = "";
+
+    if( isStandardLevel ){
+        path1 = "../standardLevel1.json";
+        path2 = "../standardLevel2.json";
+    } else{
+        path1 = "../tempLevel1.json";
+        path2 = "../tempLevel2.json";
+    }
+
+    Level* level1 = new Level( this->getDungeonCrawler()->getGraphicalui(), path1, true, nullptr );
+    dungeonCrawler->setLevel( level1 );                                                 // set current Level in DungeonCrawler ( Level with Character )
+    Level* level2 = new Level( this->getDungeonCrawler()->getGraphicalui(), path2, false, level1->getCharacters()[0] );
+
+    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );
+    level2->getLevelchanger()->setDestiny( level1->getLevelchanger() );
+
+    level1->getLevelchanger()->setLevel( level2 );
+    level2->getLevelchanger()->setLevel( level1 );
+
+    level1->getLevelchanger()->setDungeonCrawler( dungeonCrawler );                               // give levelchanger this "dungeonCrawler" to know for later methods
+    level2->getLevelchanger()->setDungeonCrawler( dungeonCrawler );
+
+    //    levelList->push_back(level1);
+    //    levelList->push_back(level2);
+
+
+    draw(level1);                                                           // first draw - both levels
+    draw(level2);
+
+    draw2(level1);                                                         // draw startlevel above
+
     startscreen->hide();
     mainWindow->show();
-}
 
-void GraphicalUI::loadLevel(){
-    std::cout << "me fine" << std::endl;
+    dungeonCrawler->everythingIsReady = true;
+
 }
 
 void GraphicalUI::storeLevel(){
-    std::cout << "me fine vol. 2" << std::endl;
+    dungeonCrawler->store( dungeonCrawler->getLevel(), "../tempLevel1.json" );
+    dungeonCrawler->store( dungeonCrawler->getLevel()->getLevelchanger()->getLevel(), "../tempLevel2.json" );
 }
 
 void GraphicalUI::messageBox(){

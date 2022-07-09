@@ -22,9 +22,9 @@ Startscreen::~Startscreen(){
 
 // ************************ other methods *********************************************
 void Startscreen::buttonPushed(){
-    gui->startNewGame();
+    gui->loadLevel( true );
 }
 
 void Startscreen::loadButtonPushed(){
-    gui->loadLevel();
+    gui->loadLevel( false );
 }

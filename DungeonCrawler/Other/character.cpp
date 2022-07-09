@@ -1,7 +1,7 @@
 #include "character.h"
 
 // ************************ constructor **********************************************
-Character::Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC){
+Character::Character(Tile* pTile, Controller* pController, int pStrength, int pStamina, bool pIsNPC, int pHitpoints ){
     tile = pTile;
 
     if(pIsNPC){
@@ -13,7 +13,7 @@ Character::Character(Tile* pTile, Controller* pController, int pStrength, int pS
     controller = pController;
     strength = pStrength;
     stamina = pStamina;
-    hitpoints = getMaxHP();
+    hitpoints = pHitpoints;
     isNPC = pIsNPC;
 }
 
@@ -123,6 +123,9 @@ bool Character::getLootChestFound(){
     return lootChestFound;
 }
 
+int Character::getLastDirection() const{
+    return lastDirection;
+}
 // ************************ other methods ********************************************
 int Character::move(){
     return controller->move();
@@ -135,3 +138,5 @@ bool Character::isDead(){
         return false;
     }
 }
+
+

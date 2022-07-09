@@ -2,7 +2,9 @@
 #include "../Controller/guardcontroller.h"
 #include "../Other/level.h"
 #include "../Tiles/lootchest.h"
+#include "../Tiles/pit.h"
 #include "../Tiles/portal.h"
+#include "../Tiles/ramp.h"
 #include "../Tiles/wall.h"
 
 // ************************ getter - methods ******************************************
@@ -33,6 +35,7 @@ void Tile::setCharacter(Character *newCharacter){
 void Tile::setNeighborhood(Level* pLevel){
     int thisRow = this->getRow();
     int thisCol = this->getColumn();
+    bool thisTileIsPit = (typeid(*this) == typeid(Pit));
     bool thisTileIsWall = (typeid(*this) == typeid(Wall));
 
     Tile* newTile = nullptr;
@@ -41,15 +44,19 @@ void Tile::setNeighborhood(Level* pLevel){
         for(int c = -1; c <= 1; c++){
             for(int r = -1; r <= 1; r++){
                 newTile = pLevel->getDungeon()[thisRow + r][thisCol + c];
-                bool tileIsPortal = (typeid(*newTile) == typeid(Portal));
-                bool tileIsWall = (typeid(*newTile) == typeid(Wall));
+                bool nextTileIsPit = (typeid(*newTile) == typeid(Pit));
+                bool nextTileIsPortal = (typeid(*newTile) == typeid(Portal));
+                bool nextTileIsRamp = (typeid(*newTile) == typeid(Ramp));
+                bool nextTileIsWall = (typeid(*newTile) == typeid(Wall));
 
-                if(c == 0 && r == 0 ){
+                if(  c == 0 && r == 0 ){
                     // this Tile != neighbor of this Tile
                     // -> don't push_back
-                } else if(tileIsWall){
+                } else if( thisTileIsPit && !( nextTileIsRamp || nextTileIsPit ) ){
+                    // don't push_back
+                } else if(nextTileIsWall){
                     // do not push_back
-                } else if(tileIsPortal){
+                } else if(nextTileIsPortal){
                     int portalPlace = -404;
                     for(size_t i = 0; i < pLevel->getPortals().size(); i++){
                         if(newTile == pLevel->getPortals()[i]){
@@ -66,6 +73,9 @@ void Tile::setNeighborhood(Level* pLevel){
             }
         }
     }
+}
+void Tile::setTexture( std::string pTexture ){
+     texture = pTexture;
 }
 
 // ************************ other methods *********************************************
@@ -101,12 +111,10 @@ bool Tile::moveTo(Tile *destTile, Character *who){
             } else{                                                // else -> he will be discarded
                 destTile->character = nullptr;
             }
-
             if( lastTile->character->getHitpoints() <= 0 ){        // if me is dead
                 lastTile->character = nullptr;                     // i will be disarded
                 return false;                                      // and can't move
             }
-
         } else{
             return false;
         }

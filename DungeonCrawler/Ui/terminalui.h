@@ -14,8 +14,10 @@ public:
     ~TerminalUI(){};
 
     // other methods
-    virtual void draw(Level* level) override;
-    virtual int move() override;
+    void draw(Level* level) override;
+    int move() override;
+    std::string getMovePattern() override { return "error";};
+    unsigned int getWhereInMovePattern() override {return 10;};
 };
 
 #endif // TERMINALUI_H

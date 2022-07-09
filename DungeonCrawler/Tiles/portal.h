@@ -9,6 +9,7 @@ public:
     // constructor (inline)
     Portal(const int pRow, const int pColumn, std::string pTexture) :
         Tile(pRow, pColumn, pTexture){};
+    Portal( const int pRow, const int pColumn ):Tile( pRow, pColumn ){};
 
     // destructor (inline)
     virtual ~Portal(){};

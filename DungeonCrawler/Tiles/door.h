@@ -19,6 +19,7 @@ public:
     // other methods
     virtual Tile* onEnter(Tile* from, Character* who) override;
     virtual void notify(Active* source) override;
+    bool getIsOpen() const;
 };
 
 #endif // DOOR_H

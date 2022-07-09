@@ -20,6 +20,9 @@ public:
 
     // other methods
     virtual int move() override;
+    virtual std::string getControllerName() override { return "AttackController"; };
+    virtual std::string getMovePattern() override { return "error";};
+    virtual unsigned int getWhereInMovePattern() override {return 10;};
 };
 
 #endif // ATTACKCONTROLLER_H

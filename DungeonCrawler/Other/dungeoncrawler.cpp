@@ -5,6 +5,8 @@
 #include "../Controller/guardcontroller.h"
 #include "../Controller/stationarycontroller.h"
 #include <QTest>
+#include <json.hpp>
+#include <fstream>
 
 // ************************ constructor ***********************************************
 DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
@@ -14,64 +16,7 @@ DungeonCrawler::DungeonCrawler(GraphicalUI* pgui){
     List* pList = new List();
     levelList = pList;
 
-    Controller* controller = pgui;                 // put control to user via graphic input
-
-    std::string  levelString1 = {                                       // create level as a string
-        "################"
-        "#.......#@._<..#"
-        "#@....###.___..#"
-        "#.....#@#......#"
-        "#.......###X####"
-        "#########......#"
-        "#@....?##....S.#"
-        "################"};
-
-     std::string  levelString2 = {
-        "################"
-        "#..@?#.$.#.#.S.#"
-        "#....#...X.#...#"
-        "#.########@#...#"
-        "#....#...#####.#"
-        "#....#.#.#...#.#"
-        "#......#...#...#"
-        "################"};
-
-    Level* level1 = new Level(controller, levelString1, true );
-    level = level1;              // normal initialisation (without testing of ctor and assignement)
-    Level* level2 = new Level(controller, levelString2, false );
-
     graphicalui->setDungeonCrawler(this);
-
-    levelList->push_back(level1);                                                       // put levels in level-vector
-    levelList->push_back(level2);
-
-    level1->getLevelchanger()->setLevel( level2 );                                      // set Levelchanger in their own level
-    level2->getLevelchanger()->setLevel( level1 );
-
-    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );                 // set destiny of Levelchanger to the Levelchanger of the other level
-    level2->getLevelchanger()->setDestiny( level1->getLevelchanger() );
-
-    level1->getLevelchanger()->setDungeonCrawler( this );                               // give levelchanger this "dungeonCrawler" to know for later methods
-    level2->getLevelchanger()->setDungeonCrawler( this );
-
-    level2->setCharacters( level1->getCharacters()[0] );                                // put the same character in the 2nd level as well (not playing with different ones)
-
-    for(int r = 0; r < level1->getLength(); r++){                                       // put every neighboor of every Tile in their adjaceny list "neighborhood"
-        for(int c = 0; c < level1->getWidth(); c++){
-            level1->getDungeon()[r][c]->setNeighborhood(level1);
-        }
-    }
-
-    for(int r = 0; r < level2->getLength(); r++){                                       // do the same for every Tile in level2 as well
-        for(int c = 0; c < level2->getWidth(); c++){
-            level2->getDungeon()[r][c]->setNeighborhood(level2);
-        }
-    }
-
-    graphicalui->draw(level1);                                                           // first draw - both levels
-    graphicalui->draw(level2);
-
-    graphicalui->draw2(level1);                                                          // draw startlevel above
 
 //    // Test copy ctor
 //    auto* tmp = new Level(controller);
@@ -109,10 +54,13 @@ void DungeonCrawler::setLevel(Level *pLevel){
 void DungeonCrawler::play(){
     // set few refactor-variables
     bool run = true;
-    Tile* fromTile;
+    Tile* fromTile;    
+
+    while( !everythingIsReady ){ QTest::qWait(50); }
+    // Playloop
+
     bool cancelTry = false;
 
-    // Playloop
     while(run){
 
         if( level->getCharacters()[0]->getHitpoints() <= 0 || level->getCharacters()[0]->getLootChestFound()){
@@ -192,4 +140,77 @@ void DungeonCrawler::play(){
             }
         }
     }
+}
+
+void DungeonCrawler::store( Level* pLevel, std::string pPath ){
+
+    nlohmann::json level;
+
+     level["levelString"] = pLevel->getLevelString();
+     level["levelID"] = pLevel->levelID;
+     // in load werden beim Einlesen die einzelnen Arten in die jeweiligen Vektoren gepushed
+
+     level["numberOfPortals"] = pLevel->getPortals().size();                               // portals
+
+     for( size_t i = 0; i < pLevel->getPortals().size(); i++){
+         nlohmann::json portal;
+
+         portal["destRow"] = pLevel->getPortals()[i]->getDestination()->getRow();
+         portal["destColumn"] = pLevel->getPortals()[i]->getDestination()->getColumn();
+         portal["texture"] = pLevel->getPortals()[i]->getTexture();
+
+         level["portals"].push_back( portal );
+     }
+
+     if( pLevel->getLevelchanger()->getLevel()->levelID == 1 ){                            // levelchanger
+         level["levelchangerDestLevel"] = "../tempLevel1.json";
+     }else{
+         level["levelchangerDestLevel"] = "../tempLevel2.json";
+     }
+
+     level["levelchangerDestTileRow"] = pLevel->getLevelchanger()->getDestiny()->getRow();
+     level["levelchangerDestTileCol"] = pLevel->getLevelchanger()->getDestiny()->getColumn();
+
+     level["numberOfCharacters"] = pLevel->getCharacters().size();                         // character
+
+     for( size_t i = 0; i < pLevel->getCharacters().size(); i++ ){
+            nlohmann::json character;
+            character["texture"] = pLevel->getCharacters()[i]->getTexture();
+            character["row"] = pLevel->getCharacters()[i]->getTile()->getRow();
+            character["column"] = pLevel->getCharacters()[i]->getTile()->getColumn();
+            character["controller"] = pLevel->getCharacters()[i]->getController()->getControllerName();
+            character["movePattern"] = pLevel->getCharacters()[i]->getController()->getMovePattern();
+            character["whereInMovePattern"] = pLevel->getCharacters()[i]->getController()->getWhereInMovePattern();
+            character["strength"] = pLevel->getCharacters()[i]->getStrength();
+            character["stamina"] = pLevel->getCharacters()[i]->getStamina();
+            character["hitpoints"] = pLevel->getCharacters()[i]->getHitpoints();
+            character["isNPC"] = pLevel->getCharacters()[i]->getIsNPC();
+            character["lastDirection"] = pLevel->getCharacters()[i]->getLastDirection();
+
+            level["characters"].push_back(character);
+     }
+
+     level["numberOfDoors"] = pLevel->getDoors().size();
+
+     for( size_t i = 0; i < pLevel->getDoors().size(); i++ ){
+         nlohmann::json door;
+         door["isOpen"] = pLevel->getDoors()[i]->getIsOpen();
+
+         level["doors"].push_back( door );
+     }
+
+     std::ofstream outfile( pPath );
+     outfile << level.dump(2);
+
+//     if( pLevel->levelID == 1 ){
+//         std::cout << "id ist 1" << std::endl;
+//         std::ofstream outfile( "../tempLevel1.json");
+//         outfile << level.dump(2);
+//         //outfile.close();
+//     }else{
+//         std::cout << "id ist 2" << std::endl;
+//         std::ofstream outfile( "../tempLevel2.json" );
+//         outfile << level.dump(2);
+//     }
+
 }

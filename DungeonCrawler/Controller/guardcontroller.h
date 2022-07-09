@@ -14,13 +14,17 @@ private:
 public:
     // constructor
     GuardController(std::string pMovePattern);
+    GuardController( std::string pMovePattern, unsigned int pWhereInMovePattern ): movePattern(pMovePattern), whereInMovePattern(pWhereInMovePattern){};
 
     // setter - methods
     void setWhereInMovePattern(int number);
 
     // other methods
-    virtual int move() override;
+    int move() override;
     unsigned int getWhereInMovePattern() const;
+    std::string getControllerName() override { return "GuardController"; };
+    std::string getMovePattern() override { return movePattern;};
+    unsigned int getWhereInMovePattern() override {return whereInMovePattern;};
 };
 
 #endif // GUARDCONTROLLER_H

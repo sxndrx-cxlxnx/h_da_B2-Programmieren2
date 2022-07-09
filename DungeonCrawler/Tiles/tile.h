@@ -24,6 +24,7 @@ public:
     // constructor (inline)
     Tile(const int pRow, const int pColumn, std::string pTexture):
         row(pRow), column(pColumn), texture(pTexture){};
+    Tile( const int pRow, const int pColumn ):row(pRow), column(pColumn){};
 
     // destructor (inline)
     virtual ~Tile(){};
@@ -38,6 +39,7 @@ public:
     // setter - methods
     void setCharacter(Character *newCharacter);
     void setNeighborhood(Level* pLevel);
+    void setTexture( std::string pTexture );
 
     // other methods
     bool hasCharacter();
