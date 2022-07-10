@@ -25,8 +25,8 @@ public:
     void setDungeonCrawler(DungeonCrawler *newDungeonCrawler);
 
     // other methods
-    void draw(Level* level) override;                       // used in constructor
-    void draw2(Level* level);                                       // used to update playground
+    void draw(Level* level) override;           // used in constructor
+    void draw2(Level* level);                   // used to update playground
     int move() override;
     void loadLevel( bool isStandardLevel );
     void storeLevel();
@@ -34,8 +34,8 @@ public:
     void cancel();
     void cancelTry2();
     std::string getControllerName() override { return "GraphicalUI"; };
-    std::string getMovePattern() override { return "error";};
-    unsigned int getWhereInMovePattern() override {return 10;};
+    std::string getMovePattern() override { return "error"; };
+    unsigned int getWhereInMovePattern() override { return 10; };
 
 private:
     // attributes

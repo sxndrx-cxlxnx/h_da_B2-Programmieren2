@@ -16,23 +16,19 @@ private:
     // attributes
     int width = 16;
     int length = 8;
-    std::string floorType();
+    Levelchanger* levelchanger = nullptr;
     std::vector< std::vector<Tile*> > dungeon;
     std::vector<Character*> characters;
-    std::vector<Portal*> portalsVec;
+    std::vector<Portal*> portals;
     std::vector<Switch*> switches;
     std::vector<Door*> doors;
-    Levelchanger* levelchanger = nullptr;
     std::vector< Tile* > allNodes;
-
+    std::string floorType();
     std::string levelString;
 
-
 public:
-
-    int levelID = 0;
-
     // public attributes
+    int levelID = 0;
     std::vector<QLabel*> labels;
 
     // assignment
@@ -40,7 +36,7 @@ public:
     Level& operator=(Level rhs);
 
     // constructor
-    Level(Controller *pTerminalUI, std::string pPath, bool isCharInLevel, Character* player );
+    Level(Controller *pGUI, std::string pPath, bool isCharInLevel, Character* player );
 
     // copy constructor
     Level(const Level &pLevel);
@@ -59,18 +55,17 @@ public:
     const std::vector<std::vector<Tile *> > &getDungeon() const;
     std::vector<Character *> &getCharacters() ;
     std::vector<Tile*> getPath(Tile* from, Tile* to);
+    const std::string &getLevelString() const;
 
     // setter - methods
     void setLevelchanger(Levelchanger *newLevelchanger);
     void setCharacters( Character* pCharacter );
 
     // other methods
-    void placeCharacter(Character *c, int row, int col);
-
-    const std::string &getLevelString() const;
+    void placeCharacter(Character *c, int row, int col);   
 };
 
-// friend method for assignement
+// friend method for assignment
 void swap(Level& lhs, Level& rhs);
 
 #endif // LEVEL_H

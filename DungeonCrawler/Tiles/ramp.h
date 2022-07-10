@@ -4,6 +4,7 @@
 #include "tile.h"
 
 class Ramp : public Tile{
+
 public:
     // construtor (inline)
     Ramp(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/ramp.png"){};

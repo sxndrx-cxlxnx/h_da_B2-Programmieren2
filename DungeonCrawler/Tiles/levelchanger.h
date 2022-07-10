@@ -21,6 +21,8 @@ public:
 
     // getter - methods
     virtual std::string getTexture() const override;
+    Level *getLevel() const;
+    Tile *getDestiny() const;
 
     // setter - methods
     void setLevel(Level *newLevel);
@@ -29,8 +31,6 @@ public:
 
     // other methods
     virtual Tile* onEnter(Tile* fromTile, Character* who) override;
-    Level *getLevel() const;
-    Tile *getDestiny() const;
 };
 
 #endif // LEVELCHANGER_H

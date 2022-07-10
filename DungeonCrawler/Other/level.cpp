@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <queue>
 #include <fstream>
-
 #include <json.hpp>
 
 #include "../Controller/attackcontroller.h"
@@ -32,7 +31,7 @@ Level& Level::operator=(Level rhs){
 }
 
 // ************************ constructor ***********************************************
-Level::Level(Controller* pTerminalUI, std::string pPath, bool isCharInLevel, Character* player ){
+Level::Level(Controller* pGUI, std::string pPath, bool isCharInLevel, Character* player ){
 
     dungeon.resize(length, vector<Tile*> (width));                      // resize level with width and length
 
@@ -59,7 +58,7 @@ Level::Level(Controller* pTerminalUI, std::string pPath, bool isCharInLevel, Cha
             case '@':
                     portalTmp = new Portal(r, c);
                     dungeon[r][c] = portalTmp;
-                    portalsVec.push_back(portalTmp);
+                    portals.push_back(portalTmp);
                     allNodes.push_back( dungeon[r][c] );
                 break;
             case 'X':
@@ -98,63 +97,62 @@ Level::Level(Controller* pTerminalUI, std::string pPath, bool isCharInLevel, Cha
             switches[0]->attach(doors[i]);
         }
     }
-    int p = 0;                          // Achtung wirklich dämliche Lösung...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    int p = 0;
     for( const auto& portalTmp : jFile["portals"] ){
         int r = portalTmp["destRow"];
         int c = portalTmp["destColumn"];
-        portalsVec[p]->setDestination( dungeon[r][c]);
-        portalsVec[p]->setTexture( portalTmp["texture"] );
+        portals[p]->setDestination( dungeon[r][c]);
+        portals[p]->setTexture( portalTmp["texture"] );
         p++;
     }
 
     int c = 0;
     for( const auto& cTmp : jFile["characters"]){
 
-        if( c == 0 && isCharInLevel ){
-            Character* who = new Character( dungeon[ cTmp["row"] ][ cTmp["column"] ], pTerminalUI, cTmp["strength"], cTmp["stamina"], cTmp["isNPC"], cTmp["hitpoints"] );
-            placeCharacter( who, cTmp["row"], cTmp["column"] );
-            characters.push_back( who );
-            who->setLastDirection( cTmp["lastDirection"] );
+        int jRow       = cTmp["row"];
+        int jColumn    = cTmp["column"];
+        int jStrength  = cTmp["strength"];
+        int jStamina   = cTmp["stamina"];
+        bool jNPC      = cTmp["isNPC"];
+        int jHitpoints = cTmp["hitpoints"];
+        int jDirection = cTmp["lastDirection"];
 
-        }else if ( c == 0 && !isCharInLevel ){
+        if( c == 0 && isCharInLevel ){
+            Character* who = new Character( dungeon[ jRow ][ jColumn ], pGUI, jStrength, jStamina, jNPC, jHitpoints );
+            placeCharacter( who, jRow, jColumn );
+            characters.push_back( who );
+            who->setLastDirection( jDirection );
+
+        } else if ( c == 0 && !isCharInLevel ){
             characters.push_back( player );
 
-        }else{            
+        } else{
             Controller* controller = nullptr;
+            Character* who = nullptr;
 
             if( cTmp["controller"] == "AttackController" ){
                 AttackController* attack = new AttackController( this );
-
                 controller = attack;
-
-                Character* who = new Character( dungeon[ cTmp["row"] ][ cTmp["column"] ], controller, cTmp["strength"], cTmp["stamina"], cTmp["isNPC"], cTmp["hitpoints"] );
-                placeCharacter( who, cTmp["row"], cTmp["column"] );
-                characters.push_back( who );
-                who->setLastDirection( cTmp["lastDirection"] );
-
+                who = new Character( dungeon[ jRow ][ jColumn ], controller, jStrength, jStamina, jNPC, jHitpoints );
                 attack->setCharacter( who );
 
-            }else if ( cTmp["controller"] == "GuardController" ){
+            } else if ( cTmp["controller"] == "GuardController" ){
                 controller = new GuardController( cTmp["movePattern"], cTmp["whereInMovePattern"] );
+                who = new Character( dungeon[ jRow ][ jColumn ], controller, jStrength, jStamina, jNPC, jHitpoints );
 
-                Character* who = new Character( dungeon[ cTmp["row"] ][ cTmp["column"] ], controller, cTmp["strength"], cTmp["stamina"], cTmp["isNPC"], cTmp["hitpoints"] );
-                placeCharacter( who, cTmp["row"], cTmp["column"] );
-                characters.push_back( who );
-                who->setLastDirection( cTmp["lastDirection"] );
-
-            }else{
+            } else{
                 controller = new StationaryController();
-
-                Character* who = new Character( dungeon[ cTmp["row"] ][ cTmp["column"] ], controller, cTmp["strength"], cTmp["stamina"], cTmp["isNPC"], cTmp["hitpoints"] );
-                placeCharacter( who, cTmp["row"], cTmp["column"] );
-                characters.push_back( who );
-                who->setLastDirection( cTmp["lastDirection"] );
+                who = new Character( dungeon[ jRow ][ jColumn ], controller, jStrength, jStamina, jNPC, jHitpoints );
             }
+
+            placeCharacter( who, jRow, jColumn );
+            characters.push_back( who );
+            who->setLastDirection( jDirection );
         }
         c++;
     }
 
-    for(int r = 0; r < this->getLength(); r++){                                       // put every neighboor of every Tile in their adjaceny list "neighborhood"
+    for(int r = 0; r < this->getLength(); r++){                                  // put every neighboor of every Tile in their adjaceny list "neighborhood"
         for(int c = 0; c < this->getWidth(); c++){
             this->getDungeon()[r][c]->setNeighborhood(this);
         }
@@ -194,7 +192,7 @@ Level::Level(const Level &pLevel){
             } else if(tileIsPortal){
                 Portal* portal = new Portal(r, c, pLevel.getTile(r,c)->getTexture());
                 dungeon[r][c] = portal;
-                portalsVec.push_back(portal);
+                portals.push_back(portal);
             } else if(tileIsRamp){
                 dungeon[r][c] = new Ramp(r, c);
             } else if(tileIsSwitch){
@@ -214,11 +212,11 @@ Level::Level(const Level &pLevel){
         }
     }
 
-    for( int i = 0; i < (int) portalsVec.size(); i++ ){                                    // set portal destination
-        int colPLevelDest = pLevel.portalsVec[i]->getDestination()->getColumn();
-        int rowPLevelDest = pLevel.portalsVec[i]->getDestination()->getRow();
+    for( int i = 0; i < (int) portals.size(); i++ ){                                 // set portal destination
+        int colPLevelDest = pLevel.portals[i]->getDestination()->getColumn();
+        int rowPLevelDest = pLevel.portals[i]->getDestination()->getRow();
 
-        portalsVec[i]->setDestination( dungeon[rowPLevelDest][colPLevelDest]);
+        portals[i]->setDestination( dungeon[rowPLevelDest][colPLevelDest]);
     }
 
     for( int j = 0; j < (int) doors.size(); j++ ){                                      // connect switch with door
@@ -264,7 +262,7 @@ const std::vector<Door *> &Level::getDoors() const{
 }
 
 const std::vector<Portal *> &Level::getPortals() const{
-    return portalsVec;
+    return portals;
 }
 
 const std::vector<std::vector<Tile *> > &Level::getDungeon() const{
@@ -319,6 +317,10 @@ std::vector<Tile *> Level::getPath(Tile *from, Tile *to){
     return wayToGo;                                                                 // if q == empty -> Character not found
 }
 
+const std::string &Level::getLevelString() const{
+    return levelString;
+}
+
 // ************************ setter - methods ******************************************
 
 void Level::setLevelchanger(Levelchanger *newLevelchanger){
@@ -353,8 +355,3 @@ std::string Level::floorType(){
         break;
     }
 }
-
-const std::string &Level::getLevelString() const{
-    return levelString;
-}
-

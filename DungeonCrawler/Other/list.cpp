@@ -1,5 +1,6 @@
 #include "list.h"
 
+// ************************ constructor ***********************************************
 List::List(){
     first.pointer->next = last.pointer;
     last.pointer->next = NULL;
@@ -7,12 +8,14 @@ List::List(){
     first.pointer->back = nullptr;
 }
 
+// ************************ destructor ************************************************
 List::~List(){
     while(!empty()){
         pop_back();
     }
 }
 
+// ************************ methods ***************************************************
 void List::push_front(Level *level){
     Element* element = new Element();
     element->data = level;

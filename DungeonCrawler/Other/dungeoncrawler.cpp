@@ -66,7 +66,7 @@ void DungeonCrawler::play(){
         if( level->getCharacters()[0]->getHitpoints() <= 0 || level->getCharacters()[0]->getLootChestFound()){
             run = false;           
             graphicalui->messageBox();
-            break;
+            continue;
         }
 
         QTest::qWait(50);
@@ -147,48 +147,69 @@ void DungeonCrawler::store( Level* pLevel, std::string pPath ){
     nlohmann::json level;
 
      level["levelString"] = pLevel->getLevelString();
-     level["levelID"] = pLevel->levelID;
-     // in load werden beim Einlesen die einzelnen Arten in die jeweiligen Vektoren gepushed
+     level["levelID"]     = pLevel->levelID;
 
-     level["numberOfPortals"] = pLevel->getPortals().size();                               // portals
+     // ************************************************************ //
+     //                         Portals                              //
+     // ************************************************************ //
+
+     level["numberOfPortals"] = pLevel->getPortals().size();
 
      for( size_t i = 0; i < pLevel->getPortals().size(); i++){
          nlohmann::json portal;
 
-         portal["destRow"] = pLevel->getPortals()[i]->getDestination()->getRow();
+         portal["destRow"]    = pLevel->getPortals()[i]->getDestination()->getRow();
          portal["destColumn"] = pLevel->getPortals()[i]->getDestination()->getColumn();
-         portal["texture"] = pLevel->getPortals()[i]->getTexture();
+         portal["texture"]    = pLevel->getPortals()[i]->getTexture();
 
          level["portals"].push_back( portal );
      }
+     // ------------------------------------------------------------ //
 
-     if( pLevel->getLevelchanger()->getLevel()->levelID == 1 ){                            // levelchanger
+     // ************************************************************ //
+     //                       Levelchanger                           //
+     // ************************************************************ //
+
+     if( pLevel->getLevelchanger()->getLevel()->levelID == 1 ){
          level["levelchangerDestLevel"] = "../tempLevel1.json";
-     }else{
+     } else{
          level["levelchangerDestLevel"] = "../tempLevel2.json";
      }
 
      level["levelchangerDestTileRow"] = pLevel->getLevelchanger()->getDestiny()->getRow();
      level["levelchangerDestTileCol"] = pLevel->getLevelchanger()->getDestiny()->getColumn();
 
-     level["numberOfCharacters"] = pLevel->getCharacters().size();                         // character
+     // ------------------------------------------------------------ //
+
+     // ************************************************************ //
+     //                         Character                            //
+     // ************************************************************ //
+
+     level["numberOfCharacters"] = pLevel->getCharacters().size();
 
      for( size_t i = 0; i < pLevel->getCharacters().size(); i++ ){
             nlohmann::json character;
-            character["texture"] = pLevel->getCharacters()[i]->getTexture();
-            character["row"] = pLevel->getCharacters()[i]->getTile()->getRow();
-            character["column"] = pLevel->getCharacters()[i]->getTile()->getColumn();
-            character["controller"] = pLevel->getCharacters()[i]->getController()->getControllerName();
-            character["movePattern"] = pLevel->getCharacters()[i]->getController()->getMovePattern();
-            character["whereInMovePattern"] = pLevel->getCharacters()[i]->getController()->getWhereInMovePattern();
-            character["strength"] = pLevel->getCharacters()[i]->getStrength();
-            character["stamina"] = pLevel->getCharacters()[i]->getStamina();
-            character["hitpoints"] = pLevel->getCharacters()[i]->getHitpoints();
-            character["isNPC"] = pLevel->getCharacters()[i]->getIsNPC();
-            character["lastDirection"] = pLevel->getCharacters()[i]->getLastDirection();
+            Character* iChar = pLevel->getCharacters()[i];
+
+            character["texture"]            = iChar->getTexture();
+            character["row"]                = iChar->getTile()->getRow();
+            character["column"]             = iChar->getTile()->getColumn();
+            character["controller"]         = iChar->getController()->getControllerName();
+            character["movePattern"]        = iChar->getController()->getMovePattern();
+            character["whereInMovePattern"] = iChar->getController()->getWhereInMovePattern();
+            character["strength"]           = iChar->getStrength();
+            character["stamina"]            = iChar->getStamina();
+            character["hitpoints"]          = iChar->getHitpoints();
+            character["isNPC"]              = iChar->getIsNPC();
+            character["lastDirection"]      = iChar->getLastDirection();
 
             level["characters"].push_back(character);
      }
+     // ------------------------------------------------------------ //
+
+     // ************************************************************ //
+     //                           Doors                              //
+     // ************************************************************ //
 
      level["numberOfDoors"] = pLevel->getDoors().size();
 
@@ -198,19 +219,8 @@ void DungeonCrawler::store( Level* pLevel, std::string pPath ){
 
          level["doors"].push_back( door );
      }
+     // ------------------------------------------------------------ //
 
      std::ofstream outfile( pPath );
      outfile << level.dump(2);
-
-//     if( pLevel->levelID == 1 ){
-//         std::cout << "id ist 1" << std::endl;
-//         std::ofstream outfile( "../tempLevel1.json");
-//         outfile << level.dump(2);
-//         //outfile.close();
-//     }else{
-//         std::cout << "id ist 2" << std::endl;
-//         std::ofstream outfile( "../tempLevel2.json" );
-//         outfile << level.dump(2);
-//     }
-
 }

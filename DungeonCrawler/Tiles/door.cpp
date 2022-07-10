@@ -1,8 +1,7 @@
 #include "door.h"
 
 // ************************ getter - methods *****************************************
-bool Door::getIsOpen() const
-{
+bool Door::getIsOpen() const{
     return isOpen;
 }
 

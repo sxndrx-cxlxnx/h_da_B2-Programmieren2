@@ -10,9 +10,10 @@
 
 #include "graphicalui.h"
 #include "../Tiles/levelchanger.h"
+#include "../Tiles/pit.h"
+#include "../Other/character.h"
 #include "../Other/dungeoncrawler.h"
 #include "startscreen.h"
-#include "../Tiles/pit.h"
 
 // ************************ constructor ***********************************************
 GraphicalUI::GraphicalUI(){
@@ -87,7 +88,6 @@ void GraphicalUI::draw2(Level *level){                                          
 
     int length = level->getLength();
     int width = level->getWidth();
-
     int counter = 0;
 
     for( int r = 0; r < length; r++ ){
@@ -111,11 +111,13 @@ void GraphicalUI::draw2(Level *level){                                          
 
             if(level->getTile(r, c)->hasCharacter() ){                                                  // if Tile has Character
 
+                Character* levelChar = level->getTile(r, c)->getCharacter();
+
                 QString texTile = QString::fromStdString ( level->getTile(r, c)->getTexture() );        // load texture of Tile
                 QPixmap* pixmapTile = new QPixmap;
                 pixmapTile->load(texTile);
 
-                QString texChar = QString::fromStdString ( level->getTile(r,c)->getCharacter()->getTexture() );  // load texture of character
+                QString texChar = QString::fromStdString ( levelChar->getTexture() );                   // load texture of character
                 QPixmap* pixmapChar = new QPixmap;
                 pixmapChar->load(texChar);
                 pixmapChar->scaled(level->labels[counter]->size());
@@ -124,24 +126,22 @@ void GraphicalUI::draw2(Level *level){                                          
                 bool tileIsPit = (typeid(*testPit) == typeid(Pit));
 
                 if( tileIsPit ){                                                                        // show character behind a pit,
-                    pixmapTile->scaled(level->labels[counter]->size());
-
                     QPainter painter(pixmapChar);
                     painter.drawPixmap(0,0,*pixmapTile);
 
-                    level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapChar);
+                    levelChar->label->setPixmap(*pixmapChar);
                 } else{                                                                                 // but show character behind a tile (!= pit)
-                    if(level->getTile(r, c)->getCharacter()->label  == nullptr){                        // if Label == nullptr
-                        level->getTile(r, c)->getCharacter()->label = new QLabel();                     // set new Label
+                    if(levelChar->label  == nullptr){                                                   // if Label == nullptr
+                        levelChar->label = new QLabel();                                                // set new Label
                     }
                     QPainter painter(pixmapTile);
                     painter.drawPixmap(0,0,*pixmapChar);
 
-                    level->getTile(r, c)->getCharacter()->label->setPixmap(*pixmapTile);                // actual output
+                    levelChar->label->setPixmap(*pixmapTile);                                           // actual output
                 }                                                                                       // END - show Character behind Tile
-            mainWindow->getUi()->gridDungeon->addWidget( level->getTile(r, c)->getCharacter()->label , r, c );
-            level->getTile(r, c)->getCharacter()->label->setScaledContents(true);
-            level->getTile(r, c)->getCharacter()->label->raise();
+            mainWindow->getUi()->gridDungeon->addWidget( levelChar->label , r, c );
+            levelChar->label->setScaledContents(true);
+            levelChar->label->raise();
 
             delete pixmapTile;
             delete pixmapChar;
@@ -178,32 +178,28 @@ void GraphicalUI::loadLevel( bool isStandardLevel ){
     }
 
     Level* level1 = new Level( this->getDungeonCrawler()->getGraphicalui(), path1, true, nullptr );
-    dungeonCrawler->setLevel( level1 );                                                 // set current Level in DungeonCrawler ( Level with Character )
     Level* level2 = new Level( this->getDungeonCrawler()->getGraphicalui(), path2, false, level1->getCharacters()[0] );
 
-    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );
+    dungeonCrawler->setLevel( level1 );                                     // set "current Level" in DungeonCrawler ( Level with Character )
+
+    level1->getLevelchanger()->setDestiny( level2->getLevelchanger() );     // set Levelchanger-attributes
     level2->getLevelchanger()->setDestiny( level1->getLevelchanger() );
 
     level1->getLevelchanger()->setLevel( level2 );
     level2->getLevelchanger()->setLevel( level1 );
 
-    level1->getLevelchanger()->setDungeonCrawler( dungeonCrawler );                               // give levelchanger this "dungeonCrawler" to know for later methods
+    level1->getLevelchanger()->setDungeonCrawler( dungeonCrawler );         // give levelchanger this "dungeonCrawler" to know for later methods
     level2->getLevelchanger()->setDungeonCrawler( dungeonCrawler );
 
-    //    levelList->push_back(level1);
-    //    levelList->push_back(level2);
-
-
-    draw(level1);                                                           // first draw - both levels
+    draw(level1);           // ""first draw" - both levels
     draw(level2);
 
-    draw2(level1);                                                         // draw startlevel above
+    draw2(level1);          // draw startlevel above
 
     startscreen->hide();
     mainWindow->show();
 
     dungeonCrawler->everythingIsReady = true;
-
 }
 
 void GraphicalUI::storeLevel(){

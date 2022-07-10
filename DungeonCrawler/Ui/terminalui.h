@@ -13,11 +13,13 @@ public:
     // destructor (inline)
     ~TerminalUI(){};
 
+    // getter - methods
+    std::string getMovePattern() override { return "error"; };
+    unsigned int getWhereInMovePattern() override { return 10; };
+
     // other methods
     void draw(Level* level) override;
     int move() override;
-    std::string getMovePattern() override { return "error";};
-    unsigned int getWhereInMovePattern() override {return 10;};
 };
 
 #endif // TERMINALUI_H

@@ -126,6 +126,7 @@ bool Character::getLootChestFound(){
 int Character::getLastDirection() const{
     return lastDirection;
 }
+
 // ************************ other methods ********************************************
 int Character::move(){
     return controller->move();
@@ -138,5 +139,3 @@ bool Character::isDead(){
         return false;
     }
 }
-
-

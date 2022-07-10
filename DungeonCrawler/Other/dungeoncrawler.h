@@ -7,6 +7,9 @@
 
 class DungeonCrawler{
 public:
+    // public attributes
+    bool everythingIsReady = false;
+
     // constructor
     DungeonCrawler(GraphicalUI* pgui);
 
@@ -23,8 +26,6 @@ public:
     // other methods
     void play();
     void store( Level* pLevel, std::string pPath );
-
-    bool everythingIsReady = false;
 
 private:
     // attributes

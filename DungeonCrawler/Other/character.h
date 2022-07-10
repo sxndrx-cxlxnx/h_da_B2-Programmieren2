@@ -38,8 +38,6 @@ public:
     // public attributes
     QLabel* label = nullptr;
 
-
-
 private:
     // attributes
     Tile* tile;

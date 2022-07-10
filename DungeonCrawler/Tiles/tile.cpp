@@ -74,6 +74,7 @@ void Tile::setNeighborhood(Level* pLevel){
         }
     }
 }
+
 void Tile::setTexture( std::string pTexture ){
      texture = pTexture;
 }
@@ -127,7 +128,7 @@ bool Tile::moveTo(Tile *destTile, Character *who){
 
     if(lastTile == nullptr){        // f.e. standing on a one-way road
         return false;
-    }else{                                                          // destTile - where I wanted to go (original destination)
+    } else{                                                         // destTile - where I wanted to go (original destination)
         Tile* nextTile;                                             // nextTile - where I'm arriving (actual destination)
         nextTile = destTile->onEnter(lastTile, who);
         if(nextTile == nullptr){    // run into a wall

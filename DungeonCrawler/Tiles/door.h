@@ -7,19 +7,19 @@
 class Door : public Tile, public Passive{
 private:
     // attributes
-    bool isOpen = true;
+    bool isOpen = false;
 
 public:
     // constructor (inline)
     Door(const int pRow, const int pColumn):Tile(pRow, pColumn, ":/Textures/Texturen-Paket/door1.png"), Passive(){};
 
     // getter - methods
+    bool getIsOpen() const;
     virtual std::string getTexture() const override;
 
     // other methods
     virtual Tile* onEnter(Tile* from, Character* who) override;
     virtual void notify(Active* source) override;
-    bool getIsOpen() const;
 };
 
 #endif // DOOR_H

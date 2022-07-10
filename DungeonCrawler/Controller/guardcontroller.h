@@ -19,12 +19,14 @@ public:
     // setter - methods
     void setWhereInMovePattern(int number);
 
-    // other methods
-    int move() override;
+    // getter - methods
     unsigned int getWhereInMovePattern() const;
     std::string getControllerName() override { return "GuardController"; };
-    std::string getMovePattern() override { return movePattern;};
-    unsigned int getWhereInMovePattern() override {return whereInMovePattern;};
+    std::string getMovePattern() override { return movePattern; };
+    unsigned int getWhereInMovePattern() override { return whereInMovePattern; };
+
+    // other methods
+    int move() override;
 };
 
 #endif // GUARDCONTROLLER_H
