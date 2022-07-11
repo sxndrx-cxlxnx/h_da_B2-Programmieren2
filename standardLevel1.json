@@ -1,0 +1,65 @@
+{
+  "characters": [
+    {
+      "column": 4,
+      "controller": "GraphicalUI",
+      "hitpoints": 100,
+      "isNPC": false,
+      "lastDirection": 5,
+      "movePattern": "error",
+      "row": 1,
+      "stamina": 16,
+      "strength": 25,
+      "texture": ":/Character/Texturen-Paket/char/char_front_2.png",
+      "whereInMovePattern": 10
+    },
+    {
+      "column": 7,
+      "controller": "AttackController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "error",
+      "row": 1,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 10
+    }
+  ],
+  "doors": [
+    {
+      "isOpen": false
+    }
+  ],
+  "levelID": 1,
+  "levelString": "#################.......#@._<..##@....###.___..##.....#@#......##.......###X#############......##@....?##....S.#################",
+  "levelchangerDestLevel": "../tempLevel2.json",
+  "levelchangerDestTileCol": 13,
+  "levelchangerDestTileRow": 1,
+  "numberOfCharacters": 2,
+  "numberOfDoors": 1,
+  "numberOfPortals": 4,
+  "portals": [
+    {
+      "destColumn": 1,
+      "destRow": 2,
+      "texture": ":/Textures/Texturen-Paket/portal1.png"
+    },
+    {
+      "destColumn": 9,
+      "destRow": 1,
+      "texture": ":/Textures/Texturen-Paket/portal1.png"
+    },
+    {
+      "destColumn": 1,
+      "destRow": 6,
+      "texture": ":/Textures/Texturen-Paket/portal2.png"
+    },
+    {
+      "destColumn": 7,
+      "destRow": 3,
+      "texture": ":/Textures/Texturen-Paket/portal2.png"
+    }
+  ]
+}

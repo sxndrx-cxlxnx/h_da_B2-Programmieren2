@@ -8,61 +8,63 @@ QT += testlib
 CONFIG += c++11
 
 FORMS += \
-    mainwindow.ui \
-    startscreen.ui
+    Ui/mainwindow.ui \
+    Ui/startscreen.ui
 
 SOURCES += \
-        abstractui.cpp \
-        active.cpp \
-        character.cpp \
-        controller.cpp \
-        door.cpp \
-        dungeoncrawler.cpp \
-        floor.cpp \
-        graphicalui.cpp \
-        guardcontroller.cpp \
-        level.cpp \
-        levelchanger.cpp \
-        list.cpp \
-        lootchest.cpp \
+        Ui/abstractui.cpp \
+        Tiles/active.cpp \
+        Controller/attackcontroller.cpp \
+        Other/character.cpp \
+        Controller/controller.cpp \
+        Tiles/door.cpp \
+        Other/dungeoncrawler.cpp \
+        Tiles/floor.cpp \
+        Ui/graphicalui.cpp \
+        Controller/guardcontroller.cpp \
+        Other/level.cpp \
+        Tiles/levelchanger.cpp \
+        Other/list.cpp \
+        Tiles/lootchest.cpp \
         main.cpp \
-        mainwindow.cpp \
-        passive.cpp \
-        pit.cpp \
-        portal.cpp \
-        ramp.cpp \
-        startscreen.cpp \
-        stationarycontroller.cpp \
-        switch.cpp \
-        terminalui.cpp \
-        tile.cpp \
-        wall.cpp
+        Ui/mainwindow.cpp \
+        Tiles/passive.cpp \
+        Tiles/pit.cpp \
+        Tiles/portal.cpp \
+        Tiles/ramp.cpp \
+        Ui/startscreen.cpp \
+        Controller/stationarycontroller.cpp \
+        Tiles/switch.cpp \
+        Ui/terminalui.cpp \
+        Tiles/tile.cpp \
+        Tiles/wall.cpp
 
 HEADERS += \
-    abstractui.h \
-    active.h \
-    character.h \
-    controller.h \
-    door.h \
-    dungeoncrawler.h \
-    floor.h \
-    graphicalui.h \
-    guardcontroller.h \
-    level.h \
-    levelchanger.h \
-    list.h \
-    lootchest.h \
-    mainwindow.h \
-    passive.h \
-    pit.h \
-    portal.h \
-    ramp.h \
-    startscreen.h \
-    stationarycontroller.h \
-    switch.h \
-    terminalui.h \
-    tile.h \
-    wall.h
+    Ui/abstractui.h \
+    Tiles/active.h \
+    Controller/attackcontroller.h \
+    Other/character.h \
+    Controller/controller.h \
+    Tiles/door.h \
+    Other/dungeoncrawler.h \
+    Tiles/floor.h \
+    Ui/graphicalui.h \
+    Controller/guardcontroller.h \
+    Other/level.h \
+    Tiles/levelchanger.h \
+    Other/list.h \
+    Tiles/lootchest.h \
+    Ui/mainwindow.h \
+    Tiles/passive.h \
+    Tiles/pit.h \
+    Tiles/portal.h \
+    Tiles/ramp.h \
+    Ui/startscreen.h \
+    Controller/stationarycontroller.h \
+    Tiles/switch.h \
+    Ui/terminalui.h \
+    Tiles/tile.h \
+    Tiles/wall.h
 
 RESOURCES += \
     Resources.qrc

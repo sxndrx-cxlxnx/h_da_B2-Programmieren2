@@ -1,0 +1,107 @@
+{
+  "characters": [
+    {
+      "column": 4,
+      "controller": "GraphicalUI",
+      "hitpoints": 100,
+      "isNPC": false,
+      "lastDirection": 5,
+      "movePattern": "error",
+      "row": 1,
+      "stamina": 16,
+      "strength": 25,
+      "texture": ":/Character/Texturen-Paket/char/char_front_2.png",
+      "whereInMovePattern": 10
+    },
+    {
+      "column": 13,
+      "controller": "GuardController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "56446",
+      "row": 2,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 0
+    },
+    {
+      "column": 1,
+      "controller": "GuardController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "5666444",
+      "row": 6,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 0
+    },
+    {
+      "column": 2,
+      "controller": "GuardController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "5466644",
+      "row": 5,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 0
+    },
+    {
+      "column": 3,
+      "controller": "GuardController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "5446664",
+      "row": 4,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 0
+    },
+    {
+      "column": 1,
+      "controller": "StationaryController",
+      "hitpoints": 50,
+      "isNPC": true,
+      "lastDirection": 5,
+      "movePattern": "error",
+      "row": 3,
+      "stamina": 6,
+      "strength": 30,
+      "texture": ":/Textures/Texturen-Paket/zombie_right.png",
+      "whereInMovePattern": 10
+    }
+  ],
+  "doors": [
+    {
+      "isOpen": true
+    }
+  ],
+  "levelID": 2,
+  "levelString": "#################..@?#.$.#.#.S.##....#...X.#...##.########@#...##....#...#####.##....#.#.#...#.##......#...#...#################",
+  "levelchangerDestLevel": "../tempLevel1.json",
+  "levelchangerDestTileCol": 13,
+  "levelchangerDestTileRow": 6,
+  "numberOfCharacters": 6,
+  "numberOfDoors": 1,
+  "numberOfPortals": 2,
+  "portals": [
+    {
+      "destColumn": 10,
+      "destRow": 3,
+      "texture": ":/Textures/Texturen-Paket/portal1.png"
+    },
+    {
+      "destColumn": 3,
+      "destRow": 1,
+      "texture": ":/Textures/Texturen-Paket/portal1.png"
+    }
+  ]
+}
